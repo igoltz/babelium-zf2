@@ -18,7 +18,8 @@
         "zfcampus/zf-development-mode": "^3.0",
         "doctrine/doctrine-orm-module": "^1.1",
         "zendframework/zend-developer-tools": "dev-master",
-        "silexlabs/amfphp": "^2.2"
+        "zendframework/zend-json": "^3.0",
+        "captioning/captioning": "^2.5"
     },
     "autoload": {
         "psr-4": {
