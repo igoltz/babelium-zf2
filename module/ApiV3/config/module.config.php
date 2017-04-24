@@ -12,6 +12,15 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
+    'controllers' => [
+        'factories' => [
+            Controller\IndexController::class => InvokableFactory::class,
+            Controller\SubTitlesController::class => InvokableFactory::class,
+        ],
+        'invokables' => array(
+            'ApiV3\Controller\SubTitles' => 'ApiV3\Controller\SubTitlesController'
+        )
+    ],
     'router' => [
         'routes' => [
             'home' => [
@@ -24,21 +33,19 @@ return [
                     ],
                 ],
             ],
-            'application' => [
-                'type'    => Segment::class,
+            'subtitles' => [
+                'type' => Segment::class,
                 'options' => [
-                    'route'    => '/application[/:action]',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
-        ],
-    ],
-    'controllers' => [
-        'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
+                    'route' => '/sub-titles[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+(\.vtt)?',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => Controller\SubTitlesController::class,
+                    )
+                ]
+            ]
         ],
     ],
     'view_manager' => [
@@ -49,12 +56,42 @@ return [
         'exception_template'       => 'error/index',
         'template_map' => [
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
+            'api-v3/index/index'      => __DIR__ . '/../view/api-v3/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ],
         'template_path_stack' => [
             __DIR__ . '/../view',
         ],
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
     ],
+    'doctrine' => array(
+        'driver' => array(
+            'application_entities' => array(
+                'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/Entity')
+            ),
+
+            'orm_default' => array(
+                'drivers' => array(
+                    'Application\Entity' => 'application_entities'
+                )
+            )
+        ),
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' =>'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => array(
+                    'host'     => '151.80.161.84',
+                    'port'     => '3306',
+                    'user'     => 'root',
+                    'password' => 'B4b3l1umd4t4b4sE',
+                    'dbname'   => 'babelium_data_new'
+                )
+            )
+        )
+    )
 ];
