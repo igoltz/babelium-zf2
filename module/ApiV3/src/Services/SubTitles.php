@@ -52,7 +52,6 @@ class SubTitles
             $sline->exerciseRoleName = $data['meta']['voice'];
             $sline->subtitleId = $subtitle['id'];
 
-            //Add an id to the voice
             $c = count($distinctVoices);
             if (!array_key_exists($data['meta']['voice'], $distinctVoices)) {
                 $distinctVoices[$data['meta']['voice']] = $c+1;
