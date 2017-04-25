@@ -61,7 +61,7 @@ class SubTitlesController
 
             $json = new JsonModel();
             $json->setVariables($result);
-            $this->response->setStatusCode(500);
+            $this->response->setStatusCode(200);
 
             return $json;
 
@@ -127,7 +127,7 @@ class SubTitlesController
     {
 
         if (!$this->_doctrineConnection) {
-            $this->_doctrineConnection= $this->getEvent()
+            $this->_doctrineConnection = $this->getEvent()
             ->getApplication()
             ->getServiceManager()
             ->get('Doctrine\ORM\EntityManager')

@@ -7,6 +7,8 @@
 
 namespace ApiV3;
 
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
     const VERSION = '3.0.3-dev';
@@ -14,6 +16,21 @@ class Module
     public function getConfig()
     {
         return include __DIR__ . '/../config/module.config.php';
+    }
+
+    public function onBootstrap(MvcEvent $event)
+    {
+        $app = $event->getApplication();
+        $sm  = $app->getServiceManager();
+        $em  = $app->getEventManager();
+
+        $listener = $sm->get('ApiV3\Listener\ApiAuthenticationListener');
+        $em->getSharedManager()->attach(
+            '\ApiV3\Controller',
+            'dispatch',
+            $listener
+        );
+
     }
 
 }

@@ -12,10 +12,16 @@ use Zend\Router\Http\Segment;
 use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
+    'service_manager' => array(
+        'factories' => array(
+            \ApiV3\Authentication\Adapter\HeaderAuthentication::class => \ApiV3\Factory\AuthenticationAdapterFactory::class,
+            \ApiV3\Listener\ApiAuthenticationListener::class => \ApiV3\Factory\AuthenticationListenerFactory::class
+        )
+    ),
     'controllers' => [
         'factories' => [
             Controller\IndexController::class => InvokableFactory::class,
-            Controller\SubTitlesController::class => InvokableFactory::class,
+            Controller\SubTitlesController::class => InvokableFactory::class
         ],
         'invokables' => array(
             'ApiV3\Controller\SubTitles' => 'ApiV3\Controller\SubTitlesController'

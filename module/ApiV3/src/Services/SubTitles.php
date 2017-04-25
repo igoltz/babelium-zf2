@@ -7,6 +7,13 @@ class SubTitles
 
     protected $_formatTime = 'H:i:s';
 
+    /**
+     * Devuelve los segundos de los subtitulos, en un formato correcto para
+     * que lo interprete correctamente el archivo .vtt
+     *
+     * @param unknown $seconds
+     * @return string
+     */
     public function getFormatTimeBySeconds($seconds)
     {
 
@@ -18,13 +25,18 @@ class SubTitles
 
     }
 
-
+    /**
+     * Extrae los subtitulos en un array, para poder generar el archivo .vtt
+     *
+     * @param array $subtitle
+     *         Información de los subtitulos guardados en Base de datos.
+     * @return array
+     */
     public function parseSubtitles(array $subtitle = array())
     {
 
         $parsedSubtitles = array();
         $distinctVoices = array();
-
 
         $serialized = $this->unpackblob($subtitle['serialized_subtitles']);
         $subtitles = \Zend\Json\Json::decode($serialized, true);
