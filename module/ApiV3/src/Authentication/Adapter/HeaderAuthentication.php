@@ -96,7 +96,7 @@ class HeaderAuthentication
     }
 
     /**
-     * En base a las 2 cabeceras de autenticación, se bus
+     * En base a las 2 cabeceras de autenticación, se busca y valida el moodle
      *
      * @return mixed
      */

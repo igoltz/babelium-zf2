@@ -20,6 +20,7 @@ class Module
 
     public function onBootstrap(MvcEvent $event)
     {
+
         $app = $event->getApplication();
         $sm  = $app->getServiceManager();
         $em  = $app->getEventManager();
@@ -31,6 +32,32 @@ class Module
             $listener
         );
 
+        $em->attach(MvcEvent::EVENT_FINISH, array($this, 'onRenderError'));
+
+    }
+
+    public function onRenderError(MvcEvent $event)
+    {
+        $statusCode = $event->getResponse()->getStatusCode();
+        if ($statusCode > 400) {
+
+            $result = array(
+                'code' => $statusCode,
+                'messages' => $event->getResponse()->getReasonPhrase()
+            );
+
+            $headers = new \Zend\Http\Headers();
+            $headers->addHeaderLine(
+                'Content-Type:application/json; charset=utf-8'
+            );
+
+            $event->getResponse()->setHeaders($headers);
+            $event->getResponse()->setStatusCode(401);
+            $event->getResponse()->setContent(\Zend\Json\Json::encode($result));
+            $event->getResponse()->send();
+            die();
+
+        }
     }
 
 }

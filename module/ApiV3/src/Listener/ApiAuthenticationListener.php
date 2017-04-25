@@ -42,8 +42,6 @@ class ApiAuthenticationListener
             die();
         }
 
-        //die('api-auth');
-
     }
 
     public function __invoke(MvcEvent $event)
@@ -53,13 +51,10 @@ class ApiAuthenticationListener
 
         if (!$result->isValid()) {
             $response = $event->getResponse();
-
-            // Set some response content
             $response->setStatusCode(401);
             return $response;
         }
 
-        // All is OK
         $event->setParam('user', $result->getIdentity());
 
     }
