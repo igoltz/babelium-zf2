@@ -9,7 +9,6 @@ namespace ApiV3;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
-use Zend\ServiceManager\Factory\InvokableFactory;
 
 return [
     'service_manager' => array(
@@ -19,12 +18,11 @@ return [
         )
     ),
     'controllers' => [
-        'factories' => [
-            Controller\IndexController::class => InvokableFactory::class,
-            Controller\SubTitlesController::class => InvokableFactory::class
-        ],
+        'factories' => [],
         'invokables' => array(
-            'ApiV3\Controller\SubTitles' => 'ApiV3\Controller\SubTitlesController'
+            'ApiV3\Controller\SubTitles' => 'ApiV3\Controller\SubTitlesController',
+            'ApiV3\Controller\Exercises' => 'ApiV3\Controller\ExercisesController',
+            'ApiV3\Controller\Response' => 'ApiV3\Controller\ResponseController'
         )
     ],
     'router' => [
@@ -39,16 +37,51 @@ return [
                     ],
                 ],
             ],
+            /**
+             * Sub-titles
+             */
             'subtitles' => [
                 'type' => Segment::class,
                 'options' => [
                     'route' => '/sub-titles[/:id]',
                     'constraints' => array(
                         'id'     => '[0-9]+(\.vtt)?',
-                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ),
                     'defaults' => array(
-                        'controller' => Controller\SubTitlesController::class,
+                        'controller' => Controller\SubTitlesController::class
+                    )
+                ]
+            ],
+            /**
+             * Exercises
+             */
+            'exercises' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/exercises[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => Controller\ExercisesController::class
+                    )
+                ]
+            ],
+            /**
+             * Response
+             */
+            'response' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/response[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9]+',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => Controller\ResponseController::class
                     )
                 ]
             ]
@@ -95,7 +128,8 @@ return [
                     'port'     => '3306',
                     'user'     => 'root',
                     'password' => 'B4b3l1umd4t4b4sE',
-                    'dbname'   => 'babelium_data_new'
+                    'dbname'   => 'babelium_data_new',
+                    'charset'  => 'utf8mb4'
                 )
             )
         )
