@@ -4,7 +4,9 @@ namespace ApiV3\Services;
 
 class Exercises
 {
+
     protected $_streamingserver = 'rtmp://babelium-server-dev.irontec.com/oflaDemo/';
+
     /**
      * @var \Doctrine\DBAL\Connection
      */
@@ -14,12 +16,50 @@ class Exercises
         \Doctrine\DBAL\Connection $doctrineConnection
     )
     {
-
         $this->_doctrineConnection = $doctrineConnection;
+    }
+
+    public function getExercises()
+    {
+
+        $columsPieces = array(
+            'id',
+            'title',
+            'description',
+            'language',
+            'exercisecode as name',
+            'from_unixtime(timecreated) as addingDate',
+            'difficulty as avgDifficulty',
+            'status',
+            'likes',
+            'dislikes',
+            'type',
+            'situation',
+            'competence',
+            'lingaspects'
+        );
+
+        $colums = implode(', ', $columsPieces);
+
+        $select = sprintf(
+            'SELECT %s FROM exercise WHERE status = 1 AND visible = 1 ORDER BY title ASC, language ASC',
+            $colums
+        );
+        $params = array();
+
+        $stmt = $this->_doctrineConnection->prepare($select);
+        $stmt->execute($params);
+        $exercises = $stmt->fetchAll();
+
+        if (empty($exercises)) {
+            return array();
+        }
+
+       return $exercises;
 
     }
 
-    public function getExerciseById($id)
+    public function getExercise($id)
     {
 
         $columsPieces = array(
@@ -68,14 +108,14 @@ class Exercises
 
     }
 
-    public function getExerciseTags($exerciseId)
+    public function getExerciseTags($id)
     {
 
         $tags = array();
         $select = 'SELECT t.name FROM tag t INNER JOIN rel_exercise_tag r ON t.id = r.fk_tag_id WHERE r.fk_exercise_id = :exercise_id';
 
         $params = array(
-            'exercise_id' => $exerciseId
+            'exercise_id' => $id
         );
         $stmt = $this->_doctrineConnection->prepare($select);
         $stmt->execute($params);
@@ -93,14 +133,14 @@ class Exercises
 
     }
 
-    public function getExerciseDescriptors($exerciseId)
+    public function getExerciseDescriptors($id)
     {
 
         $dcodes = array();
         $select = 'SELECT ed.* FROM rel_exercise_descriptor red INNER JOIN exercise_descriptor ed ON red.fk_exercise_descriptor_id = ed.id WHERE red.fk_exercise_id = :exercise_id';
 
         $params = array(
-            'exercise_id' => $exerciseId
+            'exercise_id' => $id
         );
 
         $stmt = $this->_doctrineConnection->prepare($select);
@@ -126,7 +166,7 @@ class Exercises
 
     }
 
-    public function getExerciseMedia($exerciseid)
+    public function getExerciseMediaById($id)
     {
 
         $columsPieces = array(
@@ -139,7 +179,8 @@ class Exercises
             'm.level',
             'm.defaultthumbnail',
             'mr.status',
-            'mr.filename'
+            'mr.filename',
+            'sub.id as subtitleId'
         );
         $colums = implode(', ', $columsPieces);
 
@@ -152,12 +193,12 @@ class Exercises
         $where = implode(' AND ', $wherePieces);
 
         $select = sprintf(
-            'SELECT %s FROM media m INNER JOIN media_rendition mr ON m.id = mr.fk_media_id WHERE %s',
+            'SELECT %s FROM media m INNER JOIN media_rendition mr ON m.id = mr.fk_media_id INNER JOIN subtitle sub ON sub.fk_media_id = m.id WHERE %s LIMIT 1',
             $colums,
             $where
         );
         $params = array(
-            'instanceid' => $exerciseid
+            'instanceid' => $id
         );
 
         $stmt = $this->_doctrineConnection->prepare($select);
@@ -170,6 +211,13 @@ class Exercises
 
         $media = array();
         foreach ($results as $result) {
+
+            $result['thumbnail'] = sprintf(
+                '/resources/images/thumbs/%s/%02d.jpg',
+                $result['mediacode'],
+                $result['defaultthumbnail']
+            );
+
             $result['netConnectionUrl'] = $this->_streamingserver;
             $result['mediaUrl'] = 'exercises/' . $result['filename'];
             $media[] = $result;

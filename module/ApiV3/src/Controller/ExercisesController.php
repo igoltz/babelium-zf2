@@ -18,7 +18,24 @@ class ExercisesController
 
     public function getList()
     {
-        return $this->_methodNotAllowed();
+
+        $exerService = new \ApiV3\Services\Exercises(
+            $this->getDoctrineConnection()
+        );
+
+        $exercises = $exerService->getExercises();
+        if (empty($exercises)) {
+            $json = new JsonModel();
+            $this->response->setStatusCode(404);
+            return $json;
+        }
+
+        $json = new JsonModel();
+        $json->setVariables($exercises);
+        $this->response->setStatusCode(200);
+
+        return $json;
+
     }
 
     public function get($id)
@@ -28,14 +45,14 @@ class ExercisesController
             $this->getDoctrineConnection()
         );
 
-        $exercise = $exerService->getExerciseById($id);
+        $exercise = $exerService->getExercise($id);
         if (empty($exercise)) {
             $json = new JsonModel();
             $this->response->setStatusCode(404);
             return $json;
         }
 
-        $media = $exerService->getExerciseMedia($id);
+        $media = $exerService->getExerciseMediaById($id);
         if (empty($media)) {
             $json = new JsonModel();
             $this->response->setStatusCode(404);
