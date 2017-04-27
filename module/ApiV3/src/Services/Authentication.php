@@ -72,6 +72,12 @@ class Authentication
 
     }
 
+    /**
+     * Comprueba que la ip de la petición, sea una de las validas.
+     *
+     * @param array $consumer
+     * @return boolean
+     */
     public function ipAddressValid($consumer)
     {
 
@@ -93,11 +99,6 @@ class Authentication
 
         return true;
 
-    }
-
-    public function saveConsumerLog()
-    {
-        //$this->_doctrineConnection
     }
 
 }

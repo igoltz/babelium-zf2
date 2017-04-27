@@ -12,10 +12,17 @@ class Response
 
     public function __construct($container)
     {
-
-        $this->_doctrineConnection = $container->get('Doctrine\ORM\EntityManager')->getConnection();
+        $this->_doctrineConnection = $container
+            ->get('Doctrine\ORM\EntityManager')
+            ->getConnection();
     }
 
+    /**
+     * Obtiene la información de una respuesta
+     *
+     * @param integer $id
+     * @return array|mixed
+     */
     public function getResponse($id)
     {
 

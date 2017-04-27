@@ -17,6 +17,11 @@ class Exercises
             ->getConnection();
     }
 
+    /**
+     * Lista todos los ejercicios activos y visibles
+     *
+     * @return array
+     */
     public function getExercises()
     {
 
@@ -57,6 +62,12 @@ class Exercises
 
     }
 
+    /**
+     * Buscar un ejercicio, segun el $id
+     *
+     * @param integer $id
+     * @return array
+     */
     public function getExercise($id)
     {
 
@@ -113,6 +124,12 @@ class Exercises
 
     }
 
+    /**
+     * Lista las etiquedas de un ejercicio
+     *
+     * @param integer $id
+     * @return array
+     */
     public function getExerciseTags($id)
     {
 
@@ -138,6 +155,12 @@ class Exercises
 
     }
 
+    /**
+     * Listas las descripciones de un ejercicio
+     *
+     * @param integer $id
+     * @return array|string[]
+     */
     public function getExerciseDescriptors($id)
     {
 
@@ -171,6 +194,12 @@ class Exercises
 
     }
 
+    /**
+     * Obtiene la información del video de un ejercicio
+     *
+     * @param integer $id
+     * @return array
+     */
     public function getExerciseMediaById($id)
     {
 

@@ -8,8 +8,15 @@ use Zend\Mvc\MvcEvent;
 class ApiAuthenticationListener
 {
 
-    protected $adapter;
-    protected $doctrine;
+    /**
+     * @var \ApiV3\Authentication\Adapter\HeaderAuthentication
+     */
+    protected $_adapter;
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $_doctrine;
 
     public function __construct(
         HeaderAuthentication $adapter,
@@ -18,10 +25,10 @@ class ApiAuthenticationListener
     )
     {
 
-        $this->adapter = $adapter;
-        $this->doctrine= $doctrine;
+        $this->_adapter = $adapter;
+        $this->_doctrine= $doctrine;
 
-        $result = $this->adapter->authenticate();
+        $result = $this->_adapter->authenticate();
 
         if (!$result->isValid()) {
 
@@ -47,7 +54,7 @@ class ApiAuthenticationListener
     public function __invoke(MvcEvent $event)
     {
 
-        $result = $this->adapter->authenticate();
+        $result = $this->_adapter->authenticate();
 
         if (!$result->isValid()) {
             $response = $event->getResponse();
