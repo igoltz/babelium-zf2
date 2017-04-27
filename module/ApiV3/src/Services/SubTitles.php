@@ -5,7 +5,17 @@ namespace ApiV3\Services;
 class SubTitles
 {
 
-    protected $_formatTime = 'H:i:s';
+    /**
+     * @var \Doctrine\DBAL\Connection
+     */
+    protected $_doctrineConnection;
+
+    public function __construct($container)
+    {
+        $this->_doctrineConnection = $container
+            ->get('Doctrine\ORM\EntityManager')
+            ->getConnection();
+    }
 
     /**
      * Devuelve los segundos de los subtitulos, en un formato correcto para
@@ -21,7 +31,7 @@ class SubTitles
         $second = reset($values);
 
         $hideTime = new \DateTime("@$second");
-        return $hideTime->format($this->_formatTime) . '.000';
+        return $hideTime->format('H:i:s') . '.000';
 
     }
 
@@ -63,6 +73,38 @@ class SubTitles
         }
 
         return $parsedSubtitles;
+
+    }
+
+    /**
+     * Genera el contenido para una respuesta en Formato .vtt
+     *
+     * @param array $parseSubtitles
+     * @return string
+     */
+    public function generatoFileContent($parseSubtitles)
+    {
+
+        $vttFile = new \Captioning\Format\WebvttFile();
+        foreach ($parseSubtitles as $lineSubtitle) {
+
+            if ($lineSubtitle->exerciseRoleName === 'NPC') {
+                $user = '<v NPC>';
+            } else {
+                $user = '<v Yourself>';
+            }
+
+            $vttFile->addCue(
+                $user . $lineSubtitle->text . '</v>',
+                $this->getFormatTimeBySeconds($lineSubtitle->showTime),
+                $this->getFormatTimeBySeconds($lineSubtitle->hideTime)
+            );
+
+        }
+
+        $vttFile->build();
+
+        return $vttFile->getFileContent();
 
     }
 

@@ -5,18 +5,16 @@ namespace ApiV3\Services;
 class Exercises
 {
 
-    protected $_streamingserver = 'rtmp://babelium-server-dev.irontec.com/oflaDemo/';
-
     /**
      * @var \Doctrine\DBAL\Connection
      */
     protected $_doctrineConnection;
 
-    public function __construct(
-        \Doctrine\DBAL\Connection $doctrineConnection
-    )
+    public function __construct($container)
     {
-        $this->_doctrineConnection = $doctrineConnection;
+        $this->_doctrineConnection = $container
+            ->get('Doctrine\ORM\EntityManager')
+            ->getConnection();
     }
 
     public function getExercises()
@@ -98,11 +96,18 @@ class Exercises
         $exercise = $stmt->fetch();
 
         if (empty($exercise)) {
-            return false;
+            return array();
         }
 
         $exercise['tags'] = $this->getExerciseTags($id);
         $exercise['descriptors'] = $this->getExerciseDescriptors($id);
+
+        $media = $this->getExerciseMediaById($id);
+        if (empty($media)) {
+            return array();
+        }
+
+        $exercise['media'] = $media;
 
         return $exercise;
 
@@ -218,7 +223,7 @@ class Exercises
                 $result['defaultthumbnail']
             );
 
-            $result['netConnectionUrl'] = $this->_streamingserver;
+            $result['netConnectionUrl'] = 'rtmp://babelium-server-dev.irontec.com/oflaDemo/';
             $result['mediaUrl'] = 'exercises/' . $result['filename'];
             $media[] = $result;
         }

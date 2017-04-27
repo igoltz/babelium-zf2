@@ -38,6 +38,7 @@ class Module
 
     public function onRenderError(MvcEvent $event)
     {
+
         $statusCode = $event->getResponse()->getStatusCode();
         if ($statusCode > 400) {
 
@@ -58,6 +59,7 @@ class Module
             die();
 
         }
+
     }
 
 }

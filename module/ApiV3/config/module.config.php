@@ -9,12 +9,30 @@ namespace ApiV3;
 
 use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
+use Interop\Container\ContainerInterface;
 
 return [
     'service_manager' => array(
         'factories' => array(
             \ApiV3\Authentication\Adapter\HeaderAuthentication::class => \ApiV3\Factory\AuthenticationAdapterFactory::class,
-            \ApiV3\Listener\ApiAuthenticationListener::class => \ApiV3\Factory\AuthenticationListenerFactory::class
+            \ApiV3\Listener\ApiAuthenticationListener::class => \ApiV3\Factory\AuthenticationListenerFactory::class,
+            'AuthenticationService' => function(ContainerInterface $container) {
+                return new \ApiV3\Services\Authentication($container);
+            },
+            'ConsumersService' => function(ContainerInterface $container) {
+                return new \ApiV3\Services\Consumers($container);
+            },
+            'ExercisesService' => function(ContainerInterface $container) {
+                return new \ApiV3\Services\Exercises($container);
+            },
+            'ResponseService' => function(ContainerInterface $container) {
+                return new \ApiV3\Services\Response($container);
+            },
+            'SubTitlesService' => function(ContainerInterface $container) {
+                return new \ApiV3\Services\SubTitles($container);
+            },
+
+
         )
     ),
     'controllers' => [

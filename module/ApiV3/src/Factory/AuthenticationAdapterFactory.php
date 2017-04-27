@@ -14,30 +14,16 @@ class AuthenticationAdapterFactory
 
     public function __invoke(
         ContainerInterface $container,
-        $requestedName,
+        $requestName,
         array $options = NULL
     )
     {
-
-        $request = $container->get('Request');
-        $response = $container->get('Response');
-        $doctrine = $container->get('Doctrine\ORM\EntityManager');
-
-        $adapter = new HeaderAuthentication($request, $response, $doctrine);
-
-        return $adapter;
-
+        return new HeaderAuthentication($container);
     }
 
     public function createService(ServiceLocatorInterface $sl)
     {
-
-        $request = $sl->get('Request');
-        $response = $sl->get('Response');
-        $doctrine = $sl->get('Doctrine\ORM\EntityManager');
-
-        $adapter = new HeaderAuthentication($request, $response, $doctrine);
-        return $adapter;
-
+        return new HeaderAuthentication($sl);
     }
+
 }
