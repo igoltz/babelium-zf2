@@ -14,3 +14,9 @@ RewriteRule ^.*$ - [L]
 RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
 RewriteRule ^(.*) - [E=BASE:%1]
 RewriteRule ^(.*)$ %{ENV:BASE}/index.php [L]
+
+
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Methods "GET, PUT, POST, OPTIONS, DELETE"
+Header set Access-Control-Allow-Credentials "true"
+Header set Access-Control-Allow-Headers "Authorization, Origin, Content-Type, X-CSRF-Token"
