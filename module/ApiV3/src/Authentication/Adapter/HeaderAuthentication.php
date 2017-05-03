@@ -44,7 +44,7 @@ class HeaderAuthentication
         $this->_response = $container->get('Response');
         $this->_doctrine = $container->get('Doctrine\ORM\EntityManager');
         $this->_authService = $container->get('AuthenticationService');
-        $this->_consService = $container->get('ConsumersService');
+        $this->_consService = $container->get('ConsumerService');
 
         return $this;
 
