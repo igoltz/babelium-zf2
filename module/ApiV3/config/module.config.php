@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
  * @copyright Copyright (c) 2005-2016 Zend Technologies USA Inc. (http://www.zend.com)
@@ -7,7 +8,6 @@
 
 namespace ApiV3;
 
-use Zend\Router\Http\Literal;
 use Zend\Router\Http\Segment;
 use Interop\Container\ContainerInterface;
 
@@ -19,7 +19,7 @@ return [
             'AuthenticationService' => function(ContainerInterface $container) {
                 return new \ApiV3\Services\Authentication($container);
             },
-            'ConsumersService' => function(ContainerInterface $container) {
+            'ConsumerService' => function(ContainerInterface $container) {
                 return new \ApiV3\Services\Consumers($container);
             },
             'ExercisesService' => function(ContainerInterface $container) {
@@ -30,9 +30,7 @@ return [
             },
             'SubTitlesService' => function(ContainerInterface $container) {
                 return new \ApiV3\Services\SubTitles($container);
-            },
-
-
+            }
         )
     ),
     'controllers' => [
@@ -45,16 +43,6 @@ return [
     ],
     'router' => [
         'routes' => [
-            'home' => [
-                'type' => Literal::class,
-                'options' => [
-                    'route'    => '/',
-                    'defaults' => [
-                        'controller' => Controller\IndexController::class,
-                        'action'     => 'index',
-                    ],
-                ],
-            ],
             /**
              * Sub-titles
              */
@@ -103,7 +91,7 @@ return [
                     )
                 ]
             ]
-        ],
+        ]
     ],
     'view_manager' => [
         'display_not_found_reason' => true,
@@ -112,26 +100,25 @@ return [
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => [
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'api-v3/index/index'      => __DIR__ . '/../view/api-v3/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'layout/layout'      => __DIR__ . '/../view/layout/layout.phtml',
+            'api-v3/index/index' => __DIR__ . '/../view/api-v3/index/index.phtml',
+            'error/404'          => __DIR__ . '/../view/error/404.phtml',
+            'error/index'        => __DIR__ . '/../view/error/index.phtml'
         ],
         'template_path_stack' => [
-            __DIR__ . '/../view',
+            __DIR__ . '/../view'
         ],
         'strategies' => array(
-            'ViewJsonStrategy',
-        ),
+            'ViewJsonStrategy'
+        )
     ],
     'doctrine' => array(
         'driver' => array(
             'application_entities' => array(
                 'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/Entity')
+                'paths' => array(__DIR__ . '/../src/Entity/')
             ),
-
             'orm_default' => array(
                 'drivers' => array(
                     'Application\Entity' => 'application_entities'
@@ -142,12 +129,16 @@ return [
             'orm_default' => array(
                 'driverClass' =>'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params' => array(
-                    'host'     => '151.80.161.84',
+                    'host'     => '10.177.74.63',
                     'port'     => '3306',
                     'user'     => 'root',
                     'password' => 'B4b3l1umd4t4b4sE',
                     'dbname'   => 'babelium_data_new',
                     'charset'  => 'utf8mb4'
+                ),
+                'doctrine_type_mappings' => array(
+                    'enum' => 'string',
+                    'set' => 'string'
                 )
             )
         )
