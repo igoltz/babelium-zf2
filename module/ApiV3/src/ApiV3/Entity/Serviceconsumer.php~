@@ -1,0 +1,112 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Serviceconsumer
+ *
+ * @ORM\Table(name="serviceconsumer", uniqueConstraints={@ORM\UniqueConstraint(name="access_key_UNIQUE", columns={"access_key"}), @ORM\UniqueConstraint(name="domainforuser_UNIQUE", columns={"domain", "fk_user_id"})}, indexes={@ORM\Index(name="fk_moodle_api_1", columns={"fk_user_id"})})
+ * @ORM\Entity
+ */
+class Serviceconsumer
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="access_key", type="string", length=20, nullable=false)
+     */
+    private $accessKey;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="secret_access_key", type="string", length=40, nullable=false)
+     */
+    private $secretAccessKey;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="domain", type="string", length=100, nullable=false)
+     */
+    private $domain;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rawdomain", type="string", length=100, nullable=false)
+     */
+    private $rawdomain;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ipaddress", type="string", length=255, nullable=false)
+     */
+    private $ipaddress = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subscriptionstart", type="bigint", nullable=false)
+     */
+    private $subscriptionstart = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subscriptionend", type="bigint", nullable=false)
+     */
+    private $subscriptionend = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="notifyexpiration", type="boolean", nullable=false)
+     */
+    private $notifyexpiration = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timecreated", type="bigint", nullable=false)
+     */
+    private $timecreated = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     */
+    private $timemodified = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enabled", type="boolean", nullable=false)
+     */
+    private $enabled = '1';
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+
+}

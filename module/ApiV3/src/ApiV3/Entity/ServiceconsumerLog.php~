@@ -1,0 +1,81 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ServiceconsumerLog
+ *
+ * @ORM\Table(name="serviceconsumer_log")
+ * @ORM\Entity
+ */
+class ServiceconsumerLog
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="time", type="bigint", nullable=false)
+     */
+    private $time = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="method", type="string", length=45, nullable=false)
+     */
+    private $method = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="statuscode", type="integer", nullable=false)
+     */
+    private $statuscode = '500';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="message", type="text", length=65535, nullable=false)
+     */
+    private $message;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="ipaddress", type="string", length=45, nullable=false)
+     */
+    private $ipaddress = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="origin", type="string", length=255, nullable=false)
+     */
+    private $origin = '';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="referer", type="string", length=255, nullable=false)
+     */
+    private $referer = '';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fk_serviceconsumer_id", type="integer", nullable=true)
+     */
+    private $fkServiceconsumerId;
+
+
+}

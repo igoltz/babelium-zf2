@@ -1,0 +1,83 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Credithistory
+ *
+ * @ORM\Table(name="credithistory", indexes={@ORM\Index(name="FK_credithistory_1", columns={"fk_user_id"}), @ORM\Index(name="FK_credithistory_3", columns={"fk_response_id"}), @ORM\Index(name="FK_credithistory_2", columns={"fk_exercise_id"})})
+ * @ORM\Entity
+ */
+class Credithistory
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fk_eval_id", type="integer", nullable=true)
+     */
+    private $fkEvalId;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="changeDate", type="datetime", nullable=false)
+     */
+    private $changedate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="changeType", type="string", length=45, nullable=false)
+     */
+    private $changetype;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="changeAmount", type="integer", nullable=false)
+     */
+    private $changeamount = '0';
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+    /**
+     * @var \ApiV3\Entity\Exercise
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     * })
+     */
+    private $fkExercise;
+
+    /**
+     * @var \ApiV3\Entity\Response
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Response")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_response_id", referencedColumnName="id")
+     * })
+     */
+    private $fkResponse;
+
+
+}

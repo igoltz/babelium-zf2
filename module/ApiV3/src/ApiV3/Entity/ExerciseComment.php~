@@ -1,0 +1,59 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ExerciseComment
+ *
+ * @ORM\Table(name="exercise_comment", indexes={@ORM\Index(name="FK_exercise_comments_1", columns={"fk_exercise_id"}), @ORM\Index(name="FK_exercise_comments_2", columns={"fk_user_id"})})
+ * @ORM\Entity
+ */
+class ExerciseComment
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="text", length=65535, nullable=false)
+     */
+    private $comment;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="comment_date", type="datetime", nullable=false)
+     */
+    private $commentDate;
+
+    /**
+     * @var \ApiV3\Entity\Exercise
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     * })
+     */
+    private $fkExercise;
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+
+}

@@ -1,0 +1,70 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserSession
+ *
+ * @ORM\Table(name="user_session", indexes={@ORM\Index(name="FK_user_session_1", columns={"fk_user_id"})})
+ * @ORM\Entity
+ */
+class UserSession
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="session_id", type="string", length=100, nullable=false)
+     */
+    private $sessionId;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="session_date", type="datetime", nullable=false)
+     */
+    private $sessionDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="duration", type="integer", nullable=false)
+     */
+    private $duration;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="keep_alive", type="boolean", nullable=false)
+     */
+    private $keepAlive;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="closed", type="boolean", nullable=false)
+     */
+    private $closed = '0';
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+
+}

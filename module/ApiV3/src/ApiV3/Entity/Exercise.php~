@@ -1,0 +1,213 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Exercise
+ *
+ * @ORM\Table(name="exercise", uniqueConstraints={@ORM\UniqueConstraint(name="name_UNIQUE", columns={"exercisecode"})}, indexes={@ORM\Index(name="FK_exercises_1", columns={"fk_user_id"})})
+ * @ORM\Entity
+ */
+class Exercise
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="exercisecode", type="string", length=255, nullable=false)
+     */
+    private $exercisecode;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", length=80, nullable=false)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="language", type="string", length=45, nullable=false)
+     */
+    private $language;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="difficulty", type="integer", nullable=false)
+     */
+    private $difficulty;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="status", type="boolean", nullable=false)
+     */
+    private $status = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="visible", type="boolean", nullable=false)
+     */
+    private $visible = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fk_scope_id", type="integer", nullable=false)
+     */
+    private $fkScopeId = '1';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timecreated", type="integer", nullable=false)
+     */
+    private $timecreated = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timemodified", type="integer", nullable=false)
+     */
+    private $timemodified = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="type", type="integer", nullable=false)
+     */
+    private $type = '5';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="situation", type="integer", nullable=true)
+     */
+    private $situation;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="competence", type="integer", nullable=true)
+     */
+    private $competence;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="lingaspects", type="integer", nullable=true)
+     */
+    private $lingaspects;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="licence", type="string", length=60, nullable=false)
+     */
+    private $licence = 'cc-by';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="attribution", type="text", length=65535, nullable=true)
+     */
+    private $attribution;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="likes", type="integer", nullable=false)
+     */
+    private $likes = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="dislikes", type="integer", nullable=false)
+     */
+    private $dislikes = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="ismodel", type="boolean", nullable=false)
+     */
+    private $ismodel = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="model_id", type="integer", nullable=true)
+     */
+    private $modelId;
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="ApiV3\Entity\ExerciseDescriptor", inversedBy="fkExercise")
+     * @ORM\JoinTable(name="rel_exercise_descriptor",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="fk_exercise_descriptor_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $fkExerciseDescriptor;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="ApiV3\Entity\Tag", inversedBy="fkExercise")
+     * @ORM\JoinTable(name="rel_exercise_tag",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="fk_tag_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $fkTag;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->fkExerciseDescriptor = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->fkTag = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}

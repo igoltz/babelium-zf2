@@ -1,0 +1,91 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * MediaRendition
+ *
+ * @ORM\Table(name="media_rendition", indexes={@ORM\Index(name="FK_media_rendition_1", columns={"fk_media_id"})})
+ * @ORM\Entity
+ */
+class MediaRendition
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="filename", type="string", length=255, nullable=false)
+     */
+    private $filename;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contenthash", type="string", length=40, nullable=false)
+     */
+    private $contenthash;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="status", type="boolean", nullable=false)
+     */
+    private $status = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timecreated", type="integer", nullable=false)
+     */
+    private $timecreated;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timemodified", type="integer", nullable=false)
+     */
+    private $timemodified;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="filesize", type="integer", nullable=false)
+     */
+    private $filesize = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metadata", type="text", length=65535, nullable=true)
+     */
+    private $metadata;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="dimension", type="integer", nullable=true)
+     */
+    private $dimension;
+
+    /**
+     * @var \ApiV3\Entity\Media
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Media")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_media_id", referencedColumnName="id")
+     * })
+     */
+    private $fkMedia;
+
+
+}

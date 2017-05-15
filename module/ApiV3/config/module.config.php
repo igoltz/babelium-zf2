@@ -117,12 +117,18 @@ return [
             'application_entities' => array(
                 'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/Entity/')
+                'paths' => array('/home/dani/workspaces/babelium-zf2/module/ApiV3/src/Entity')
             ),
             'orm_default' => array(
+                'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
                 'drivers' => array(
-                    'Application\Entity' => 'application_entities'
+                    'ApiV3\Entity' => 'application_entities',
                 )
+            ),
+            'mappings' => array(
+                'type' => 'annotation',
+                'namespace' => 'ApiV3\Entity',
+                'path' => '/home/dani/workspaces/babelium-zf2/module/ApiV3/src/Entity',
             )
         ),
         'connection' => array(

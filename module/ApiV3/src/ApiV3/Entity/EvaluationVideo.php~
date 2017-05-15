@@ -1,0 +1,63 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EvaluationVideo
+ *
+ * @ORM\Table(name="evaluation_video", indexes={@ORM\Index(name="FK_evaluation_video_1", columns={"fk_evaluation_id"})})
+ * @ORM\Entity
+ */
+class EvaluationVideo
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="video_identifier", type="string", length=100, nullable=false)
+     */
+    private $videoIdentifier;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="source", type="string", nullable=false)
+     */
+    private $source;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="thumbnail_uri", type="string", length=200, nullable=false)
+     */
+    private $thumbnailUri = 'nothumb.png';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="duration", type="integer", nullable=false)
+     */
+    private $duration;
+
+    /**
+     * @var \ApiV3\Entity\Evaluation
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Evaluation")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_evaluation_id", referencedColumnName="id")
+     * })
+     */
+    private $fkEvaluation;
+
+
+}

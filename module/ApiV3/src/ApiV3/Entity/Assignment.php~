@@ -1,0 +1,94 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Assignment
+ *
+ * @ORM\Table(name="assignment", indexes={@ORM\Index(name="fk_assignment_1", columns={"fk_course_id"}), @ORM\Index(name="fk_assignment_2_idx", columns={"fk_exercise_id"})})
+ * @ORM\Entity
+ */
+class Assignment
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="duedate", type="bigint", nullable=false)
+     */
+    private $duedate = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="allowsubmissionsfromdate", type="bigint", nullable=false)
+     */
+    private $allowsubmissionsfromdate = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="grade", type="bigint", nullable=false)
+     */
+    private $grade = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     */
+    private $timemodified = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="maxattempts", type="integer", nullable=false)
+     */
+    private $maxattempts = '0';
+
+    /**
+     * @var \ApiV3\Entity\Course
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Course")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_course_id", referencedColumnName="id")
+     * })
+     */
+    private $fkCourse;
+
+    /**
+     * @var \ApiV3\Entity\Exercise
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     * })
+     */
+    private $fkExercise;
+
+
+}

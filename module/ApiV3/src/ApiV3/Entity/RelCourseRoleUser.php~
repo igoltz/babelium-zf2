@@ -1,0 +1,62 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * RelCourseRoleUser
+ *
+ * @ORM\Table(name="rel_course_role_user", indexes={@ORM\Index(name="fk_rel_course_role_user_1", columns={"fk_course_id"}), @ORM\Index(name="fk_rel_course_role_user_2", columns={"fk_role_id"}), @ORM\Index(name="fk_rel_course_role_user_3", columns={"fk_user_id"})})
+ * @ORM\Entity
+ */
+class RelCourseRoleUser
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     */
+    private $timemodified = '0';
+
+    /**
+     * @var \ApiV3\Entity\Course
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Course")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_course_id", referencedColumnName="id")
+     * })
+     */
+    private $fkCourse;
+
+    /**
+     * @var \ApiV3\Entity\Role
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Role")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_role_id", referencedColumnName="id")
+     * })
+     */
+    private $fkRole;
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+
+}

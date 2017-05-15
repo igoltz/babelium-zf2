@@ -1,0 +1,60 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Transcription
+ *
+ * @ORM\Table(name="transcription")
+ * @ORM\Entity
+ */
+class Transcription
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="adding_date", type="datetime", nullable=false)
+     */
+    private $addingDate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=45, nullable=false)
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="transcription", type="text", length=65535, nullable=true)
+     */
+    private $transcription;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="transcription_date", type="datetime", nullable=true)
+     */
+    private $transcriptionDate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="system", type="string", length=45, nullable=false)
+     */
+    private $system;
+
+
+}

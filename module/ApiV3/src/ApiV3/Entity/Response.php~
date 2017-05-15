@@ -1,0 +1,132 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Response
+ *
+ * @ORM\Table(name="response", uniqueConstraints={@ORM\UniqueConstraint(name="fileidentifier_UNIQUE", columns={"file_identifier"})}, indexes={@ORM\Index(name="FK_response_1", columns={"fk_user_id"}), @ORM\Index(name="FK_response_2", columns={"fk_exercise_id"}), @ORM\Index(name="fk_response_transcriptions1", columns={"fk_transcription_id"}), @ORM\Index(name="FK_response_3", columns={"fk_subtitle_id"})})
+ * @ORM\Entity
+ */
+class Response
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fk_user_id", type="integer", nullable=false)
+     */
+    private $fkUserId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fk_media_id", type="integer", nullable=true)
+     */
+    private $fkMediaId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="file_identifier", type="string", length=100, nullable=false)
+     */
+    private $fileIdentifier;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_private", type="boolean", nullable=false)
+     */
+    private $isPrivate;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="thumbnail_uri", type="string", length=200, nullable=false)
+     */
+    private $thumbnailUri = 'nothumb.png';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="source", type="string", nullable=false)
+     */
+    private $source;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="duration", type="integer", nullable=false)
+     */
+    private $duration;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="adding_date", type="datetime", nullable=false)
+     */
+    private $addingDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="rating_amount", type="integer", nullable=false)
+     */
+    private $ratingAmount;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="character_name", type="string", length=45, nullable=false)
+     */
+    private $characterName;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="priority_date", type="datetime", nullable=false)
+     */
+    private $priorityDate = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var \ApiV3\Entity\Exercise
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     * })
+     */
+    private $fkExercise;
+
+    /**
+     * @var \ApiV3\Entity\Subtitle
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Subtitle")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_subtitle_id", referencedColumnName="id")
+     * })
+     */
+    private $fkSubtitle;
+
+    /**
+     * @var \ApiV3\Entity\Transcription
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Transcription")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_transcription_id", referencedColumnName="id")
+     * })
+     */
+    private $fkTranscription;
+
+
+}

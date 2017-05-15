@@ -1,0 +1,44 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Enrolment
+ *
+ * @ORM\Table(name="enrolment", indexes={@ORM\Index(name="fk_enrolment_1_idx", columns={"fk_group_id"})})
+ * @ORM\Entity
+ */
+class Enrolment
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fk_user_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $fkUserId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="role", type="string", nullable=true)
+     */
+    private $role = 'student';
+
+    /**
+     * @var \ApiV3\Entity\Groups
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="ApiV3\Entity\Groups")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_group_id", referencedColumnName="ID")
+     * })
+     */
+    private $fkGroup;
+
+
+}

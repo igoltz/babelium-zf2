@@ -1,0 +1,63 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserLanguages
+ *
+ * @ORM\Table(name="user_languages", indexes={@ORM\Index(name="fk_user_id", columns={"fk_user_id"})})
+ * @ORM\Entity
+ */
+class UserLanguages
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="language", type="string", length=45, nullable=false)
+     */
+    private $language;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="level", type="integer", nullable=false)
+     */
+    private $level;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="positives_to_next_level", type="integer", nullable=false)
+     */
+    private $positivesToNextLevel;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="purpose", type="string", nullable=false)
+     */
+    private $purpose = 'practice';
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+
+}

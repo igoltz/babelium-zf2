@@ -1,0 +1,87 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Subtitle
+ *
+ * @ORM\Table(name="subtitle", indexes={@ORM\Index(name="FK_exercise_subtitle_2", columns={"fk_user_id"}), @ORM\Index(name="fk_subtitle_media_idx", columns={"fk_media_id"})})
+ * @ORM\Entity
+ */
+class Subtitle
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="language", type="string", length=45, nullable=false)
+     */
+    private $language;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="translation", type="boolean", nullable=false)
+     */
+    private $translation = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timecreated", type="integer", nullable=false)
+     */
+    private $timecreated = '0';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="complete", type="boolean", nullable=false)
+     */
+    private $complete = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="serialized_subtitles", type="text", nullable=false)
+     */
+    private $serializedSubtitles;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="subtitle_count", type="integer", nullable=false)
+     */
+    private $subtitleCount;
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+    /**
+     * @var \ApiV3\Entity\Media
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Media")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_media_id", referencedColumnName="id")
+     * })
+     */
+    private $fkMedia;
+
+
+}

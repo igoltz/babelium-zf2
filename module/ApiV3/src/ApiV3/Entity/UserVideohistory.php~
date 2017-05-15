@@ -1,0 +1,103 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * UserVideohistory
+ *
+ * @ORM\Table(name="user_videohistory", indexes={@ORM\Index(name="FK_user_videohistory_1", columns={"fk_user_id"}), @ORM\Index(name="FK_user_videohistory_2", columns={"fk_user_session_id"}), @ORM\Index(name="FK_user_videohistory_3", columns={"fk_exercise_id"}), @ORM\Index(name="FK_user_videohistory_4", columns={"fk_response_id"}), @ORM\Index(name="FK_user_videohistory_5", columns={"fk_subtitle_id"})})
+ * @ORM\Entity
+ */
+class UserVideohistory
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="response_attempt", type="boolean", nullable=false)
+     */
+    private $responseAttempt = '0';
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="incidence_date", type="datetime", nullable=false)
+     */
+    private $incidenceDate = 'CURRENT_TIMESTAMP';
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="subtitles_are_used", type="boolean", nullable=false)
+     */
+    private $subtitlesAreUsed = '0';
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="response_role", type="string", length=45, nullable=true)
+     */
+    private $responseRole;
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+    /**
+     * @var \ApiV3\Entity\UserSession
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\UserSession")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_session_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUserSession;
+
+    /**
+     * @var \ApiV3\Entity\Exercise
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     * })
+     */
+    private $fkExercise;
+
+    /**
+     * @var \ApiV3\Entity\Response
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Response")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_response_id", referencedColumnName="id")
+     * })
+     */
+    private $fkResponse;
+
+    /**
+     * @var \ApiV3\Entity\Subtitle
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Subtitle")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_subtitle_id", referencedColumnName="id")
+     * })
+     */
+    private $fkSubtitle;
+
+
+}

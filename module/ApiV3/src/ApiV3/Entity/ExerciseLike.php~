@@ -1,0 +1,66 @@
+<?php
+
+namespace ApiV3\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ExerciseLike
+ *
+ * @ORM\Table(name="exercise_like", uniqueConstraints={@ORM\UniqueConstraint(name="UNIQUE_exercise_like", columns={"fk_exercise_id", "fk_user_id"})}, indexes={@ORM\Index(name="FK_exercise_like_1", columns={"fk_exercise_id"}), @ORM\Index(name="FK_exercise_like_2", columns={"fk_user_id"})})
+ * @ORM\Entity
+ */
+class ExerciseLike
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="like", type="boolean", nullable=false)
+     */
+    private $like = '0';
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timecreated", type="integer", nullable=false)
+     */
+    private $timecreated;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="timemodified", type="integer", nullable=false)
+     */
+    private $timemodified;
+
+    /**
+     * @var \ApiV3\Entity\Exercise
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     * })
+     */
+    private $fkExercise;
+
+    /**
+     * @var \ApiV3\Entity\User
+     *
+     * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     * })
+     */
+    private $fkUser;
+
+
+}
