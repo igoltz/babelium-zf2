@@ -61,6 +61,10 @@ class HeaderAuthentication
             return new Result(Result::SUCCESS, array());
         }
 
+        if (php_sapi_name() === 'cli' && isset($_SERVER['argv'])) {
+            return new Result(Result::SUCCESS, array());
+        }
+
         if (!$this->_authService->validHeaders($headers)) {
             return new Result(
                 Result::FAILURE,
