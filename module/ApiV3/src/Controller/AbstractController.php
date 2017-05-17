@@ -48,21 +48,21 @@ class AbstractController
         return $json;
     }
 
-    protected function _methodNotAllowed()
+    public function _methodNotAllowed()
     {
         $json = new JsonModel();
         $this->response->setStatusCode(405);
         return $json;
     }
 
-    protected function _notFound()
+    public function _notFound()
     {
         $json = new JsonModel();
         $this->response->setStatusCode(404);
         return $json;
     }
 
-    protected function getDoctrineConnection()
+    public function getDoctrineConnection()
     {
 
         if (!$this->_doctrineConnection) {
@@ -80,12 +80,12 @@ class AbstractController
     /**
      * @return \Doctrine\ORM\EntityManager
      */
-    protected function getEntityManager()
+    public function getEntityManager()
     {
         return $this->getService('Doctrine\ORM\EntityManager');
     }
 
-    protected function getDoctrineRepository($entityName)
+    public function getDoctrineRepository($entityName)
     {
         return $this->getEntityManager()->getRepository($entityName);
     }
@@ -93,7 +93,7 @@ class AbstractController
     /**
      * @param array|string $data
      */
-    protected function jsonResponse($data, $groups = array())
+    public function jsonResponse($data, $groups = array())
     {
 
         $json = new JsonModel();
@@ -104,7 +104,7 @@ class AbstractController
 
     }
 
-    protected function entityToArray($entity, $groups = array())
+    public function entityToArray($entity, $groups = array())
     {
 
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
