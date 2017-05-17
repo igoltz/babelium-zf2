@@ -33,6 +33,24 @@ class Authentication
         }
 
         return false;
+
+    }
+
+    /**
+     * Comprueba que la uri sea para obtener un thumbnail o un video
+     *
+     * @param string $path
+     * @return boolean
+     */
+    public function isMedia($path)
+    {
+
+        if (strpos($path, '/thumbnail/') || strpos($path, '/media/')) {
+            return true;
+        }
+
+        return false;
+
     }
 
     /**
