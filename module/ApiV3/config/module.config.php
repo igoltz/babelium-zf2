@@ -39,7 +39,8 @@ return [
             'ApiV3\Controller\SubTitles' => 'ApiV3\Controller\SubTitlesController',
             'ApiV3\Controller\Exercises' => 'ApiV3\Controller\ExercisesController',
             'ApiV3\Controller\Response' => 'ApiV3\Controller\ResponseController',
-            'ApiV3\Controller\Media' => 'ApiV3\Controller\MediaController'
+            'ApiV3\Controller\Media' => 'ApiV3\Controller\MediaController',
+            'ApiV3\Controller\Thumbnail' => 'ApiV3\Controller\ThumbnailController'
         )
     ],
     'router' => [
@@ -100,11 +101,28 @@ return [
                 'options' => [
                     'route' => '/media[/:id]',
                     'constraints' => array(
-                        'id'     => '[0-9a-zA-Z_.]+',
+                        'id'     => '[0-9a-zA-Z_.-]+',
                         'controller' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ),
                     'defaults' => array(
                         'controller' => Controller\MediaController::class
+                    )
+                ]
+            ],
+            /**
+             * Thumbnail
+             */
+            'thumbnail' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/thumbnail/:id/:thumbnail',
+                    'constraints' => array(
+                        'id'     => '[a-f0-9]{8}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{4}\-[a-f0-9]{12}+',
+                        'thumbnail'    => '[0-9a-zA-Z_.]+',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => Controller\ThumbnailController::class
                     )
                 ]
             ]

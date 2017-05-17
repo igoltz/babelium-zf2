@@ -33,7 +33,7 @@ class MediaController
         }
 
         $send = new SendFileToClient();
-        $send->sendFile($path, 'Video.mp4');
+        $send->sendFile($path, $mediaRendition->getFilename());
         die();
 
     }
