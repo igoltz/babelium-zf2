@@ -20,7 +20,8 @@
         "zendframework/zend-developer-tools": "dev-master",
         "zendframework/zend-json": "^3.0",
         "captioning/captioning": "^2.5",
-        "jms/serializer": "^1.7"
+        "jms/serializer": "^1.7",
+        "doctrine/migrations": "^1.5"
     },
     "autoload": {
         "psr-4": {
