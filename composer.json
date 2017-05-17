@@ -21,7 +21,8 @@
         "zendframework/zend-json": "^3.0",
         "captioning/captioning": "^2.5",
         "jms/serializer": "^1.7",
-        "doctrine/migrations": "^1.5"
+        "doctrine/migrations": "^1.5",
+        "irontec/send-file-to-client": "dev-master"
     },
     "autoload": {
         "psr-4": {

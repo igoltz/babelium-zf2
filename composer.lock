@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "f7d7a6f385bce4beab494f2a1acdb67d",
-    "content-hash": "c88952c3ae78d11e58ef311ce149521d",
+    "hash": "e1398701468a67b64a76a7e5d267afc2",
+    "content-hash": "c5347b20a0a184317013ef7c2c8a18ff",
     "packages": [
         {
             "name": "captioning/captioning",
@@ -942,6 +942,47 @@
                 "orm"
             ],
             "time": "2016-12-18 15:42:34"
+        },
+        {
+            "name": "irontec/send-file-to-client",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/irontec/send-file-to-client.git",
+                "reference": "04f1dfec99255fb1f8351042a907f29d6af34a2b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/irontec/send-file-to-client/zipball/04f1dfec99255fb1f8351042a907f29d6af34a2b",
+                "reference": "04f1dfec99255fb1f8351042a907f29d6af34a2b",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SendFileToClient\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "EUPL-1.1"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Rendon Arias",
+                    "email": "daniel@irontec.com",
+                    "homepage": "https://github.com/ddniel16"
+                }
+            ],
+            "description": "Clase para servir archivos con 'HTTP/1.1 206 Partial Content'",
+            "homepage": "https://github.com/irontec/send-file-to-client",
+            "keywords": [
+                "206",
+                "Partial Content",
+                "http",
+                "php"
+            ],
+            "time": "2017-05-17 10:51:52"
         },
         {
             "name": "jms/metadata",
@@ -3483,7 +3524,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "zendframework/zend-component-installer": 20,
-        "zendframework/zend-developer-tools": 20
+        "zendframework/zend-developer-tools": 20,
+        "irontec/send-file-to-client": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
