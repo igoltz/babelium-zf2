@@ -2,6 +2,8 @@
 
 namespace ApiV3\Entity;
 
+use JMS\Serializer\Annotation\Groups;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -18,6 +20,7 @@ class Exercise
      * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"response", "exercise-list"})
      */
     private $id;
 
@@ -25,6 +28,7 @@ class Exercise
      * @var string
      *
      * @ORM\Column(name="exercisecode", type="string", length=255, nullable=false)
+     * @Groups({"response", "exercise-list"})
      */
     private $exercisecode;
 
@@ -32,6 +36,7 @@ class Exercise
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=80, nullable=false)
+     * @Groups({"response", "exercise-list"})
      */
     private $title;
 
@@ -39,6 +44,7 @@ class Exercise
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @Groups({"response"})
      */
     private $description;
 
@@ -46,6 +52,7 @@ class Exercise
      * @var string
      *
      * @ORM\Column(name="language", type="string", length=45, nullable=false)
+     * @Groups({"response", "exercise-list"})
      */
     private $language;
 
@@ -53,6 +60,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="difficulty", type="integer", nullable=false)
+     * @Groups({"response", "exercise-list"})
      */
     private $difficulty;
 
@@ -60,6 +68,7 @@ class Exercise
      * @var boolean
      *
      * @ORM\Column(name="status", type="boolean", nullable=false)
+     * @Groups({"response", "exercise-list"})
      */
     private $status = '0';
 
@@ -67,6 +76,7 @@ class Exercise
      * @var boolean
      *
      * @ORM\Column(name="visible", type="boolean", nullable=false)
+     * @Groups({"response", "exercise-list"})
      */
     private $visible = '0';
 
@@ -74,6 +84,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="fk_scope_id", type="integer", nullable=false)
+     * @Groups({"response"})
      */
     private $fkScopeId = '1';
 
@@ -81,6 +92,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="timecreated", type="integer", nullable=false)
+     * @Groups({"response"})
      */
     private $timecreated = '0';
 
@@ -88,6 +100,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="timemodified", type="integer", nullable=false)
+     * @Groups({"response"})
      */
     private $timemodified = '0';
 
@@ -95,6 +108,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="type", type="integer", nullable=false)
+     * @Groups({"response"})
      */
     private $type = '5';
 
@@ -102,6 +116,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="situation", type="integer", nullable=true)
+     * @Groups({"response"})
      */
     private $situation;
 
@@ -109,6 +124,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="competence", type="integer", nullable=true)
+     * @Groups({"response"})
      */
     private $competence;
 
@@ -116,6 +132,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="lingaspects", type="integer", nullable=true)
+     * @Groups({"response"})
      */
     private $lingaspects;
 
@@ -123,6 +140,7 @@ class Exercise
      * @var string
      *
      * @ORM\Column(name="licence", type="string", length=60, nullable=false)
+     * @Groups({"response"})
      */
     private $licence = 'cc-by';
 
@@ -130,6 +148,7 @@ class Exercise
      * @var string
      *
      * @ORM\Column(name="attribution", type="text", length=65535, nullable=true)
+     * @Groups({"response"})
      */
     private $attribution;
 
@@ -137,6 +156,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="likes", type="integer", nullable=false)
+     * @Groups({"response"})
      */
     private $likes = '0';
 
@@ -144,6 +164,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="dislikes", type="integer", nullable=false)
+     * @Groups({"response"})
      */
     private $dislikes = '0';
 
@@ -151,6 +172,7 @@ class Exercise
      * @var boolean
      *
      * @ORM\Column(name="ismodel", type="boolean", nullable=false)
+     * @Groups({"response"})
      */
     private $ismodel = '0';
 
@@ -158,6 +180,7 @@ class Exercise
      * @var integer
      *
      * @ORM\Column(name="model_id", type="integer", nullable=true)
+     * @Groups({"response"})
      */
     private $modelId;
 
