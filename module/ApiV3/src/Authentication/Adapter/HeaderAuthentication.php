@@ -53,15 +53,21 @@ class HeaderAuthentication
     public function authenticate()
     {
 
+        if (php_sapi_name() === 'cli' && isset($_SERVER['argv'])) {
+            return new Result(Result::SUCCESS, array());
+        }
+
         $headers = $this->_request->getHeaders();
 
         $path = $this->_request->getUri()->getPath();
+
         $isSubtitleVTT = $this->_authService->isSubtitleVTT($path);
         if ($isSubtitleVTT) {
             return new Result(Result::SUCCESS, array());
         }
 
-        if (php_sapi_name() === 'cli' && isset($_SERVER['argv'])) {
+        $isMedia= $this->_authService->isMedia($path);
+        if ($isMedia) {
             return new Result(Result::SUCCESS, array());
         }
 
