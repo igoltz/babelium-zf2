@@ -188,6 +188,7 @@ return [
         )
     ),
     'babelium' => array(
-        'path_uploads' => '/var/www/babelium-server-new/httpdocs/resources/uploads'
+        'path_uploads' => '/var/www/babelium-server-new/httpdocs/resources/uploads',
+        'path_thumbs' => '/var/www/babelium-server-new/httpdocs/resources/images/thumbs'
     )
 ];

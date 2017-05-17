@@ -31,7 +31,7 @@ class ThumbnailController
         $config = $config->getConfig();
         $path = sprintf(
             '%s/%s/%s',
-            $config['babelium']['path_uploads'],
+            $config['babelium']['path_thumbs'],
             $id,
             $thumbnail
         );
