@@ -38,7 +38,8 @@ return [
         'invokables' => array(
             'ApiV3\Controller\SubTitles' => 'ApiV3\Controller\SubTitlesController',
             'ApiV3\Controller\Exercises' => 'ApiV3\Controller\ExercisesController',
-            'ApiV3\Controller\Response' => 'ApiV3\Controller\ResponseController'
+            'ApiV3\Controller\Response' => 'ApiV3\Controller\ResponseController',
+            'ApiV3\Controller\Media' => 'ApiV3\Controller\MediaController'
         )
     ],
     'router' => [
@@ -90,7 +91,26 @@ return [
                         'controller' => Controller\ResponseController::class
                     )
                 ]
+            ],
+            /**
+             * Media
+             */
+            'media' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/media[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9a-zA-Z_.]+',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => Controller\MediaController::class
+                    )
+                ]
             ]
+
+
+
         ]
     ],
     'view_manager' => [
@@ -148,5 +168,8 @@ return [
                 )
             )
         )
+    ),
+    'babelium' => array(
+        'path_uploads' => '/var/www/babelium-server-new/httpdocs/resources/uploads'
     )
 ];
