@@ -20,7 +20,8 @@ class MediaController
             return $this->_notFound();
         }
 
-        $config = \ApiV3\Module::getConfig();
+        $config = new \ApiV3\Module();
+        $config = $config->getConfig();
         $path = sprintf(
             '%s/%s',
             $config['babelium']['path_uploads'],
