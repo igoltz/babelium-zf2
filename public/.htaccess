@@ -19,4 +19,4 @@ RewriteRule ^(.*)$ %{ENV:BASE}/index.php [L]
 Header set Access-Control-Allow-Origin "*"
 Header set Access-Control-Allow-Methods "GET, PUT, POST, OPTIONS, DELETE"
 Header set Access-Control-Allow-Credentials "true"
-Header set Access-Control-Allow-Headers "Authorization, Origin, Content-Type, X-CSRF-Token, HTTP_ORIGIN"
+Header set Access-Control-Allow-Headers "Authorization, Origin, Content-Type, X-CSRF-Token, HTTP_ORIGIN, Origin"
