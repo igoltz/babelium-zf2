@@ -111,7 +111,8 @@ class ExercisesController
             'filename' => $mediaRendition->getFilename(),
             'subtitleId' => $subtitle->getId(),
             'thumbnail' => $thumbnailUrl,
-            'mediaUrl' => $mediaUrl
+            'mp4Url' => $mediaUrl,
+            'webpUrl' => $mediaUrl
         );
 
         $result = array(
