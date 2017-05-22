@@ -147,8 +147,7 @@ class AbstractController
     {
 
         $url = sprintf(
-            '%s://%s%s',
-            $this->request->getServer()->get('REQUEST_SCHEME'),
+            'https://%s%s',
             $this->request->getServer()->get('HTTP_HOST'),
             $this->request->getBasePath()
         );
