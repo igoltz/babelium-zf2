@@ -9,6 +9,12 @@ class SubTitlesController
     extends AbstractController
 {
 
+    /**
+     * Obtiene la información relacionado con un subtitulo
+     *
+     * {@inheritDoc}
+     * @see \ApiV3\Controller\AbstractController::get()
+     */
     public function get($id)
     {
 
