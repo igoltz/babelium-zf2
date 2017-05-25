@@ -116,7 +116,7 @@ class ExercisesController
             'username' => $exercise->getFkUser()->getUsername(),
             'media' => array(
                 'id' => $media->getId(),
-                'filename' => $mediaRendition->getFilename(),
+                'filename' => $mediaRendition->getId() . '.mp4',
                 'subtitleId' => $subtitle->getId(),
                 'thumbnail' => $thumbnailUrl,
                 'mp4Url' => $mediaUrl

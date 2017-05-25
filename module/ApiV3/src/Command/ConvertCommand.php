@@ -64,7 +64,10 @@ class ConvertCommand extends Command
         $bar->setProgressCharacter('<fg=green>></>');
         $bar->setFormat($this->_formatProgress);
 
-        $generatePath = $this->_zendApplication->getServiceManager()->get('GeneratePath');
+        $generatePath = $this->_zendApplication
+            ->getServiceManager()
+            ->get('GeneratePath');
+
         $mediaPath = STORAGE_PATH . '/media';
 
         $optionsFFMpeg = array(
