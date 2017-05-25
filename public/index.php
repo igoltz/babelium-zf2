@@ -3,6 +3,11 @@
 use Zend\Mvc\Application;
 use Zend\Stdlib\ArrayUtils;
 
+defined('STORAGE_PATH') || define(
+    'STORAGE_PATH',
+    realpath(dirname(__FILE__) . '/../storage')
+);
+
 /**
  * This makes our life easier when dealing with paths. Everything is relative
  * to the application root now.

@@ -30,7 +30,10 @@ return [
             },
             'SubTitlesService' => function(ContainerInterface $container) {
                 return new \ApiV3\Services\SubTitles($container);
-            }
+            },
+            'GeneratePath' => function(ContainerInterface $container) {
+                return new \ApiV3\Services\GeneratePath();
+            },
         )
     ),
     'controllers' => [
@@ -178,7 +181,7 @@ return [
                     'user'     => 'root',
                     'password' => 'B4b3l1umd4t4b4sE',
                     'dbname'   => 'babelium_data_new',
-                    'charset'  => 'utf8mb4'
+                    'charset'  => 'utf8'
                 ),
                 'doctrine_type_mappings' => array(
                     'enum' => 'string',
@@ -189,6 +192,7 @@ return [
     ),
     'babelium' => array(
         'path_uploads' => '/var/www/babelium-server-new/httpdocs/resources/uploads',
-        'path_thumbs' => '/var/www/babelium-server-new/httpdocs/resources/images/thumbs'
+        'path_thumbs' => '/var/www/babelium-server-new/httpdocs/resources/images/thumbs',
+        'path_red5' => '/usr/local/red5/red5-server/webapps/oflaDemo/streams'
     )
 ];
