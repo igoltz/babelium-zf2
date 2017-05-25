@@ -69,7 +69,10 @@ class ConvertCommand extends Command
 
         $optionsFFMpeg = array(
             'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
-            'ffprobe.binaries' => '/usr/bin/ffprobe'
+            'ffprobe.binaries' => '/usr/bin/ffprobe',
+            'timeout'          => 15800,
+            'ffmpeg.timeout'   => 15800,
+            'ffprobe.timeout'  => 15800,
         );
         $ffmpeg = \FFMpeg\FFMpeg::create($optionsFFMpeg);
 
@@ -77,13 +80,9 @@ class ConvertCommand extends Command
          * @var \ApiV3\Entity\MediaRendition $media
          */
         foreach ($mediaList as $media) {
+            $bar->advance();
 
             $pk = $media->getId();
-
-            $pathMediaPk = $generatePath->generate($mediaPath, $pk, false);
-            mkdir($pathMediaPk, 0777, true);
-
-            $bar->advance();
 
             $pathFile = sprintf(
                 '%s/%s',
@@ -95,10 +94,14 @@ class ConvertCommand extends Command
                 continue;
             }
 
+            $pathMediaPk = $generatePath->generate($mediaPath, $pk, false);
+            mkdir($pathMediaPk, 0777, true);
+
             $video = $ffmpeg->open($pathFile);
-            $video
-                ->save(new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'), $pathMediaPk . '/' . $pk . '.mp4')
-                ->save(new \FFMpeg\Format\Video\WebM(), $pathMediaPk . '/' . $pk . '.webm');
+            $video->save(
+                new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'),
+                $pathMediaPk . '/' . $pk . '.mp4'
+            );
 
         }
 

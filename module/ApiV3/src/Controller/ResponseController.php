@@ -44,4 +44,18 @@ class ResponseController
 
     }
 
+    public function create($data)
+    {
+
+        var_dump($this->params()->fromPost());
+        var_dump($this->params()->fromPost('name', 12));
+
+        $consumer = $this->getService('ConsumerService')
+            ->getConsumerByHeaders($this->request->getHeaders());
+
+        var_dump($consumer);
+        die();
+
+    }
+
 }

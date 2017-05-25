@@ -103,16 +103,7 @@ class ExercisesController
         $mediaUrl = sprintf(
             '%s/media/%s',
             $this->getBaseUrl(),
-            $mediaRendition->getFilename()
-        );
-
-        $mediaResult = array(
-            'id' => $media->getId(),
-            'filename' => $mediaRendition->getFilename(),
-            'subtitleId' => $subtitle->getId(),
-            'thumbnail' => $thumbnailUrl,
-            'mp4Url' => $mediaUrl,
-            'webpUrl' => $mediaUrl
+            $mediaRendition->getId() . '.mp4'
         );
 
         $result = array(
@@ -123,7 +114,13 @@ class ExercisesController
             'difficulty' => $exercise->getDifficulty(),
             'licence' => $exercise->getLicence(),
             'username' => $exercise->getFkUser()->getUsername(),
-            'media' => $mediaResult
+            'media' => array(
+                'id' => $media->getId(),
+                'filename' => $mediaRendition->getFilename(),
+                'subtitleId' => $subtitle->getId(),
+                'thumbnail' => $thumbnailUrl,
+                'mp4Url' => $mediaUrl
+            )
         );
 
         return $this->jsonResponse($result);
