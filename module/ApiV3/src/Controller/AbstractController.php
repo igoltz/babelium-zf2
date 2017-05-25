@@ -15,31 +15,55 @@ class AbstractController
      */
     protected $_doctrineConnection;
 
+    /**
+     * {@inheritDoc}
+     * @see \Zend\Mvc\Controller\AbstractRestfulController::getList()
+     */
     public function getList()
     {
         return $this->_methodNotAllowed();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Zend\Mvc\Controller\AbstractRestfulController::get()
+     */
     public function get($id)
     {
         return $this->_methodNotAllowed();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Zend\Mvc\Controller\AbstractRestfulController::create()
+     */
     public function create($data)
     {
         return $this->_methodNotAllowed();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Zend\Mvc\Controller\AbstractRestfulController::update()
+     */
     public function update($id, $data)
     {
         return $this->_methodNotAllowed();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Zend\Mvc\Controller\AbstractRestfulController::delete()
+     */
     public function delete($id)
     {
         return $this->_methodNotAllowed();
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Zend\Mvc\Controller\AbstractRestfulController::options()
+     */
     public function options()
     {
         $json = new JsonModel();
