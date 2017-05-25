@@ -1,50 +1,47 @@
 {
-    "name": "zendframework/skeleton-application",
-    "description": "Skeleton Application for Zend Framework zend-mvc applications",
-    "type": "project",
-    "license": "BSD-3-Clause",
-    "keywords": [
-        "framework",
-        "mvc",
-        "zf"
-    ],
-    "homepage": "http://framework.zend.com/",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-        "php": "^5.6 || ^7.0",
-        "zendframework/zend-component-installer": "^1.0 || ^0.7 || ^1.0.0-dev@dev",
-        "zendframework/zend-mvc": "^3.0.1",
-        "zfcampus/zf-development-mode": "^3.0",
-        "doctrine/doctrine-orm-module": "^1.1",
-        "zendframework/zend-developer-tools": "dev-master",
-        "zendframework/zend-json": "^3.0",
-        "captioning/captioning": "^2.5",
-        "jms/serializer": "^1.7",
-        "doctrine/migrations": "^1.5",
-        "irontec/send-file-to-client": "dev-master"
-    },
-    "autoload": {
-        "psr-4": {
-            "ApiV3\\": "module/ApiV3/src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "ApiV3Test\\": "module/ApiV3/test/"
-        }
-    },
-    "extra": [],
-    "scripts": {
-        "cs-check": "phpcs",
-        "cs-fix": "phpcbf",
-        "development-disable": "zf-development-mode disable",
-        "development-enable": "zf-development-mode enable",
-        "development-status": "zf-development-mode status",
-        "post-create-project-cmd": [
-            "@development-enable"
-        ],
-        "serve": "php -S 0.0.0.0:8080 -t public public/index.php",
-        "test": "phpunit"
-    }
+	"name" : "babeliumproject/babelium-zf2",
+	"description" : "Api de integración entre Babelium y Moodle",
+	"type" : "project",
+	"license" : "BSD-3-Clause",
+	"homepage" : "http://framework.zend.com/",
+	"minimum-stability" : "dev",
+	"prefer-stable" : true,
+	"require" : {
+		"php" : "^5.6 || ^7.0",
+		"zendframework/zend-component-installer" : "^1.0 || ^0.7 || ^1.0.0-dev@dev",
+		"zendframework/zend-mvc" : "^3.0.1",
+		"zfcampus/zf-development-mode" : "^3.0",
+		"doctrine/doctrine-orm-module" : "^1.1",
+		"zendframework/zend-developer-tools" : "dev-master",
+		"zendframework/zend-json" : "^3.0",
+		"captioning/captioning" : "^2.5",
+		"jms/serializer" : "^1.7",
+		"doctrine/migrations" : "^1.5",
+		"irontec/send-file-to-client" : "dev-master",
+		"symfony/console": "^3.2",
+		"php-ffmpeg/php-ffmpeg": "^0.9.3"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"ApiV3\\" : "module/ApiV3/src/"
+		}
+	},
+	"autoload-dev" : {
+		"psr-4" : {
+			"ApiV3Test\\" : "module/ApiV3/test/"
+		}
+	},
+	"scripts" : {
+		"cs-check" : "phpcs",
+		"cs-fix" : "phpcbf",
+		"development-disable" : "zf-development-mode disable",
+		"development-enable" : "zf-development-mode enable",
+		"development-status" : "zf-development-mode status",
+		"babelium-storage-create": "mkdir storage -p",
+		"babelium-storage-chmod": "chmod 777 -R storage",
+    	"post-install-cmd" : [ "@babelium-storage-create" , "@babelium-storage-chmod" ],
+    	"post-update-cmd" : [ "@babelium-storage-create" , "@babelium-storage-chmod" ],
+    	"post-create-project-cmd" : "@development-enable",
+		"serve" : "php -S 0.0.0.0:8080 -t public public/index.php"
+	}
 }
