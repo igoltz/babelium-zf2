@@ -145,12 +145,11 @@ class ResponseConvertCommand extends Command
             $response->setIsProcessed(1);
 
             $em->persist($response);
+            $em->flush();
 
             $responseConverted[] = $response->getId();
 
         }
-
-        $em->flush();
 
         $output->write('Fin de la converción!');
 
@@ -175,8 +174,8 @@ class ResponseConvertCommand extends Command
         $output->writeln('Hay ' . sizeof($responses). ' para enviar');
 
         $generatePath = $this->_zendApplication
-        ->getServiceManager()
-        ->get('GeneratePath');
+            ->getServiceManager()
+            ->get('GeneratePath');
 
         $responsePath = STORAGE_PATH . '/response';
 
@@ -225,9 +224,9 @@ class ResponseConvertCommand extends Command
     protected function getResponseRepository()
     {
         return $this->_zendApplication
-        ->getServiceManager()
-        ->get('Doctrine\ORM\EntityManager')
-        ->getRepository('\ApiV3\Entity\Response');
+            ->getServiceManager()
+            ->get('Doctrine\ORM\EntityManager')
+            ->getRepository('\ApiV3\Entity\Response');
     }
 
     /**
@@ -236,9 +235,9 @@ class ResponseConvertCommand extends Command
     protected function getMediaRepository()
     {
         return $this->_zendApplication
-        ->getServiceManager()
-        ->get('Doctrine\ORM\EntityManager')
-        ->getRepository('\ApiV3\Entity\Media');
+            ->getServiceManager()
+            ->get('Doctrine\ORM\EntityManager')
+            ->getRepository('\ApiV3\Entity\Media');
     }
 
     /**
@@ -247,9 +246,9 @@ class ResponseConvertCommand extends Command
     protected function getMediaRenditionRepository()
     {
         return $this->_zendApplication
-        ->getServiceManager()
-        ->get('Doctrine\ORM\EntityManager')
-        ->getRepository('\ApiV3\Entity\MediaRendition');
+            ->getServiceManager()
+            ->get('Doctrine\ORM\EntityManager')
+            ->getRepository('\ApiV3\Entity\MediaRendition');
     }
 
 }

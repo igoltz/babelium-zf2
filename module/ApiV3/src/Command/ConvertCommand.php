@@ -90,6 +90,7 @@ class ConvertCommand extends Command
             if (empty($mediaRend)) {
                 $media->setIsProcessed(1);
                 $em->persist($media);
+                $em->flush();
                 continue;
             }
 
@@ -118,10 +119,9 @@ class ConvertCommand extends Command
             }
 
             $em->persist($media);
+            $em->flush();
 
         }
-
-        $em->flush();
 
         $output->write('Terminado!');
 
