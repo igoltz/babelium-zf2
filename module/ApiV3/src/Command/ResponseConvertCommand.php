@@ -75,7 +75,7 @@ class ResponseConvertCommand extends Command
         foreach ($responseList as $response) {
 
             $pathResponsePk = $generatePath->generate(
-                $mediaPath,
+                $responsePath,
                 $response->getId(),
                 false
             );
@@ -90,19 +90,24 @@ class ResponseConvertCommand extends Command
 
             $exerciseMedia = $this->getMediaRepository()->findOneBy($where);
 
+            $where = array(
+                'fkMedia' => $exerciseMedia->getId()
+            );
+            $exerciseMediaRendition = $this->getMediaRenditionRepository()->findOneBy($where);
+
             $pathExerciseMediaPk = $generatePath->generate(
                 $mediaPath,
-                $exerciseMedia->getId(),
+                $exerciseMediaRendition->getId(),
                 false
             );
 
-            $exerciseMediaPath = $pathExerciseMediaPk . '/' . $exerciseMedia->getId() . '.mp4';
+            $exerciseMediaPath = $pathExerciseMediaPk . '/' . $exerciseMediaRendition->getId() . '.mp4';
 
             $mergeResponsePath = $pathResponsePk . '/' . $response->getId() . '.mp4';
 
-            var_dump(file_exists($audioPath));
-            var_dump(file_exists($exerciseMediaPath));
-            var_dump(file_exists($mergeResponsePath));
+            if (!file_exists($audioPath) && !file_exists($exerciseMediaPath)) {
+                continue;
+            }
 
             $cmd = sprintf(
                 "%s -i %s -i %s -filter_complex 'amix=inputs=2' -c:a libmp3lame -q:a 4 -shortest -strict -2 -f mp4 %s",
@@ -112,10 +117,20 @@ class ResponseConvertCommand extends Command
                 $mergeResponsePath
             );
 
-            var_dump($cmd);
-            die();
+            shell_exec($cmd);
+
+            if (file_exists($mergeResponsePath)) {
+                $response->setIsConverted(1);
+            }
+
+            $response->setIsProcessed(1);
+
+            $em = $this->_zendApplication->getServiceManager()->get('Doctrine\ORM\EntityManager');
+            $em->persist($response);
 
         }
+
+        $em->flush();
 
         $output->write('Fin!');
 
@@ -141,6 +156,17 @@ class ResponseConvertCommand extends Command
             ->getServiceManager()
             ->get('Doctrine\ORM\EntityManager')
             ->getRepository('\ApiV3\Entity\Media');
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getMediaRenditionRepository()
+    {
+        return $this->_zendApplication
+                ->getServiceManager()
+                ->get('Doctrine\ORM\EntityManager')
+                ->getRepository('\ApiV3\Entity\MediaRendition');
     }
 
 }
