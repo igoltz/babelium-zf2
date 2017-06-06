@@ -9,10 +9,33 @@ class ExercisesController
     public function getList()
     {
 
+        $whereSql = array(
+            'exercise.status = 1',
+            'exercise.visible = 1',
+            'exercise.ismodel = 0',
+            'media.component = "exercise"',
+            'is_converted = 1',
+            'media.is_processed = 1'
+        );
+
+        $sql = 'SELECT exercise.id FROM exercise INNER JOIN media ON media.instanceid = exercise.id WHERE ' . implode(' AND ', $whereSql);
+
+        $prepare = $this->getEntityManager()->getConnection()->prepare($sql);
+        $prepare->execute();
+        $prepareResult = $prepare->fetchAll();
+
+        if (empty($prepareResult)) {
+            return $this->_notFound();
+        }
+
+        $exercisesIds = array();
+
+        foreach ($prepareResult as $value) {
+            $exercisesIds[] = $value['id'];
+        }
+
         $where = array(
-            'status' => 1,
-            'visible' => 1,
-            'ismodel' => 0
+            'id' => $exercisesIds
         );
         $orderBy = array('title' => 'asc');
 
