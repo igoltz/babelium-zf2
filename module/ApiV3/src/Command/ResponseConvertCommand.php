@@ -47,8 +47,8 @@ class ResponseConvertCommand extends Command
     {
 
         $this->setName($this->_commandName)
-            ->setDescription('Combinar audio y video original para generar la respuesta')
-            ->setHelp('Ejecución en CRON');
+        ->setDescription('Combinar audio y video original para generar la respuesta')
+        ->setHelp('Ejecución en CRON');
 
     }
 
@@ -175,8 +175,8 @@ class ResponseConvertCommand extends Command
         $output->writeln('Hay ' . sizeof($responses). ' para enviar');
 
         $generatePath = $this->_zendApplication
-            ->getServiceManager()
-            ->get('GeneratePath');
+        ->getServiceManager()
+        ->get('GeneratePath');
 
         $responsePath = STORAGE_PATH . '/response';
 
@@ -198,15 +198,18 @@ class ResponseConvertCommand extends Command
             );
 
             $responseNewPath = sprintf(
-                '%s/responses/%s.mp4',
+                '%s/responses/%s.flv',
                 $this->_babeliumPathRed,
                 $response->getFileIdentifier()
             );
 
-            copy(
+            $command = sprintf(
+                'ffmpeg -i %s -c:v libx264 -ar 22050 -crf 28 %s',
                 $responseMerge,
                 $responseNewPath
             );
+
+            shell_exec($command);
 
             $output->writeln($responseNewPath);
 
@@ -222,9 +225,9 @@ class ResponseConvertCommand extends Command
     protected function getResponseRepository()
     {
         return $this->_zendApplication
-            ->getServiceManager()
-            ->get('Doctrine\ORM\EntityManager')
-            ->getRepository('\ApiV3\Entity\Response');
+        ->getServiceManager()
+        ->get('Doctrine\ORM\EntityManager')
+        ->getRepository('\ApiV3\Entity\Response');
     }
 
     /**
@@ -233,9 +236,9 @@ class ResponseConvertCommand extends Command
     protected function getMediaRepository()
     {
         return $this->_zendApplication
-            ->getServiceManager()
-            ->get('Doctrine\ORM\EntityManager')
-            ->getRepository('\ApiV3\Entity\Media');
+        ->getServiceManager()
+        ->get('Doctrine\ORM\EntityManager')
+        ->getRepository('\ApiV3\Entity\Media');
     }
 
     /**
@@ -244,9 +247,9 @@ class ResponseConvertCommand extends Command
     protected function getMediaRenditionRepository()
     {
         return $this->_zendApplication
-                ->getServiceManager()
-                ->get('Doctrine\ORM\EntityManager')
-                ->getRepository('\ApiV3\Entity\MediaRendition');
+        ->getServiceManager()
+        ->get('Doctrine\ORM\EntityManager')
+        ->getRepository('\ApiV3\Entity\MediaRendition');
     }
 
 }
