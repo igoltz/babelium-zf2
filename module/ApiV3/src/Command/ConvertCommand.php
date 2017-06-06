@@ -51,7 +51,11 @@ class ConvertCommand extends Command
 
         $output->writeln('Convertir videos (mp4 - webm)');
 
-        $mediaList = $this->getMediaRenditionRepository()->findAll();
+        $where = array(
+            'isProcessed' => 0
+        );
+
+        $mediaList = $this->getMediaRepository()->findBy($where);
 
         $count = sizeof($mediaList);
         $output->writeln('Videos a convertir #' . $count);
@@ -75,11 +79,17 @@ class ConvertCommand extends Command
             ->getServiceManager()
             ->get('Doctrine\ORM\EntityManager');
         /**
-         * @var \ApiV3\Entity\MediaRendition $mediaRend
+         * @var \ApiV3\Entity\Media $media
          */
-        foreach ($mediaList as $mediaRend) {
+        foreach ($mediaList as $media) {
 
-            $pk = $mediaRend->getId();
+            $criteria = array(
+                'fkMedia' => $media->getId()
+            );
+            $mediaRend = $this->getMediaRenditionRepository()->findOneBy($criteria);
+            if (empty($mediaRend)) {
+                continue;
+            }
 
             $pathFile = sprintf(
                 '%s/%s',
@@ -92,13 +102,13 @@ class ConvertCommand extends Command
 
             if (file_exists($pathFile)) {
 
-                $pathMediaPk = $generatePath->generate($mediaPath, $pk, false);
+                $pathMediaPk = $generatePath->generate($mediaPath, $mediaRend->getId(), false);
                 mkdir($pathMediaPk, 0777, true);
 
                 $video = $ffmpeg->open($pathFile);
                 $video->save(
                     new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'),
-                    $pathMediaPk . '/' . $pk . '.mp4'
+                    $pathMediaPk . '/' . $mediaRend->getId(). '.mp4'
                 );
 
                 $media->setIsConverted(1);
@@ -124,6 +134,17 @@ class ConvertCommand extends Command
             ->getServiceManager()
             ->get('Doctrine\ORM\EntityManager')
             ->getRepository('\ApiV3\Entity\MediaRendition');
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getMediaRepository()
+    {
+        return $this->_zendApplication
+            ->getServiceManager()
+            ->get('Doctrine\ORM\EntityManager')
+            ->getRepository('\ApiV3\Entity\Media');
     }
 
 }
