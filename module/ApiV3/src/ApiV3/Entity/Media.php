@@ -80,14 +80,14 @@ class Media
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_converted", type="boolean", nullable=false)
+     * @ORM\Column(name="is_converted", type="boolean", nullable=false, options={"default": 0})
      */
     private $isConverted;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_processed", type="boolean", nullable=false)
+     * @ORM\Column(name="is_processed", type="boolean", nullable=false, options={"default": 0})
      */
     private $isProcessed;
 

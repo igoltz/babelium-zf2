@@ -57,7 +57,7 @@ class Response
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_converted", type="boolean", nullable=false)
+     * @ORM\Column(name="is_converted", type="boolean", nullable=false, options={"default": 0})
      * @Groups({"details"})
      */
     private $isConverted;
@@ -65,7 +65,7 @@ class Response
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_processed", type="boolean", nullable=false)
+     * @ORM\Column(name="is_processed", type="boolean", nullable=false, options={"default": 0})
      * @Groups({"details"})
      */
     private $isProcessed;
@@ -73,7 +73,7 @@ class Response
     /**
      * @var boolean
      *
-     * @ORM\Column(name="audio", type="boolean", nullable=false)
+     * @ORM\Column(name="audio", type="boolean", nullable=false, options={"default": 0})
      * @Groups({"details"})
      */
     private $audio;
