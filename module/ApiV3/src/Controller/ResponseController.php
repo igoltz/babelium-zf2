@@ -71,6 +71,8 @@ class ResponseController
         $response->setSource('Red5');
         $response->setDuration(0);
         $response->setFileIdentifier(uniqid('moodle-'));
+        $response->setIsConverted(0);
+        $response->setIsProcessed(0);
 
         $now = new \DateTime();
 
