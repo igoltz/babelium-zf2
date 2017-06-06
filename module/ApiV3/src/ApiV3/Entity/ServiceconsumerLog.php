@@ -24,21 +24,21 @@ class ServiceconsumerLog
     /**
      * @var integer
      *
-     * @ORM\Column(name="time", type="bigint", nullable=false)
+     * @ORM\Column(name="time", type="bigint", nullable=false, options={"unsigned": true, "default": 0})
      */
     private $time = '0';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="method", type="string", length=45, nullable=false)
+     * @ORM\Column(name="method", type="string", length=45, nullable=false, options={"default": ""})
      */
     private $method = '';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="statuscode", type="integer", nullable=false)
+     * @ORM\Column(name="statuscode", type="integer", nullable=false, options={"default": 500})
      */
     private $statuscode = '500';
 
@@ -52,28 +52,28 @@ class ServiceconsumerLog
     /**
      * @var string
      *
-     * @ORM\Column(name="ipaddress", type="string", length=45, nullable=false)
+     * @ORM\Column(name="ipaddress", type="string", length=45, nullable=false, options={"default": ""})
      */
     private $ipaddress = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="origin", type="string", length=255, nullable=false)
+     * @ORM\Column(name="origin", type="string", length=255, nullable=false, options={"default": ""})
      */
     private $origin = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="referer", type="string", length=255, nullable=false)
+     * @ORM\Column(name="referer", type="string", length=255, nullable=false, options={"default": ""})
      */
     private $referer = '';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="fk_serviceconsumer_id", type="integer", nullable=true)
+     * @ORM\Column(name="fk_serviceconsumer_id", type="integer", nullable=true, options={"unsigned": true})
      */
     private $fkServiceconsumerId;
 

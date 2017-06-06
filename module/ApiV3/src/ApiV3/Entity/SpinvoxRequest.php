@@ -15,7 +15,7 @@ class SpinvoxRequest
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -47,7 +47,7 @@ class SpinvoxRequest
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Transcription")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_transcription_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_transcription_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkTranscription;

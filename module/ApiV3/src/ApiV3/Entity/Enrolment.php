@@ -12,19 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Enrolment
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="fk_user_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $fkUserId;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="role", type="string", nullable=true)
+     * @ORM\Column(name="role", type="string", nullable=true, columnDefinition="ENUM('student','teacher')", options={"default": "student"})
      */
     private $role = 'student';
 
@@ -40,7 +32,14 @@ class Enrolment
      */
     private $fkGroup;
 
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="fk_user_id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $fkUserId;
 
     /**
      * Set fkUserId

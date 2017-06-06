@@ -15,7 +15,7 @@ class RelCourseRoleUser
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,7 +24,7 @@ class RelCourseRoleUser
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false, options={"default": 0})
      */
     private $timemodified = '0';
 
@@ -33,7 +33,7 @@ class RelCourseRoleUser
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Course")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_course_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_course_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkCourse;
@@ -43,7 +43,7 @@ class RelCourseRoleUser
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Role")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_role_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_role_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkRole;
@@ -53,7 +53,7 @@ class RelCourseRoleUser
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;

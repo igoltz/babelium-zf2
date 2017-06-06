@@ -15,7 +15,7 @@ class SpinvoxRequest
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -47,10 +47,116 @@ class SpinvoxRequest
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Transcription")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_transcription_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_transcription_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkTranscription;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set xError
+     *
+     * @param string $xError
+     *
+     * @return SpinvoxRequest
+     */
+    public function setXError($xError)
+    {
+        $this->xError = $xError;
+
+        return $this;
+    }
+
+    /**
+     * Get xError
+     *
+     * @return string
+     */
+    public function getXError()
+    {
+        return $this->xError;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return SpinvoxRequest
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return SpinvoxRequest
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set fkTranscription
+     *
+     * @param \ApiV3\Entity\Transcription $fkTranscription
+     *
+     * @return SpinvoxRequest
+     */
+    public function setFkTranscription(\ApiV3\Entity\Transcription $fkTranscription = null)
+    {
+        $this->fkTranscription = $fkTranscription;
+
+        return $this;
+    }
+
+    /**
+     * Get fkTranscription
+     *
+     * @return \ApiV3\Entity\Transcription
+     */
+    public function getFkTranscription()
+    {
+        return $this->fkTranscription;
+    }
 }

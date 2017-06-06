@@ -15,7 +15,7 @@ class Media
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -31,7 +31,7 @@ class Media
     /**
      * @var integer
      *
-     * @ORM\Column(name="instanceid", type="integer", nullable=false)
+     * @ORM\Column(name="instanceid", type="integer", nullable=false, options={"unsigned": true})
      */
     private $instanceid;
 
@@ -45,42 +45,56 @@ class Media
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=45, nullable=false)
+     * @ORM\Column(name="type", type="string", length=45, nullable=false, options={"default": "video"})
      */
     private $type = 'video';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timecreated", type="integer", nullable=false)
+     * @ORM\Column(name="timecreated", type="integer", nullable=false, options={"default": 0})
      */
     private $timecreated = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="integer", nullable=false)
+     * @ORM\Column(name="timemodified", type="integer", nullable=false, options={"default": 0})
      */
     private $timemodified = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="duration", type="integer", nullable=false)
+     * @ORM\Column(name="duration", type="integer", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $duration = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="level", type="boolean", nullable=false)
+     * @ORM\Column(name="level", type="boolean", nullable=false, options={"default": 0, "comment": "0: undefined, 1: primary, 2: model, 3: attempt, 4: raw"})
      */
     private $level = '0';
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_converted", type="boolean", nullable=false)
+     */
+    private $isConverted;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_processed", type="boolean", nullable=false)
+     */
+    private $isProcessed;
+
+    /**
      * @var integer
      *
-     * @ORM\Column(name="defaultthumbnail", type="integer", nullable=true)
+     * @ORM\Column(name="defaultthumbnail", type="integer", nullable=true, options={"default": 1})
      */
     private $defaultthumbnail = '1';
 
@@ -89,7 +103,7 @@ class Media
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;
@@ -344,5 +358,53 @@ class Media
     public function getFkUser()
     {
         return $this->fkUser;
+    }
+
+    /**
+     * Set isConverted
+     *
+     * @param boolean $isConverted
+     *
+     * @return Media
+     */
+    public function setIsConverted($isConverted)
+    {
+        $this->isConverted = $isConverted;
+
+        return $this;
+    }
+
+    /**
+     * Get isConverted
+     *
+     * @return boolean
+     */
+    public function getIsConverted()
+    {
+        return $this->isConverted;
+    }
+
+    /**
+     * Set isProcessed
+     *
+     * @param boolean $isProcessed
+     *
+     * @return Media
+     */
+    public function setIsProcessed($isProcessed)
+    {
+        $this->isProcessed = $isProcessed;
+
+        return $this;
+    }
+
+    /**
+     * Get isProcessed
+     *
+     * @return boolean
+     */
+    public function getIsProcessed()
+    {
+        return $this->isProcessed;
     }
 }

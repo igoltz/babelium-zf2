@@ -17,7 +17,7 @@ class Response
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Groups({"details"})
@@ -27,14 +27,14 @@ class Response
     /**
      * @var integer
      *
-     * @ORM\Column(name="fk_user_id", type="integer", nullable=false)
+     * @ORM\Column(name="fk_user_id", type="integer", nullable=false, options={"unsigned": true})
      */
     private $fkUserId;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="fk_media_id", type="integer", nullable=true)
+     * @ORM\Column(name="fk_media_id", type="integer", nullable=true, options={"unsigned": true})
      */
     private $fkMediaId;
 
@@ -55,9 +55,25 @@ class Response
     private $isPrivate;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_converted", type="boolean", nullable=false)
+     * @Groups({"details"})
+     */
+    private $isConverted;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_processed", type="boolean", nullable=false)
+     * @Groups({"details"})
+     */
+    private $isProcessed;
+
+    /**
      * @var string
      *
-     * @ORM\Column(name="thumbnail_uri", type="string", length=200, nullable=false)
+     * @ORM\Column(name="thumbnail_uri", type="string", length=200, nullable=false, options={"default": "nothumb.png"})
      * @Groups({"details"})
      */
     private $thumbnailUri = 'nothumb.png';
@@ -73,7 +89,7 @@ class Response
     /**
      * @var integer
      *
-     * @ORM\Column(name="duration", type="integer", nullable=false)
+     * @ORM\Column(name="duration", type="integer", nullable=false, options={"unsigned": true})
      * @Groups({"details"})
      */
     private $duration;
@@ -105,7 +121,7 @@ class Response
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="priority_date", type="datetime", nullable=false)
+     * @ORM\Column(name="priority_date", type="datetime", nullable=false, options={"default": "CURRENT_TIMESTAMP"})
      * @Groups({"details"})
      */
     private $priorityDate = 'CURRENT_TIMESTAMP';
@@ -115,7 +131,7 @@ class Response
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkExercise;
@@ -486,5 +502,53 @@ class Response
     public function getFkTranscription()
     {
         return $this->fkTranscription;
+    }
+
+    /**
+     * Set isConverted
+     *
+     * @param boolean $isConverted
+     *
+     * @return Response
+     */
+    public function setIsConverted($isConverted)
+    {
+        $this->isConverted = $isConverted;
+
+        return $this;
+    }
+
+    /**
+     * Get isConverted
+     *
+     * @return boolean
+     */
+    public function getIsConverted()
+    {
+        return $this->isConverted;
+    }
+
+    /**
+     * Set isProcessed
+     *
+     * @param boolean $isProcessed
+     *
+     * @return Response
+     */
+    public function setIsProcessed($isProcessed)
+    {
+        $this->isProcessed = $isProcessed;
+
+        return $this;
+    }
+
+    /**
+     * Get isProcessed
+     *
+     * @return boolean
+     */
+    public function getIsProcessed()
+    {
+        return $this->isProcessed;
     }
 }

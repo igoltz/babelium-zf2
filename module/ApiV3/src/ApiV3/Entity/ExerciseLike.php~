@@ -15,7 +15,7 @@ class ExerciseLike
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,7 +24,7 @@ class ExerciseLike
     /**
      * @var boolean
      *
-     * @ORM\Column(name="like", type="boolean", nullable=false)
+     * @ORM\Column(name="like", type="boolean", nullable=false, options={"default": 0})
      */
     private $like = '0';
 
@@ -47,7 +47,7 @@ class ExerciseLike
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkExercise;
@@ -57,10 +57,140 @@ class ExerciseLike
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set like
+     *
+     * @param boolean $like
+     *
+     * @return ExerciseLike
+     */
+    public function setLike($like)
+    {
+        $this->like = $like;
+
+        return $this;
+    }
+
+    /**
+     * Get like
+     *
+     * @return boolean
+     */
+    public function getLike()
+    {
+        return $this->like;
+    }
+
+    /**
+     * Set timecreated
+     *
+     * @param integer $timecreated
+     *
+     * @return ExerciseLike
+     */
+    public function setTimecreated($timecreated)
+    {
+        $this->timecreated = $timecreated;
+
+        return $this;
+    }
+
+    /**
+     * Get timecreated
+     *
+     * @return integer
+     */
+    public function getTimecreated()
+    {
+        return $this->timecreated;
+    }
+
+    /**
+     * Set timemodified
+     *
+     * @param integer $timemodified
+     *
+     * @return ExerciseLike
+     */
+    public function setTimemodified($timemodified)
+    {
+        $this->timemodified = $timemodified;
+
+        return $this;
+    }
+
+    /**
+     * Get timemodified
+     *
+     * @return integer
+     */
+    public function getTimemodified()
+    {
+        return $this->timemodified;
+    }
+
+    /**
+     * Set fkExercise
+     *
+     * @param \ApiV3\Entity\Exercise $fkExercise
+     *
+     * @return ExerciseLike
+     */
+    public function setFkExercise(\ApiV3\Entity\Exercise $fkExercise = null)
+    {
+        $this->fkExercise = $fkExercise;
+
+        return $this;
+    }
+
+    /**
+     * Get fkExercise
+     *
+     * @return \ApiV3\Entity\Exercise
+     */
+    public function getFkExercise()
+    {
+        return $this->fkExercise;
+    }
+
+    /**
+     * Set fkUser
+     *
+     * @param \ApiV3\Entity\User $fkUser
+     *
+     * @return ExerciseLike
+     */
+    public function setFkUser(\ApiV3\Entity\User $fkUser = null)
+    {
+        $this->fkUser = $fkUser;
+
+        return $this;
+    }
+
+    /**
+     * Get fkUser
+     *
+     * @return \ApiV3\Entity\User
+     */
+    public function getFkUser()
+    {
+        return $this->fkUser;
+    }
 }

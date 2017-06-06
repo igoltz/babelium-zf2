@@ -15,7 +15,7 @@ class ExerciseComment
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -40,7 +40,7 @@ class ExerciseComment
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkExercise;
@@ -50,10 +50,116 @@ class ExerciseComment
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     *
+     * @return ExerciseComment
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set commentDate
+     *
+     * @param \DateTime $commentDate
+     *
+     * @return ExerciseComment
+     */
+    public function setCommentDate($commentDate)
+    {
+        $this->commentDate = $commentDate;
+
+        return $this;
+    }
+
+    /**
+     * Get commentDate
+     *
+     * @return \DateTime
+     */
+    public function getCommentDate()
+    {
+        return $this->commentDate;
+    }
+
+    /**
+     * Set fkExercise
+     *
+     * @param \ApiV3\Entity\Exercise $fkExercise
+     *
+     * @return ExerciseComment
+     */
+    public function setFkExercise(\ApiV3\Entity\Exercise $fkExercise = null)
+    {
+        $this->fkExercise = $fkExercise;
+
+        return $this;
+    }
+
+    /**
+     * Get fkExercise
+     *
+     * @return \ApiV3\Entity\Exercise
+     */
+    public function getFkExercise()
+    {
+        return $this->fkExercise;
+    }
+
+    /**
+     * Set fkUser
+     *
+     * @param \ApiV3\Entity\User $fkUser
+     *
+     * @return ExerciseComment
+     */
+    public function setFkUser(\ApiV3\Entity\User $fkUser = null)
+    {
+        $this->fkUser = $fkUser;
+
+        return $this;
+    }
+
+    /**
+     * Get fkUser
+     *
+     * @return \ApiV3\Entity\User
+     */
+    public function getFkUser()
+    {
+        return $this->fkUser;
+    }
 }

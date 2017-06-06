@@ -15,7 +15,7 @@ class Credithistory
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,7 +24,7 @@ class Credithistory
     /**
      * @var integer
      *
-     * @ORM\Column(name="fk_eval_id", type="integer", nullable=true)
+     * @ORM\Column(name="fk_eval_id", type="integer", nullable=true, options={"unsigned": true})
      */
     private $fkEvalId;
 
@@ -45,7 +45,7 @@ class Credithistory
     /**
      * @var integer
      *
-     * @ORM\Column(name="changeAmount", type="integer", nullable=false)
+     * @ORM\Column(name="changeAmount", type="integer", nullable=false, options={"default": 0})
      */
     private $changeamount = '0';
 
@@ -54,17 +54,16 @@ class Credithistory
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;
 
     /**
      * @var \ApiV3\Entity\Exercise
-     *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkExercise;

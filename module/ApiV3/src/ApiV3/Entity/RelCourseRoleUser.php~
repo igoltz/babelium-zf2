@@ -15,7 +15,7 @@ class RelCourseRoleUser
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,7 +24,7 @@ class RelCourseRoleUser
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false, options={"default": 0})
      */
     private $timemodified = '0';
 
@@ -33,7 +33,7 @@ class RelCourseRoleUser
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Course")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_course_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_course_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkCourse;
@@ -43,7 +43,7 @@ class RelCourseRoleUser
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Role")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_role_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_role_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkRole;
@@ -53,10 +53,116 @@ class RelCourseRoleUser
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set timemodified
+     *
+     * @param integer $timemodified
+     *
+     * @return RelCourseRoleUser
+     */
+    public function setTimemodified($timemodified)
+    {
+        $this->timemodified = $timemodified;
+
+        return $this;
+    }
+
+    /**
+     * Get timemodified
+     *
+     * @return integer
+     */
+    public function getTimemodified()
+    {
+        return $this->timemodified;
+    }
+
+    /**
+     * Set fkCourse
+     *
+     * @param \ApiV3\Entity\Course $fkCourse
+     *
+     * @return RelCourseRoleUser
+     */
+    public function setFkCourse(\ApiV3\Entity\Course $fkCourse = null)
+    {
+        $this->fkCourse = $fkCourse;
+
+        return $this;
+    }
+
+    /**
+     * Get fkCourse
+     *
+     * @return \ApiV3\Entity\Course
+     */
+    public function getFkCourse()
+    {
+        return $this->fkCourse;
+    }
+
+    /**
+     * Set fkRole
+     *
+     * @param \ApiV3\Entity\Role $fkRole
+     *
+     * @return RelCourseRoleUser
+     */
+    public function setFkRole(\ApiV3\Entity\Role $fkRole = null)
+    {
+        $this->fkRole = $fkRole;
+
+        return $this;
+    }
+
+    /**
+     * Get fkRole
+     *
+     * @return \ApiV3\Entity\Role
+     */
+    public function getFkRole()
+    {
+        return $this->fkRole;
+    }
+
+    /**
+     * Set fkUser
+     *
+     * @param \ApiV3\Entity\User $fkUser
+     *
+     * @return RelCourseRoleUser
+     */
+    public function setFkUser(\ApiV3\Entity\User $fkUser = null)
+    {
+        $this->fkUser = $fkUser;
+
+        return $this;
+    }
+
+    /**
+     * Get fkUser
+     *
+     * @return \ApiV3\Entity\User
+     */
+    public function getFkUser()
+    {
+        return $this->fkUser;
+    }
 }

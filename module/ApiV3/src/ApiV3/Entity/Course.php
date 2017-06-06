@@ -15,7 +15,7 @@ class Course
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,14 +24,14 @@ class Course
     /**
      * @var string
      *
-     * @ORM\Column(name="fullname", type="string", length=255, nullable=false)
+     * @ORM\Column(name="fullname", type="string", length=255, nullable=false, options={"default": ""})
      */
     private $fullname = '';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="shortname", type="string", length=255, nullable=false)
+     * @ORM\Column(name="shortname", type="string", length=255, nullable=false, options={"default": ""})
      */
     private $shortname = '';
 
@@ -45,35 +45,35 @@ class Course
     /**
      * @var integer
      *
-     * @ORM\Column(name="startdate", type="bigint", nullable=false)
+     * @ORM\Column(name="startdate", type="bigint", nullable=false, options={"default": 0})
      */
     private $startdate = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="visible", type="boolean", nullable=false)
+     * @ORM\Column(name="visible", type="boolean", nullable=false, options={"default": 1})
      */
     private $visible = '1';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="language", type="string", length=45, nullable=false)
+     * @ORM\Column(name="language", type="string", length=45, nullable=false, options={"default": ""})
      */
     private $language = '';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timecreated", type="bigint", nullable=false)
+     * @ORM\Column(name="timecreated", type="bigint", nullable=false, options={"default": 0})
      */
     private $timecreated = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false, options={"default": 0})
      */
     private $timemodified = '0';
 

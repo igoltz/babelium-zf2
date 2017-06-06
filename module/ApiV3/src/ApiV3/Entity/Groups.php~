@@ -38,9 +38,91 @@ class Groups
     /**
      * @var string
      *
-     * @ORM\Column(name="coeval", type="string", nullable=true)
+     * @ORM\Column(name="coeval", type="string", nullable=true, columnDefinition="ENUM('TRUE','FALSE')", options={"default": "FALSE"})
      */
     private $coeval = 'FALSE';
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Groups
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Groups
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set coeval
+     *
+     * @param string $coeval
+     *
+     * @return Groups
+     */
+    public function setCoeval($coeval)
+    {
+        $this->coeval = $coeval;
+
+        return $this;
+    }
+
+    /**
+     * Get coeval
+     *
+     * @return string
+     */
+    public function getCoeval()
+    {
+        return $this->coeval;
+    }
 }

@@ -12,10 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class EvaluationVideo
 {
+
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -38,14 +39,14 @@ class EvaluationVideo
     /**
      * @var string
      *
-     * @ORM\Column(name="thumbnail_uri", type="string", length=200, nullable=false)
+     * @ORM\Column(name="thumbnail_uri", type="string", length=200, nullable=false, options={"default": "nothumb.png"})
      */
     private $thumbnailUri = 'nothumb.png';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="duration", type="integer", nullable=false)
+     * @ORM\Column(name="duration", type="integer", nullable=false, options={"unsigned": true})
      */
     private $duration;
 
@@ -54,7 +55,7 @@ class EvaluationVideo
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Evaluation")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_evaluation_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_evaluation_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkEvaluation;

@@ -15,7 +15,7 @@ class UserVideohistory
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,21 +24,21 @@ class UserVideohistory
     /**
      * @var boolean
      *
-     * @ORM\Column(name="response_attempt", type="boolean", nullable=false)
+     * @ORM\Column(name="response_attempt", type="boolean", nullable=false, options={"default": 0})
      */
     private $responseAttempt = '0';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="incidence_date", type="datetime", nullable=false)
+     * @ORM\Column(name="incidence_date", type="datetime", nullable=false, options={"default": "CURRENT_TIMESTAMP"})
      */
     private $incidenceDate = 'CURRENT_TIMESTAMP';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="subtitles_are_used", type="boolean", nullable=false)
+     * @ORM\Column(name="subtitles_are_used", type="boolean", nullable=false, options={"default": 0})
      */
     private $subtitlesAreUsed = '0';
 
@@ -54,7 +54,7 @@ class UserVideohistory
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;
@@ -64,7 +64,7 @@ class UserVideohistory
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\UserSession")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_session_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_session_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUserSession;
@@ -74,7 +74,7 @@ class UserVideohistory
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkExercise;

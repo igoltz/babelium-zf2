@@ -12,21 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ExerciseDescriptorI18n
 {
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="locale", type="string", length=8, nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     */
-    private $locale;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", length=65535, nullable=false)
-     */
-    private $name;
 
     /**
      * @var \ApiV3\Entity\ExerciseDescriptor
@@ -40,7 +25,21 @@ class ExerciseDescriptorI18n
      */
     private $fkExerciseDescriptor;
 
+    /**
+     * @var string
+     *
+     * @ORM\Id
+     * @ORM\Column(name="locale", type="string", length=8, nullable=false)
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $locale;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="text", length=65535, nullable=false)
+     */
+    private $name;
 
     /**
      * Set locale

@@ -15,7 +15,7 @@ class ExerciseDescriptor
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,35 +24,35 @@ class ExerciseDescriptor
     /**
      * @var boolean
      *
-     * @ORM\Column(name="situation", type="boolean", nullable=false)
+     * @ORM\Column(name="situation", type="boolean", nullable=false, options={"default": 1, "unsigned": true})
      */
     private $situation = '1';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="level", type="boolean", nullable=false)
+     * @ORM\Column(name="level", type="boolean", nullable=false, options={"default": 1, "unsigned": true})
      */
     private $level = '1';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="competence", type="boolean", nullable=false)
+     * @ORM\Column(name="competence", type="boolean", nullable=false, options={"default": 1, "unsigned": true})
      */
     private $competence = '1';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="number", type="integer", nullable=false)
+     * @ORM\Column(name="number", type="integer", nullable=false, options={"default": 1, "unsigned": true})
      */
     private $number = '1';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="alte", type="boolean", nullable=false)
+     * @ORM\Column(name="alte", type="boolean", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $alte = '0';
 

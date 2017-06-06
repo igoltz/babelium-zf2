@@ -15,7 +15,7 @@ class Subtitle
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -31,21 +31,21 @@ class Subtitle
     /**
      * @var boolean
      *
-     * @ORM\Column(name="translation", type="boolean", nullable=false)
+     * @ORM\Column(name="translation", type="boolean", nullable=false, options={"default": 0})
      */
     private $translation = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timecreated", type="integer", nullable=false)
+     * @ORM\Column(name="timecreated", type="integer", nullable=false, options={"default": 0})
      */
     private $timecreated = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="complete", type="boolean", nullable=false)
+     * @ORM\Column(name="complete", type="boolean", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $complete = '0';
 
@@ -59,7 +59,7 @@ class Subtitle
     /**
      * @var integer
      *
-     * @ORM\Column(name="subtitle_count", type="integer", nullable=false)
+     * @ORM\Column(name="subtitle_count", type="integer", nullable=false, options={"unsigned": true})
      */
     private $subtitleCount;
 
@@ -68,7 +68,7 @@ class Subtitle
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;
@@ -78,7 +78,7 @@ class Subtitle
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Media")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_media_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_media_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkMedia;

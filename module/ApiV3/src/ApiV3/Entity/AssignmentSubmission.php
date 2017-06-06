@@ -15,7 +15,7 @@ class AssignmentSubmission
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,28 +24,28 @@ class AssignmentSubmission
     /**
      * @var integer
      *
-     * @ORM\Column(name="timecreated", type="bigint", nullable=false)
+     * @ORM\Column(name="timecreated", type="bigint", nullable=false, options={"default": 0})
      */
     private $timecreated = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false, options={"default": 0})
      */
     private $timemodified = '0';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="status", type="string", length=255, nullable=false)
+     * @ORM\Column(name="status", type="string", length=255, nullable=false, options={"default": ""})
      */
     private $status = '';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="attempnumber", type="integer", nullable=true)
+     * @ORM\Column(name="attempnumber", type="integer", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $attempnumber = '0';
 
@@ -54,7 +54,7 @@ class AssignmentSubmission
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Assignment")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_assignment_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_assignment_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkAssignment;
@@ -64,7 +64,7 @@ class AssignmentSubmission
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;

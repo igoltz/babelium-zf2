@@ -15,7 +15,7 @@ class User
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -59,21 +59,21 @@ class User
     /**
      * @var integer
      *
-     * @ORM\Column(name="creditCount", type="integer", nullable=false)
+     * @ORM\Column(name="creditCount", type="integer", nullable=false, options={"unsigned": true, "default": 0})
      */
     private $creditcount = '0';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="joiningDate", type="datetime", nullable=false)
+     * @ORM\Column(name="joiningDate", type="datetime", nullable=false, options={"default": "CURRENT_TIMESTAMP"})
      */
     private $joiningdate = 'CURRENT_TIMESTAMP';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="active", type="boolean", nullable=false)
+     * @ORM\Column(name="active", type="boolean", nullable=false, options={"default": 0})
      */
     private $active = '0';
 
@@ -87,7 +87,7 @@ class User
     /**
      * @var boolean
      *
-     * @ORM\Column(name="isAdmin", type="boolean", nullable=false)
+     * @ORM\Column(name="isAdmin", type="boolean", nullable=false, options={"default": 0})
      */
     private $isadmin = '0';
 

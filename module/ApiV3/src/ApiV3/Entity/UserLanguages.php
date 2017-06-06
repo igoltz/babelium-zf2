@@ -15,7 +15,7 @@ class UserLanguages
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -31,21 +31,21 @@ class UserLanguages
     /**
      * @var integer
      *
-     * @ORM\Column(name="level", type="integer", nullable=false)
+     * @ORM\Column(name="level", type="integer", nullable=false, options={"comment": "Level goes from 1 to 6. 7 used for mother tongue", "unsigned": true})
      */
     private $level;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="positives_to_next_level", type="integer", nullable=false)
+     * @ORM\Column(name="positives_to_next_level", type="integer", nullable=false, options={"unsigned": true})
      */
     private $positivesToNextLevel;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="purpose", type="string", nullable=false)
+     * @ORM\Column(name="purpose", type="string", nullable=false, columnDefinition="ENUM('practice','evaluate')", options={"default": "practice"})
      */
     private $purpose = 'practice';
 
@@ -54,7 +54,7 @@ class UserLanguages
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;

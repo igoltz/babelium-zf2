@@ -15,7 +15,7 @@ class MediaRendition
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -38,7 +38,7 @@ class MediaRendition
     /**
      * @var boolean
      *
-     * @ORM\Column(name="status", type="boolean", nullable=false)
+     * @ORM\Column(name="status", type="boolean", nullable=false, options={"default": 0, "comment": "0: raw 1: encoding, 2: ready, 3: duplicate, 4: error"})
      */
     private $status = '0';
 
@@ -59,7 +59,7 @@ class MediaRendition
     /**
      * @var integer
      *
-     * @ORM\Column(name="filesize", type="integer", nullable=false)
+     * @ORM\Column(name="filesize", type="integer", nullable=false, options={"default": 0})
      */
     private $filesize = '0';
 
@@ -82,7 +82,7 @@ class MediaRendition
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Media")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_media_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_media_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkMedia;

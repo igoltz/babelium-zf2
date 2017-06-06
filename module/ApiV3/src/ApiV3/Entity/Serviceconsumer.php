@@ -15,7 +15,7 @@ class Serviceconsumer
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -52,49 +52,49 @@ class Serviceconsumer
     /**
      * @var string
      *
-     * @ORM\Column(name="ipaddress", type="string", length=255, nullable=false)
+     * @ORM\Column(name="ipaddress", type="string", length=255, nullable=false, options={"default": ""})
      */
     private $ipaddress = '';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="subscriptionstart", type="bigint", nullable=false)
+     * @ORM\Column(name="subscriptionstart", type="bigint", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $subscriptionstart = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="subscriptionend", type="bigint", nullable=false)
+     * @ORM\Column(name="subscriptionend", type="bigint", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $subscriptionend = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="notifyexpiration", type="boolean", nullable=false)
+     * @ORM\Column(name="notifyexpiration", type="boolean", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $notifyexpiration = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timecreated", type="bigint", nullable=false)
+     * @ORM\Column(name="timecreated", type="bigint", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $timecreated = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $timemodified = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=false, options={"default": 1, "unsigned": true})
      */
     private $enabled = '1';
 
@@ -103,7 +103,7 @@ class Serviceconsumer
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;

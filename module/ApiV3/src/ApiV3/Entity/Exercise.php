@@ -17,7 +17,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @Groups({"response", "exercise-list"})
@@ -27,7 +27,7 @@ class Exercise
     /**
      * @var string
      *
-     * @ORM\Column(name="exercisecode", type="string", length=255, nullable=false)
+     * @ORM\Column(name="exercisecode", type="string", length=255, nullable=false, options={"comment": "In case it's Youtube video we'll store here it's uid"})
      * @Groups({"response", "exercise-list"})
      */
     private $exercisecode;
@@ -43,7 +43,7 @@ class Exercise
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="description", type="text", length=65535, nullable=false, options={"comment": "Describe the video's content"})
      * @Groups({"response"})
      */
     private $description;
@@ -51,7 +51,7 @@ class Exercise
     /**
      * @var string
      *
-     * @ORM\Column(name="language", type="string", length=45, nullable=false)
+     * @ORM\Column(name="language", type="string", length=45, nullable=false, options={"comment": "The spoken language of this exercise"})
      * @Groups({"response", "exercise-list"})
      */
     private $language;
@@ -59,7 +59,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="difficulty", type="integer", nullable=false)
+     * @ORM\Column(name="difficulty", type="integer", nullable=false, options={"comment": "1: A1, 2: A2, 3: B1, 4: B2, 5: C", "unsigned": true})
      * @Groups({"response", "exercise-list"})
      */
     private $difficulty;
@@ -67,7 +67,7 @@ class Exercise
     /**
      * @var boolean
      *
-     * @ORM\Column(name="status", type="boolean", nullable=false)
+     * @ORM\Column(name="status", type="boolean", nullable=false, options={"comment": "0: draft, 1: ready", "default": 0})
      * @Groups({"response", "exercise-list"})
      */
     private $status = '0';
@@ -75,7 +75,7 @@ class Exercise
     /**
      * @var boolean
      *
-     * @ORM\Column(name="visible", type="boolean", nullable=false)
+     * @ORM\Column(name="visible", type="boolean", nullable=false, options={"comment": "0: visible only to author, 1: visible in scope", "default": 0})
      * @Groups({"response", "exercise-list"})
      */
     private $visible = '0';
@@ -83,7 +83,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="fk_scope_id", type="integer", nullable=false)
+     * @ORM\Column(name="fk_scope_id", type="integer", nullable=false, options={"default": 1, "unsigned": true})
      * @Groups({"response"})
      */
     private $fkScopeId = '1';
@@ -91,7 +91,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="timecreated", type="integer", nullable=false)
+     * @ORM\Column(name="timecreated", type="integer", nullable=false, options={"default": 0})
      * @Groups({"response"})
      */
     private $timecreated = '0';
@@ -99,7 +99,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="integer", nullable=false)
+     * @ORM\Column(name="timemodified", type="integer", nullable=false, options={"default": 0})
      * @Groups({"response"})
      */
     private $timemodified = '0';
@@ -107,7 +107,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="type", type="integer", nullable=false)
+     * @ORM\Column(name="type", type="integer", nullable=false, options={"default": 5})
      * @Groups({"response"})
      */
     private $type = '5';
@@ -139,7 +139,7 @@ class Exercise
     /**
      * @var string
      *
-     * @ORM\Column(name="licence", type="string", length=60, nullable=false)
+     * @ORM\Column(name="licence", type="string", length=60, nullable=false, options={"default": "cc-by"})
      * @Groups({"response"})
      */
     private $licence = 'cc-by';
@@ -155,7 +155,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="likes", type="integer", nullable=false)
+     * @ORM\Column(name="likes", type="integer", nullable=false, options={"default": 0})
      * @Groups({"response"})
      */
     private $likes = '0';
@@ -163,7 +163,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="dislikes", type="integer", nullable=false)
+     * @ORM\Column(name="dislikes", type="integer", nullable=false, options={"default": 0})
      * @Groups({"response"})
      */
     private $dislikes = '0';
@@ -171,7 +171,7 @@ class Exercise
     /**
      * @var boolean
      *
-     * @ORM\Column(name="ismodel", type="boolean", nullable=false)
+     * @ORM\Column(name="ismodel", type="boolean", nullable=false, options={"default": 0})
      * @Groups({"response"})
      */
     private $ismodel = '0';
@@ -179,7 +179,7 @@ class Exercise
     /**
      * @var integer
      *
-     * @ORM\Column(name="model_id", type="integer", nullable=true)
+     * @ORM\Column(name="model_id", type="integer", nullable=true, options={"unsigned": true})
      * @Groups({"response"})
      */
     private $modelId;
@@ -189,7 +189,7 @@ class Exercise
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;

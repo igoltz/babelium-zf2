@@ -15,7 +15,7 @@ class Motd
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -52,14 +52,14 @@ class Motd
     /**
      * @var boolean
      *
-     * @ORM\Column(name="displaywhenloggedin", type="boolean", nullable=false)
+     * @ORM\Column(name="displaywhenloggedin", type="boolean", nullable=false, options={"default": 0})
      */
     private $displaywhenloggedin = '0';
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=45, nullable=true)
+     * @ORM\Column(name="code", type="string", length=45, nullable=true, options={"comment": "A numeric code to identify this particular message in different languages"})
      */
     private $code;
 

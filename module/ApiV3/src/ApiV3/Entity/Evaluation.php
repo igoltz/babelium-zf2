@@ -15,7 +15,7 @@ class Evaluation
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,7 +24,7 @@ class Evaluation
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_overall", type="boolean", nullable=true)
+     * @ORM\Column(name="score_overall", type="boolean", nullable=true, options={"default": 0})
      */
     private $scoreOverall = '0';
 
@@ -38,70 +38,70 @@ class Evaluation
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="adding_date", type="datetime", nullable=true)
+     * @ORM\Column(name="adding_date", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
      */
     private $addingDate = 'CURRENT_TIMESTAMP';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_intonation", type="boolean", nullable=true)
+     * @ORM\Column(name="score_intonation", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scoreIntonation = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_fluency", type="boolean", nullable=true)
+     * @ORM\Column(name="score_fluency", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scoreFluency = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_rhythm", type="boolean", nullable=true)
+     * @ORM\Column(name="score_rhythm", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scoreRhythm = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_spontaneity", type="boolean", nullable=true)
+     * @ORM\Column(name="score_spontaneity", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scoreSpontaneity = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_comprehensibility", type="boolean", nullable=true)
+     * @ORM\Column(name="score_comprehensibility", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scoreComprehensibility = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_pronunciation", type="boolean", nullable=true)
+     * @ORM\Column(name="score_pronunciation", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scorePronunciation = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_adequacy", type="boolean", nullable=true)
+     * @ORM\Column(name="score_adequacy", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scoreAdequacy = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_range", type="boolean", nullable=true)
+     * @ORM\Column(name="score_range", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scoreRange = '0';
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="score_accuracy", type="boolean", nullable=true)
+     * @ORM\Column(name="score_accuracy", type="boolean", nullable=true, options={"default": 0, "unsigned": true})
      */
     private $scoreAccuracy = '0';
 
@@ -110,7 +110,7 @@ class Evaluation
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Response")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_response_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_response_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkResponse;
@@ -120,7 +120,7 @@ class Evaluation
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;

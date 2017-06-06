@@ -38,7 +38,7 @@ class Groups
     /**
      * @var string
      *
-     * @ORM\Column(name="coeval", type="string", nullable=true)
+     * @ORM\Column(name="coeval", type="string", nullable=true, columnDefinition="ENUM('TRUE','FALSE')", options={"default": "FALSE"})
      */
     private $coeval = 'FALSE';
 

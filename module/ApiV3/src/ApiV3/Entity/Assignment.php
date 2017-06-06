@@ -15,7 +15,7 @@ class Assignment
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -38,35 +38,35 @@ class Assignment
     /**
      * @var integer
      *
-     * @ORM\Column(name="duedate", type="bigint", nullable=false)
+     * @ORM\Column(name="duedate", type="bigint", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $duedate = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="allowsubmissionsfromdate", type="bigint", nullable=false)
+     * @ORM\Column(name="allowsubmissionsfromdate", type="bigint", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $allowsubmissionsfromdate = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="grade", type="bigint", nullable=false)
+     * @ORM\Column(name="grade", type="bigint", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $grade = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="bigint", nullable=false)
+     * @ORM\Column(name="timemodified", type="bigint", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $timemodified = '0';
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="maxattempts", type="integer", nullable=false)
+     * @ORM\Column(name="maxattempts", type="integer", nullable=false, options={"default": 0, "unsigned": true})
      */
     private $maxattempts = '0';
 
@@ -75,7 +75,7 @@ class Assignment
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Course")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_course_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_course_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkCourse;
@@ -85,7 +85,7 @@ class Assignment
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkExercise;

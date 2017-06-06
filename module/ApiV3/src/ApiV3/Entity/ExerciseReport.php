@@ -15,7 +15,7 @@ class ExerciseReport
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", nullable=false, options={"unsigned": true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -31,7 +31,7 @@ class ExerciseReport
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="report_date", type="datetime", nullable=false)
+     * @ORM\Column(name="report_date", type="datetime", nullable=false, options={"default": "CURRENT_TIMESTAMP"})
      */
     private $reportDate = 'CURRENT_TIMESTAMP';
 
@@ -40,7 +40,7 @@ class ExerciseReport
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\Exercise")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_exercise_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkExercise;
@@ -50,7 +50,7 @@ class ExerciseReport
      *
      * @ORM\ManyToOne(targetEntity="ApiV3\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="fk_user_id", referencedColumnName="id", nullable=false)
      * })
      */
     private $fkUser;
