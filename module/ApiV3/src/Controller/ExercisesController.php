@@ -14,7 +14,7 @@ class ExercisesController
             'exercise.visible = 1',
             'exercise.ismodel = 0',
             'media.component = "exercise"',
-            'is_converted = 1',
+            'media.is_converted = 1',
             'media.is_processed = 1'
         );
 
@@ -76,6 +76,8 @@ class ExercisesController
         $whereMedia = array(
             'instanceid' => $exercise->getId(),
             'component' => 'exercise',
+            'is_converted' => 1,
+            'is_processed' => 1
         );
 
         $mediaRepository = $this->getDoctrineRepository('\ApiV3\Entity\Media');
