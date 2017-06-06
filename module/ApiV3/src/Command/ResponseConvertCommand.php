@@ -5,7 +5,6 @@ namespace ApiV3\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class ResponseConvertCommand extends Command
 {
@@ -20,7 +19,15 @@ class ResponseConvertCommand extends Command
      */
     protected $_commandName = 'babelium:convert:response';
 
-    protected $_formatProgress = '* [%bar%] %current%/%max% <fg=white;bg=blue>%elapsed:6s%/%estimated:-6s%</> %memory:6s%' . PHP_EOL;
+    /**
+     * @var string
+     */
+    protected $_babeliumPathUploads;
+
+    /**
+     * @var string
+     */
+    protected $_babeliumPathRed;
 
     public function __construct(\Zend\Mvc\Application $application)
     {
@@ -28,6 +35,8 @@ class ResponseConvertCommand extends Command
         $config = new \ApiV3\Module();
         $config = $config->getConfig();
 
+        $this->_babeliumPathUploads = $config['babelium']['path_uploads'];
+        $this->_babeliumPathRed = $config['babelium']['path_red5'];
         $this->_zendApplication = $application;
 
         parent::__construct($this->_commandName);
@@ -46,7 +55,7 @@ class ResponseConvertCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $output->writeln('Inicio');
+        $output->writeln('Inicio de la converción');
 
         $where = array(
             'isProcessed' => 0,
@@ -68,6 +77,8 @@ class ResponseConvertCommand extends Command
 
         $mediaPath    = STORAGE_PATH . '/media';
         $responsePath = STORAGE_PATH . '/response';
+
+        $responseConverted = array();
 
         /**
          * @var \ApiV3\Entity\Response $response
@@ -101,7 +112,11 @@ class ResponseConvertCommand extends Command
                 false
             );
 
-            $exerciseMediaPath = $pathExerciseMediaPk . '/' . $exerciseMediaRendition->getId() . '.mp4';
+            $exerciseMediaPath = sprintf(
+                '%s/%s.mp4',
+                $pathExerciseMediaPk,
+                $exerciseMediaRendition->getId()
+            );
 
             $mergeResponsePath = $pathResponsePk . '/' . $response->getId() . '.mp4';
 
@@ -125,14 +140,78 @@ class ResponseConvertCommand extends Command
 
             $response->setIsProcessed(1);
 
-            $em = $this->_zendApplication->getServiceManager()->get('Doctrine\ORM\EntityManager');
+            $em = $this->_zendApplication
+                ->getServiceManager()
+                ->get('Doctrine\ORM\EntityManager');
             $em->persist($response);
+
+            $responseConverted[] = $response->getId();
 
         }
 
         $em->flush();
 
-        $output->write('Fin!');
+        $output->write('Fin de la converción!');
+
+        $this->_sendToBabelium($output, $responseConverted);
+
+    }
+
+    protected function _sendToBabelium($output, $responseConverted)
+    {
+
+        $output->writeln('Enviar respuestas a Babelium');
+
+        $where = array(
+            'id' => $responseConverted
+        );
+
+        $responses = $this->getResponseRepository()->findBy($where);
+        if (empty($responses)) {
+            return;
+        }
+
+        $output->writeln('Hay ' . sizeof($responses). ' para enviar');
+
+        $generatePath = $this->_zendApplication
+            ->getServiceManager()
+            ->get('GeneratePath');
+
+        $responsePath = STORAGE_PATH . '/response';
+
+        /**
+         * @var \ApiV3\Entity\Response $response
+         */
+        foreach ($responses as $response) {
+
+            $pathResponsePk = $generatePath->generate(
+                $responsePath,
+                $response->getId(),
+                false
+            );
+
+            $responseMerge = sprintf(
+                '%s/%s.mp4',
+                $pathResponsePk,
+                $response->getId()
+            );
+
+            $responseNewPath = sprintf(
+                '%s/responses/%s.mp4',
+                $this->_babeliumPathRed,
+                $response->getFileIdentifier()
+            );
+
+            copy(
+                $responseMerge,
+                $responseNewPath
+            );
+
+            $output->writeln($responseNewPath);
+
+        }
+
+        $output->writeln('Fin');
 
     }
 
