@@ -71,6 +71,14 @@ class Response
     private $isProcessed;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="audio", type="boolean", nullable=false)
+     * @Groups({"details"})
+     */
+    private $audio;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="thumbnail_uri", type="string", length=200, nullable=false, options={"default": "nothumb.png"})
@@ -550,5 +558,29 @@ class Response
     public function getIsProcessed()
     {
         return $this->isProcessed;
+    }
+
+    /**
+     * Set audio
+     *
+     * @param boolean $audio
+     *
+     * @return Response
+     */
+    public function setAudio($audio)
+    {
+        $this->audio = $audio;
+
+        return $this;
+    }
+
+    /**
+     * Get audio
+     *
+     * @return boolean
+     */
+    public function getAudio()
+    {
+        return $this->audio;
     }
 }

@@ -73,6 +73,7 @@ class ResponseController
         $response->setFileIdentifier(uniqid('moodle-'));
         $response->setIsConverted(0);
         $response->setIsProcessed(0);
+        $response->setAudio(0);
 
         $now = new \DateTime();
 
@@ -105,6 +106,10 @@ class ResponseController
             $pathMediaPk . '/' . $pk . '.wav',
             base64_decode($audio)
         );
+
+        $response->setAudio(1);
+        $em->persist($response);
+        $em->flush();
 
         return $this->jsonResponse($response);
 
