@@ -80,6 +80,10 @@ class ResponseConvertCommand extends Command
 
         $responseConverted = array();
 
+        $em = $this->_zendApplication
+            ->getServiceManager()
+            ->get('Doctrine\ORM\EntityManager');
+
         /**
          * @var \ApiV3\Entity\Response $response
          */
@@ -140,9 +144,6 @@ class ResponseConvertCommand extends Command
 
             $response->setIsProcessed(1);
 
-            $em = $this->_zendApplication
-                ->getServiceManager()
-                ->get('Doctrine\ORM\EntityManager');
             $em->persist($response);
 
             $responseConverted[] = $response->getId();

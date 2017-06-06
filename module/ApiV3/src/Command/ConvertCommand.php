@@ -5,7 +5,6 @@ namespace ApiV3\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class ConvertCommand extends Command
 {
@@ -24,8 +23,6 @@ class ConvertCommand extends Command
      * @var string
      */
     protected $_commandName = 'babelium:convert:videos';
-
-    protected $_formatProgress = '* [%bar%] %current%/%max% <fg=white;bg=blue>%elapsed:6s%/%estimated:-6s%</> %memory:6s%' . PHP_EOL;
 
     public function __construct(\Zend\Mvc\Application $application)
     {
@@ -59,11 +56,6 @@ class ConvertCommand extends Command
         $count = sizeof($mediaList);
         $output->writeln('Videos a convertir #' . $count);
 
-        $bar = new ProgressBar($output, $count);
-        $bar->setBarCharacter('<fg=green>=</>');
-        $bar->setProgressCharacter('<fg=green>></>');
-        $bar->setFormat($this->_formatProgress);
-
         $generatePath = $this->_zendApplication
             ->getServiceManager()
             ->get('GeneratePath');
@@ -79,36 +71,45 @@ class ConvertCommand extends Command
         );
         $ffmpeg = \FFMpeg\FFMpeg::create($optionsFFMpeg);
 
+        $em = $this->_zendApplication
+            ->getServiceManager()
+            ->get('Doctrine\ORM\EntityManager');
         /**
-         * @var \ApiV3\Entity\MediaRendition $media
+         * @var \ApiV3\Entity\MediaRendition $mediaRend
          */
-        foreach ($mediaList as $media) {
-            $bar->advance();
+        foreach ($mediaList as $mediaRend) {
 
-            $pk = $media->getId();
+            $pk = $mediaRend->getId();
 
             $pathFile = sprintf(
                 '%s/%s',
                 $this->_babeliumPathUploads,
-                $media->getFilename()
+                $mediaRend->getFilename()
             );
 
-            if (!file_exists($pathFile)) {
-                continue;
+            $media = $mediaRend->getFkMedia();
+            $media->setIsProcessed(1);
+
+            if (file_exists($pathFile)) {
+
+                $pathMediaPk = $generatePath->generate($mediaPath, $pk, false);
+                mkdir($pathMediaPk, 0777, true);
+
+                $video = $ffmpeg->open($pathFile);
+                $video->save(
+                    new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'),
+                    $pathMediaPk . '/' . $pk . '.mp4'
+                );
+
+                $media->setIsConverted(1);
+
             }
 
-            $pathMediaPk = $generatePath->generate($mediaPath, $pk, false);
-            mkdir($pathMediaPk, 0777, true);
-
-            $video = $ffmpeg->open($pathFile);
-            $video->save(
-                new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'),
-                $pathMediaPk . '/' . $pk . '.mp4'
-            );
+            $em->persist($media);
 
         }
 
-        $bar->finish();
+        $em->flush();
 
         $output->write('Terminado!');
 
