@@ -88,6 +88,8 @@ class ConvertCommand extends Command
             );
             $mediaRend = $this->getMediaRenditionRepository()->findOneBy($criteria);
             if (empty($mediaRend)) {
+                $media->setIsProcessed(1);
+                $em->persist($media);
                 continue;
             }
 
