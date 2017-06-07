@@ -29,6 +29,11 @@ class ResponseConvertCommand extends Command
      */
     protected $_babeliumPathRed;
 
+    /**
+     * @var FFMpeg\FFMpeg
+     */
+    protected $_ffmpeg;
+
     public function __construct(\Zend\Mvc\Application $application)
     {
 
@@ -39,6 +44,14 @@ class ResponseConvertCommand extends Command
         $this->_babeliumPathRed = $config['babelium']['path_red5'];
         $this->_zendApplication = $application;
 
+
+        $options = array(
+            'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+            'ffprobe.binaries' => '/usr/bin/ffprobe'
+        );
+
+        $this->_ffmpeg = FFMpeg\FFMpeg::create($options);
+
         parent::__construct($this->_commandName);
 
     }
@@ -47,8 +60,8 @@ class ResponseConvertCommand extends Command
     {
 
         $this->setName($this->_commandName)
-        ->setDescription('Combinar audio y video original para generar la respuesta')
-        ->setHelp('Ejecución en CRON');
+            ->setDescription('Combinar audio y video original para generar la respuesta')
+            ->setHelp('Ejecución en CRON');
 
     }
 
@@ -147,6 +160,45 @@ class ResponseConvertCommand extends Command
             $em->persist($response);
             $em->flush();
 
+            $user = $this->getUserRepository()->find($response->getFkUserId());
+
+            $video = $this->_ffmpeg->open($mergeResponsePath);
+
+            $duration = floor($video->getFormat()->get('duration'));
+            $filesize = $video->getFormat()->get('size');
+
+            $metadata= json_encode($video->getFormat()->all(), true);
+
+            $media = new \ApiV3\Entity\Media();
+            $media->setFkUser($user);
+            $media->setComponent('exercise');
+            $media->setType('video');
+            $media->setLevel(1);
+            $media->setDefaultthumbnail(1);
+            $media->setTimecreated(time());
+            $media->setTimemodified(0);
+
+            $media->setMediacode($response->getFileIdentifier());
+            $media->setInstanceid($response->getFkExercise()->getId());
+            $media->setDuration($duration);
+
+            $em->persist($media);
+            $em->flush();
+
+            $mediaRendition = new \ApiV3\Entity\MediaRendition();
+            $mediaRendition->setFkMedia($media);
+            $mediaRendition->setTimecreated(time());
+            $mediaRendition->setTimemodified(0);
+            $mediaRendition->setStatus(2);
+            $mediaRendition->setContenthash($response->getFileIdentifier());
+            $mediaRendition->setFilesize($filesize);
+            $mediaRendition->setMetadata($metadata);
+            $mediaRendition->setDimension(720);
+            $mediaRendition->setFilename(basename($mergeResponsePath));
+
+            $em->persist($mediaRendition);
+            $em->flush();
+
             $responseConverted[] = $response->getId();
 
         }
@@ -227,6 +279,17 @@ class ResponseConvertCommand extends Command
             ->getServiceManager()
             ->get('Doctrine\ORM\EntityManager')
             ->getRepository('\ApiV3\Entity\Response');
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getUserRepository()
+    {
+        return $this->_zendApplication
+            ->getServiceManager()
+            ->get('Doctrine\ORM\EntityManager')
+            ->getRepository('\ApiV3\Entity\User');
     }
 
     /**
