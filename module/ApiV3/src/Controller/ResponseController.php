@@ -2,7 +2,6 @@
 
 namespace ApiV3\Controller;
 
-use Zend\View\Model\JsonModel;
 use Zend\Http\Response;
 
 class ResponseController
@@ -12,35 +11,36 @@ class ResponseController
     public function get($id)
     {
 
-        $respService = $this->getService('ResponseService');
+        $responseRepo = $this->getDoctrineRepository('\ApiV3\Entity\Response');
 
-        $response = $respService->getResponse($id);
+        /**
+         * @var \ApiV3\Entity\Response $response
+         */
+        $response = $responseRepo->find($id);
         if (empty($response)) {
             return $this->_notFound();
         }
 
-        $exercise = $this->getService('ExercisesService')->getExercise($response['fk_exercise_id']);
-        if (empty($exercise)) {
-            return $this->_notFound();
-        }
+        $exercise = $response->getFkExercise();
+        $responsePk = $response->getId();
 
-        $leftMedia = $exercise['media'];
-        $rightMedia = array();
-        $rightMedia['netConnectionUrl'] = 'rtmp://babelium-server-dev.irontec.com/oflaDemo/';
-        $rightMedia['mediaUrl'] = 'responses/' . $response['file_identifier'] . '.flv';
+        $videoResponseUrl = sprintf(
+            '%s/video-response/%s',
+            $this->getBaseUrl(),
+            $responsePk. '.mp4'
+        );
 
-        unset($exercise['media']);
-        $exercise['leftMedia'] = $leftMedia;
-        $exercise['rightMedia'] = $rightMedia;
-        $exercise['subtitleId'] = $response['fk_subtitle_id'];
-        $exercise['selectedRole'] = $response['character_name'];
-        $exercise['mediaId'] = $response['fk_media_id'];
+        $result = array(
+            'id' => $responsePk,
+            'exerciseId' => $exercise->getId(),
+            'exerciseTitle' => $exercise->getTitle(),
+            'exerciseDescription' => $exercise->getDescription(),
+            'exerciseId' => $exercise->getId(),
+            'subtitleId' => $response->getFkSubtitle()->getId(),
+            'mp4Url' => $videoResponseUrl
+        );
 
-        $json = new JsonModel();
-        $json->setVariables($exercise);
-        $this->response->setStatusCode(200);
-
-        return $json;
+        return $this->jsonResponse($result);
 
     }
 
