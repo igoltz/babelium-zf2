@@ -43,7 +43,8 @@ return [
             'ApiV3\Controller\Exercises' => 'ApiV3\Controller\ExercisesController',
             'ApiV3\Controller\Response' => 'ApiV3\Controller\ResponseController',
             'ApiV3\Controller\Media' => 'ApiV3\Controller\MediaController',
-            'ApiV3\Controller\Thumbnail' => 'ApiV3\Controller\ThumbnailController'
+            'ApiV3\Controller\Thumbnail' => 'ApiV3\Controller\ThumbnailController',
+            'ApiV3\Controller\VideoResponse' => 'ApiV3\Controller\VideoResponseController',
         )
     ],
     'router' => [
@@ -109,6 +110,22 @@ return [
                     ),
                     'defaults' => array(
                         'controller' => Controller\MediaController::class
+                    )
+                ]
+            ],
+            /**
+             * responses
+             */
+            'video-response' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/video-response[/:id]',
+                    'constraints' => array(
+                        'id'     => '[0-9a-zA-Z_.-]+',
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => Controller\VideoResponseController::class
                     )
                 ]
             ],
