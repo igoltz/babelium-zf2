@@ -45,7 +45,13 @@ class Authentication
     public function isMedia($path)
     {
 
-        if (strpos($path, '/thumbnail/') || strpos($path, '/media/')) {
+        if (
+            strpos($path, '/thumbnail/')
+        ||
+            strpos($path, '/media/')
+        ||
+            strpos($path, '/video-response/')
+        ) {
             return true;
         }
 
