@@ -167,7 +167,7 @@ class ResponseConvertCommand extends Command
             $duration = floor($video->getFormat()->get('duration'));
             $filesize = $video->getFormat()->get('size');
 
-            $metadata= json_encode($video->getFormat()->all(), true);
+            $metadata = json_encode($video->getFormat()->all(), true);
 
             $media = new \ApiV3\Entity\Media();
             $media->setFkUser($user);
@@ -204,6 +204,7 @@ class ResponseConvertCommand extends Command
             $responseConverted[] = $response->getId();
 
             $response->setFkMediaId($media->getId());
+            $response->setDuration($duration);
             $em->persist($response);
             $em->flush();
 
