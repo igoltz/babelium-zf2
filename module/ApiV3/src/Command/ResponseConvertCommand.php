@@ -203,6 +203,10 @@ class ResponseConvertCommand extends Command
 
             $responseConverted[] = $response->getId();
 
+            $response->setFkMediaId($media->getId());
+            $em->persist($response);
+            $em->flush();
+
         }
 
         $output->write('Fin de la converción!');
