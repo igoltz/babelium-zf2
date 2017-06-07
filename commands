@@ -11,29 +11,15 @@ defined('STORAGE_PATH') || define(
     realpath(dirname(__FILE__) . '/storage')
 );
 
-$previousDir = '.';
-
-while (!file_exists('config/application.config.php')) {
-    $dir = dirname(getcwd());
-
-    if ($previousDir === $dir) {
-        throw new RuntimeException(
-            'Unable to locate "config/application.config.php": ' .
-            'is DoctrineModule in a subdir of your application skeleton?'
-        );
-    }
-
-    $previousDir = $dir;
-    chdir($dir);
-}
-
-$appConfig = include 'config/application.config.php';
-if (file_exists('config/development.config.php')) {
+$appConfig = include __DIR__ . '/config/application.config.php';
+if (file_exists(__DIR__ . '/config/development.config.php')) {
     $appConfig = ArrayUtils::merge(
         $appConfig,
-        include 'config/development.config.php'
+        include __DIR__ . '/config/development.config.php'
     );
 }
+
+chdir(__DIR__);
 
 $zfApp = Application::init($appConfig);
 
