@@ -191,7 +191,7 @@ class ResponseConvertCommand extends Command
             $mediaRendition->setFkMedia($media);
             $mediaRendition->setTimecreated(time());
             $mediaRendition->setTimemodified(0);
-            $mediaRendition->setStatus(2);
+            $mediaRendition->setStatus('2');
             $mediaRendition->setContenthash($response->getFileIdentifier());
             $mediaRendition->setFilesize($filesize);
             $mediaRendition->setMetadata($metadata);
