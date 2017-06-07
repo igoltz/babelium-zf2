@@ -50,7 +50,7 @@ class ResponseConvertCommand extends Command
             'ffprobe.binaries' => '/usr/bin/ffprobe'
         );
 
-        $this->_ffmpeg = FFMpeg\FFMpeg::create($options);
+        $this->_ffmpeg = \FFMpeg\FFMpeg::create($options);
 
         parent::__construct($this->_commandName);
 
@@ -181,6 +181,8 @@ class ResponseConvertCommand extends Command
             $media->setMediacode($response->getFileIdentifier());
             $media->setInstanceid($response->getFkExercise()->getId());
             $media->setDuration($duration);
+            $media->setIsConverted(1);
+            $media->setIsProcessed(1);
 
             $em->persist($media);
             $em->flush();
