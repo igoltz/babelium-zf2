@@ -30,14 +30,29 @@ class ResponseController
             $responsePk. '.mp4'
         );
 
+        $whereMedia = array(
+            'instanceid' => $exercise->getId(),
+        );
+
+        $mediaRepository = $this->getDoctrineRepository('\ApiV3\Entity\Media');
+        $media = $mediaRepository->findOneBy($whereMedia);
+
+        $thumbnailUrl = sprintf(
+            '%s/thumbnail/%s/%02d.jpg',
+            $this->getBaseUrl(),
+            $media->getMediacode(),
+            $media->getDefaultthumbnail()
+        );
+
         $result = array(
             'id' => $responsePk,
             'exerciseId' => $exercise->getId(),
-            'exerciseTitle' => $exercise->getTitle(),
-            'exerciseDescription' => $exercise->getDescription(),
+            'title' => $exercise->getTitle(),
+            'description' => $exercise->getDescription(),
             'exerciseId' => $exercise->getId(),
             'subtitleId' => $response->getFkSubtitle()->getId(),
-            'mp4Url' => $videoResponseUrl
+            'mp4Url' => $videoResponseUrl,
+            'thumbnail' => $thumbnailUrl
         );
 
         return $this->jsonResponse($result);
