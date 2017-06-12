@@ -52,7 +52,9 @@ class ResponseController
             'exerciseId' => $exercise->getId(),
             'subtitleId' => $response->getFkSubtitle()->getId(),
             'mp4Url' => $videoResponseUrl,
-            'thumbnail' => $thumbnailUrl
+            'thumbnail' => $thumbnailUrl,
+            'isProcessed' => $response->getIsProcessed(),
+            'isConverted' => $response->getIsConverted()
         );
 
         return $this->jsonResponse($result);
