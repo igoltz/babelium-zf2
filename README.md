@@ -1,229 +1,99 @@
 # Babelium Project (Api V3)
 
+## Configuración
 
+En el modulo de **ApiV3** hay una serie de parametros que se tienen que configurar en el archivo "**/~/module/ApiV3/config/module.config.php**", los cuales son:
 
+### Doctrine
 
+La conexión con base de datos va por medio de **Doctrine**, las configuraciones de la conexión estan en el array "**doctrine**" -> "**connection**" -> "**orm_default**" -> "**params**"
 
+````php
+array(
+    'host'     => '~',
+    'port'     => '~',
+    'user'     => '~',
+    'password' => '~',
+    'dbname'   => '~',
+    'charset'  => 'utf8'
+)
+````
 
+### Babelium
 
-## Introduction
+Algunas configuraciones del proyecto actual de Babelium se necesitan para un correcto funcionamiento, las cuales son:
 
-This is a skeleton application using the Zend Framework MVC layer and module
-systems. This application is meant to be used as a starting place for those
-looking to get their feet wet with Zend Framework.
+````php
+array(
+    'path_uploads' => '/var/www/babelium-server-new/httpdocs/resources/uploads',
+    'path_thumbs' => '/var/www/babelium-server-new/httpdocs/resources/images/thumbs'
+)
+````
 
-## Installation using Composer
+## Directorio "data"
 
-The easiest way to create a new Zend Framework project is to use
-[Composer](https://getcomposer.org/).  If you don't have it already installed,
-then please install as per the [documentation](https://getcomposer.org/doc/00-intro.md).
-
-To create your new Zend Framework project:
-
-```bash
-$ composer create-project -sdev zendframework/skeleton-application path/to/install
-```
-
-Once installed, you can test it out immediately using PHP's built-in web server:
-
-```bash
-$ cd path/to/install
-$ php -S 0.0.0.0:8080 -t public/ public/index.php
-# OR use the composer alias:
-$ composer serve
-```
-
-This will start the cli-server on port 8080, and bind it to all network
-interfaces. You can then visit the site at http://localhost:8080/
-- which will bring up Zend Framework welcome page.
-
-**Note:** The built-in CLI server is *for development only*.
-
-## Development mode
-
-The skeleton ships with [zf-development-mode](https://github.com/zfcampus/zf-development-mode)
-by default, and provides three aliases for consuming the script it ships with:
+El directorio **data** es donde se almacenan los archivos externos o temporales (cache) en los proyectos de Zend Framework, para este proyecto se necesita la siguiente estructura de directorios:
 
 ```bash
-$ composer development-enable  # enable development mode
-$ composer development-disable # disable development mode
-$ composer development-status  # whether or not development mode is enabled
+data
+├── cache
+└── DoctrineORMModule
+    ├── Migrations
+    └── Proxy
+
 ```
 
-You may provide development-only modules and bootstrap-level configuration in
-`config/development.config.php.dist`, and development-only application
-configuration in `config/autoload/development.local.php.dist`. Enabling
-development mode will copy these files to versions removing the `.dist` suffix,
-while disabling development mode will remove those copies.
+Esta estructura tiene que tener permisos de escritura.
 
-Development mode is automatically enabled as part of the skeleton installation process.
-After making changes to one of the above-mentioned `.dist` configuration files you will
-either need to disable then enable development mode for the changes to take effect,
-or manually make matching updates to the `.dist`-less copies of those files.
+## Doctrine Commands
 
-## Running Unit Tests
+Comando de doctrine en Zend Framework
 
-To run the supplied skeleton unit tests, you need to do one of the following:
-
-- During initial project creation, select to install the MVC testing support.
-- After initial project creation, install [zend-test](https://zendframework.github.io/zend-test/):
-
-  ```bash
-  $ composer require --dev zendframework/zend-test
-  ```
-
-Once testing support is present, you can run the tests using:
+Sincronizar los nuevos cambios en la base de datos y los cambios que realiza doctrine (nombres de las KEYS).
 
 ```bash
-$ ./vendor/bin/phpunit
+./vendor/bin/doctrine-module orm:schema-tool:update --force
 ```
 
-If you need to make local modifications for the PHPUnit test setup, copy
-`phpunit.xml.dist` to `phpunit.xml` and edit the new file; the latter has
-precedence over the former when running tests, and is ignored by version
-control. (If you want to make the modifications permanent, edit the
-`phpunit.xml.dist` file.)
+Al definir un nuevo campo en las entidades hay que ejecutar 2 comandos de Doctrine, "**orm:generate-entities**" para generar los **getters** y **setters** y "**orm:schema-tool:update**" para aplicar los cambios en MySQL. 
 
-## Using Vagrant
-
-This skeleton includes a `Vagrantfile` based on ubuntu 16.04 (bento box)
-with configured Apache2 and PHP 7.0. Start it up using:
 
 ```bash
-$ vagrant up
+./vendor/bin/doctrine-module orm:generate-entities ./module/ApiV3/src/ --generate-annotations=true
+./vendor/bin/doctrine-module orm:schema-tool:update --force
 ```
-
-Once built, you can also run composer within the box. For example, the following
-will install dependencies:
 
 ```bash
-$ vagrant ssh -c 'composer install'
+
+./vendor/bin/doctrine-module orm:convert-mapping --namespace="ApiV3\\Entity\\" --force  --from-database annotation ./module/ApiV3/src/
+./vendor/bin/doctrine-module orm:generate-entities ./module/ApiV3/src/ --generate-annotations=true
+
+ * @ORM\Entity(repositoryClass="ApiV3\Entity\Repository\ResponseRepository")
+
+./vendor/bin/doctrine-module orm:generate-repositories ./module/ApiV3/src/
+
 ```
 
-While this will update them:
+## Babelium Commands
 
 ```bash
-$ vagrant ssh -c 'composer update'
+./commands 
 ```
 
-While running, Vagrant maps your host port 8080 to port 80 on the virtual
-machine; you can visit the site at http://localhost:8080/
-
-> ### Vagrant and VirtualBox
->
-> The vagrant image is based on ubuntu/xenial64. If you are using VirtualBox as
-> a provider, you will need:
->
-> - Vagrant 1.8.5 or later
-> - VirtualBox 5.0.26 or later
-
-For vagrant documentation, please refer to [vagrantup.com](https://www.vagrantup.com/)
-
-## Using docker-compose
-
-This skeleton provides a `docker-compose.yml` for use with
-[docker-compose](https://docs.docker.com/compose/); it
-uses the `Dockerfile` provided as its base. Build and start the image using:
+* babelium:convert:videos
 
 ```bash
-$ docker-compose up -d --build
+  babelium:convert:response  Combinar audio y video original para generar la respuesta
+  babelium:convert:videos    Importa y convierte los videos a mp4 y webm
 ```
 
-At this point, you can visit http://localhost:8080 to see the site running.
-
-You can also run composer from the image. The container environment is named
-"zf", so you will pass that value to `docker-compose run`:
+## Links de apoyo
 
 ```bash
-$ docker-compose run zf composer install
+
+http://stackoverflow.com/questions/18463291/how-to-generate-entities-from-database-schema-using-doctrine-orm-module-and-zf2
+https://samsonasik.wordpress.com/2013/04/10/zend-framework-2-generate-doctrine-entities-from-existing-database-using-doctrinemodule-and-doctrineormmodule/
+http://stackoverflow.com/questions/29538840/create-doctrine-entity-of-single-table-from-database-in-zend-framework-2
+
 ```
 
-## Web server setup
-
-### Apache setup
-
-To setup apache, setup a virtual host to point to the public/ directory of the
-project and you should be ready to go! It should look something like below:
-
-```apache
-<VirtualHost *:80>
-    ServerName zfapp.localhost
-    DocumentRoot /path/to/zfapp/public
-    <Directory /path/to/zfapp/public>
-        DirectoryIndex index.php
-        AllowOverride All
-        Order allow,deny
-        Allow from all
-        <IfModule mod_authz_core.c>
-        Require all granted
-        </IfModule>
-    </Directory>
-</VirtualHost>
-```
-
-### Nginx setup
-
-To setup nginx, open your `/path/to/nginx/nginx.conf` and add an
-[include directive](http://nginx.org/en/docs/ngx_core_module.html#include) below
-into `http` block if it does not already exist:
-
-```nginx
-http {
-    # ...
-    include sites-enabled/*.conf;
-}
-```
-
-
-Create a virtual host configuration file for your project under `/path/to/nginx/sites-enabled/zfapp.localhost.conf`
-it should look something like below:
-
-```nginx
-server {
-    listen       80;
-    server_name  zfapp.localhost;
-    root         /path/to/zfapp/public;
-
-    location / {
-        index index.php;
-        try_files $uri $uri/ @php;
-    }
-
-    location @php {
-        # Pass the PHP requests to FastCGI server (php-fpm) on 127.0.0.1:9000
-        fastcgi_pass   127.0.0.1:9000;
-        fastcgi_param  SCRIPT_FILENAME /path/to/zfapp/public/index.php;
-        include fastcgi_params;
-    }
-}
-```
-
-Restart the nginx, now you should be ready to go!
-
-## QA Tools
-
-The skeleton does not come with any QA tooling by default, but does ship with
-configuration for each of:
-
-- [phpcs](https://github.com/squizlabs/php_codesniffer)
-- [phpunit](https://phpunit.de)
-
-Additionally, it comes with some basic tests for the shipped
-`Application\Controller\IndexController`.
-
-If you want to add these QA tools, execute the following:
-
-```bash
-$ composer require --dev phpunit/phpunit squizlabs/php_codesniffer zendframework/zend-test
-```
-
-We provide aliases for each of these tools in the Composer configuration:
-
-```bash
-# Run CS checks:
-$ composer cs-check
-# Fix CS errors:
-$ composer cs-fix
-# Run PHPUnit tests:
-$ composer test
-```
