@@ -1,4 +1,33 @@
 <?php
+/**
+ * Babelium Project open source collaborative second language oral practice
+ * http://www.babeliumproject.com
+ *
+ * Copyright (c) 2011 GHyM and by respective authors (see below).
+ *
+ * This file is part of Babelium Project.
+ *
+ * Babelium Project is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Babelium Project is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5.6/7
+ *
+ * @category Command
+ * @package  ApiV3
+ * @author   Elurnet Informatika Zerbitzuak S.L - Irontec
+ * @license  GNU <http://www.gnu.org/licenses/>
+ * @link     https://github.com/babeliumproject
+ */
 
 namespace ApiV3\Command;
 
@@ -6,20 +35,30 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Esta clase es la encargada de convertir a mp4 los videos que se suben a
+ * Babelium para ser usados en el modulos v3 de Moodle.
+ */
 class ConvertCommand extends Command
 {
 
     /**
+     * Zend Application
+     *
      * @var \Zend\Mvc\Application
      */
     protected $_zendApplication;
 
     /**
+     * Ruta donde se guardan los videos originales
+     *
      * @var string
      */
     protected $_babeliumPathUploads;
 
     /**
+     * Comando
+     *
      * @var string
      */
     protected $_commandName = 'babelium:convert:videos';
@@ -46,6 +85,10 @@ class ConvertCommand extends Command
 
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Symfony\Component\Console\Command\Command::execute()
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
@@ -86,7 +129,10 @@ class ConvertCommand extends Command
             $criteria = array(
                 'fkMedia' => $media->getId()
             );
-            $mediaRend = $this->getMediaRenditionRepository()->findOneBy($criteria);
+            $mediaRend = $this->getMediaRenditionRepository()->findOneBy(
+                $criteria
+            );
+
             if (empty($mediaRend)) {
                 $media->setIsProcessed(1);
                 $em->persist($media);
@@ -105,7 +151,11 @@ class ConvertCommand extends Command
 
             if (file_exists($pathFile)) {
 
-                $pathMediaPk = $generatePath->generate($mediaPath, $mediaRend->getId(), false);
+                $pathMediaPk = $generatePath->generate(
+                    $mediaPath,
+                    $mediaRend->getId(), false
+                );
+
                 mkdir($pathMediaPk, 0777, true);
 
                 $video = $ffmpeg->open($pathFile);

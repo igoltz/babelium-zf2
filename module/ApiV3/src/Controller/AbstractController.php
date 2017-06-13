@@ -1,4 +1,33 @@
 <?php
+/**
+ * Babelium Project open source collaborative second language oral practice
+ * http://www.babeliumproject.com
+ *
+ * Copyright (c) 2011 GHyM and by respective authors (see below).
+ *
+ * This file is part of Babelium Project.
+ *
+ * Babelium Project is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Babelium Project is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5.6/7
+ *
+ * @category Command
+ * @package  ApiV3
+ * @author   Elurnet Informatika Zerbitzuak S.L - Irontec
+ * @license  GNU <http://www.gnu.org/licenses/>
+ * @link     https://github.com/babeliumproject
+ */
 
 namespace ApiV3\Controller;
 
@@ -150,7 +179,8 @@ class AbstractController
     }
 
     /**
-     * @param string $service
+     * @param  string $service Nombre del servicio
+     * @return boolean|object
      */
     public function getService($service)
     {
@@ -167,6 +197,9 @@ class AbstractController
 
     }
 
+    /**
+     * @return string
+     */
     public function getBaseUrl()
     {
 

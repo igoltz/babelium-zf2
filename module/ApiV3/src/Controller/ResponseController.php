@@ -1,4 +1,33 @@
 <?php
+/**
+ * Babelium Project open source collaborative second language oral practice
+ * http://www.babeliumproject.com
+ *
+ * Copyright (c) 2011 GHyM and by respective authors (see below).
+ *
+ * This file is part of Babelium Project.
+ *
+ * Babelium Project is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Babelium Project is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5.6/7
+ *
+ * @category Command
+ * @package  ApiV3
+ * @author   Elurnet Informatika Zerbitzuak S.L - Irontec
+ * @license  GNU <http://www.gnu.org/licenses/>
+ * @link     https://github.com/babeliumproject
+ */
 
 namespace ApiV3\Controller;
 
@@ -64,17 +93,17 @@ class ResponseController
     public function create($data)
     {
 
-        $studentId = $this->params()->fromPost('studentId', false);
         $exerciseId = $this->params()->fromPost('exerciseId', false);
         $subtitleId = $this->params()->fromPost('subtitleId', false);
         $characterName = $this->params()->fromPost('characterName', false);
-        $responsehash = $this->params()->fromPost('responsehash', false);
         $audio = $this->params()->fromPost('audio', false);
 
-        $exerciseRepository = $this->getDoctrineRepository('\ApiV3\Entity\Exercise');
+        $entity = '\ApiV3\Entity\Exercise';
+        $exerciseRepository = $this->getDoctrineRepository($entity);
         $exercise = $exerciseRepository->find($exerciseId);
 
-        $subtitleRepository = $this->getDoctrineRepository('\ApiV3\Entity\Subtitle');
+        $entity = '\ApiV3\Entity\Subtitle';
+        $subtitleRepository = $this->getDoctrineRepository($entity);
         $subtitle = $subtitleRepository->find($subtitleId);
 
         $consumer = $this->getService('ConsumerService')

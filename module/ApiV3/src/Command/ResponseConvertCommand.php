@@ -1,4 +1,33 @@
 <?php
+/**
+ * Babelium Project open source collaborative second language oral practice
+ * http://www.babeliumproject.com
+ *
+ * Copyright (c) 2011 GHyM and by respective authors (see below).
+ *
+ * This file is part of Babelium Project.
+ *
+ * Babelium Project is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Babelium Project is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5.6/7
+ *
+ * @category Command
+ * @package  ApiV3
+ * @author   Elurnet Informatika Zerbitzuak S.L - Irontec
+ * @license  GNU <http://www.gnu.org/licenses/>
+ * @link     https://github.com/babeliumproject
+ */
 
 namespace ApiV3\Command;
 
@@ -6,30 +35,43 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Esta clase combina el video mp4 con la respuesta en audio
+ */
 class ResponseConvertCommand extends Command
 {
 
     /**
+     * Zend Application
+     *
      * @var \Zend\Mvc\Application
      */
     protected $_zendApplication;
 
     /**
+     * Comando
+     *
      * @var string
      */
     protected $_commandName = 'babelium:convert:response';
 
     /**
+     * Ruta donde se guardan los videos originales
+     *
      * @var string
      */
     protected $_babeliumPathUploads;
 
     /**
+     * Ruta del RED5
+     *
      * @var string
      */
     protected $_babeliumPathRed;
 
     /**
+     * Clase FFMpeg\FFMpeg para convinar el video y el audio
+     *
      * @var FFMpeg\FFMpeg
      */
     protected $_ffmpeg;
@@ -59,13 +101,18 @@ class ResponseConvertCommand extends Command
     protected function configure()
     {
 
+        $desc = 'Combinar audio y video original para generar la respuesta';
+
         $this->setName($this->_commandName)
-            ->setDescription('Combinar audio y video original para generar la respuesta')
+            ->setDescription($desc)
             ->setHelp('Ejecución en CRON');
 
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(
+        InputInterface $input,
+        OutputInterface $output
+    )
     {
 
         $output->writeln('Inicio de la converción');
@@ -108,7 +155,11 @@ class ResponseConvertCommand extends Command
                 false
             );
 
-            $audioPath = $pathResponsePk . '/' . $response->getId() . '.wav';
+            $audioPath = sprintf(
+                '%s/%s.wav',
+                $pathResponsePk,
+                $response->getId()
+            );
 
             $exerciseId = $response->getFkExercise()->getId();
 
@@ -121,7 +172,8 @@ class ResponseConvertCommand extends Command
             $where = array(
                 'fkMedia' => $exerciseMedia->getId()
             );
-            $exerciseMediaRendition = $this->getMediaRenditionRepository()->findOneBy($where);
+            $exerciseMediaRendition = $this->getMediaRenditionRepository()
+                ->findOneBy($where);
 
             $pathExerciseMediaPk = $generatePath->generate(
                 $mediaPath,
@@ -135,17 +187,22 @@ class ResponseConvertCommand extends Command
                 $exerciseMediaRendition->getId()
             );
 
-            $mergeResponsePath = $pathResponsePk . '/' . $response->getId() . '.mp4';
+            $mergeResponsePath = sprintf(
+                '%s/%s.mp4',
+                $pathResponsePk,
+                $response->getId()
+            );
 
             if (!file_exists($audioPath) && !file_exists($exerciseMediaPath)) {
                 continue;
             }
 
             $cmd = sprintf(
-                "%s -i %s -i %s -filter_complex 'amix=inputs=2' -c:a libmp3lame -q:a 4 -shortest -strict -2 -f mp4 %s",
+                "%s -i %s -i %s -filter_complex %s -f mp4 %s",
                 '/usr/bin/ffmpeg',
                 $exerciseMediaPath,
                 $audioPath,
+                "'amix=inputs=2' -c:a libmp3lame -q:a 4 -shortest -strict -2",
                 $mergeResponsePath
             );
 
@@ -216,7 +273,17 @@ class ResponseConvertCommand extends Command
 
     }
 
-    protected function _sendToBabelium($output, $responseConverted)
+    /**
+     * Convierte el video combinado en flv para que se pueda reproducir en el
+     * proyecto de Babelium
+     *
+     * @param OutputInterface $output
+     * @param array $responseConverted
+     */
+    protected function _sendToBabelium(
+        OutputInterface $output,
+        array $responseConverted = array()
+    )
     {
 
         $output->writeln('Enviar respuestas a Babelium');
