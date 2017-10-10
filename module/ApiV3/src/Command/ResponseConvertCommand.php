@@ -222,11 +222,11 @@ class ResponseConvertCommand extends Command
             }
             
             $cmd = sprintf(
-                "%s -i %s %s %s %s",
+                "%s -y -i %s %s -af \"%s\" %s",
                 '/usr/bin/ffmpeg',
                 $exerciseMediaPath,
                 "-c:a libmp3lame -strict -2",
-                "-af \"" . $exerciseMutedMediaCommand . "\"",
+                $exerciseMutedMediaCommand,
                 $exerciseMutedMediaPath
             );
             
