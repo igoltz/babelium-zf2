@@ -44,36 +44,50 @@ class SubTitles
      */
     public function parseSubtitles(array $subtitle = array())
     {
-
+        return $this->parseSerializedSubtitles($subtitle['serialized_subtitles'], $subtitle['id']);
+    }
+        
+    /**
+     * Extrae los subtitulos en un array, para poder generar el un array que representa los subtítulos
+     *
+     * @param array $serializedSubtitle
+     *         Información serializada de los subtitulos guardados en Base de datos.
+     * @return array
+     */
+    public function parseSerializedSubtitles($serializedSubtitle, $subtitleId)
+    {
+        
         $parsedSubtitles = array();
         $distinctVoices = array();
-
-        $serialized = $this->unpackblob($subtitle['serialized_subtitles']);
-        $subtitles = \Zend\Json\Json::decode($serialized, true);
-
+        
+        $serialized = $this->unpackblob($serializedSubtitle);
+        
+        //Sanitize string to strip non ASCII chars (non printable) to avoid json decode errors
+        $cleanSerialized = preg_replace('/[\x00-\x1F\x80-\xFF]/', "", $serialized);
+        $subtitles = \Zend\Json\Json::decode($cleanSerialized, true);
         foreach ($subtitles as $num => $data) {
-
+            
             $sline = new \stdClass();
             $sline->id = $num;
             $sline->showTime = $data['start_time'] / 1000;
             $sline->hideTime = $data['end_time'] / 1000;
             $sline->text = $data['text'];
-
+            
             $sline->exerciseRoleName = $data['meta']['voice'];
-            $sline->subtitleId = $subtitle['id'];
-
+            $sline->subtitleId = $subtitleId;
+            
             $c = count($distinctVoices);
             if (!array_key_exists($data['meta']['voice'], $distinctVoices)) {
                 $distinctVoices[$data['meta']['voice']] = $c+1;
             }
             $sline->exerciseRoleId = $distinctVoices[$data['meta']['voice']];
-
+            
             $parsedSubtitles[] = $sline;
-
+            
         }
-
+        
         return $parsedSubtitles;
-
+        
     }
 
     /**
