@@ -115,7 +115,7 @@ class ResponseConvertCommand extends Command
     )
     {
 
-        $output->writeln('Inicio de la converción');
+        $output->writeln('Inicio de la conversión');
 
         $where = array(
             'isProcessed' => 0,
@@ -136,6 +136,7 @@ class ResponseConvertCommand extends Command
             ->get('GeneratePath');
 
         $mediaPath    = STORAGE_PATH . '/media';
+        $tmpPath    = sys_get_temp_dir();
         $responsePath = STORAGE_PATH . '/response';
 
         $responseConverted = array();
@@ -161,20 +162,43 @@ class ResponseConvertCommand extends Command
                 $response->getId()
             );
 
+            //Obtener ejercicio
             $exerciseId = $response->getFkExercise()->getId();
 
             $where = array(
                 'instanceid' => $exerciseId
             );
 
+            //Obtener media
             $exerciseMedia = $this->getMediaRepository()->findOneBy($where);
 
             $where = array(
                 'fkMedia' => $exerciseMedia->getId()
             );
+            
+            //Obtener media rendition
             $exerciseMediaRendition = $this->getMediaRenditionRepository()
                 ->findOneBy($where);
+            $where = array(
+                'fkMedia' => $exerciseMedia->getId(),
+            );
+                
+            //Obtener subtitles
+            $exerciseSubtitle = $this->getSubtitleRepository()
+            ->findOneBy($where);
+                                    
+            $subtitleService = $this->_zendApplication->getServiceManager()->get('SubTitlesService');
+            $decodedSubtitles = $subtitleService->parseSerializedSubtitles($exerciseSubtitle->getSerializedSubtitles(), $exerciseSubtitle->getId());
+            
+            $exerciseMutedMediaCommand = '';
 
+            //Generar parámetros de control de volumen
+            foreach ($decodedSubtitles as $key => $subtitle){
+                $exerciseMutedMediaCommand .= "volume=enable='between(t,". $subtitle->showTime .",". $subtitle->hideTime .")':volume=0, ";
+            }
+            $exerciseMutedMediaCommand = substr($exerciseMutedMediaCommand, 0, -2);
+            
+            //Generar paths
             $pathExerciseMediaPk = $generatePath->generate(
                 $mediaPath,
                 $exerciseMediaRendition->getId(),
@@ -186,28 +210,55 @@ class ResponseConvertCommand extends Command
                 $pathExerciseMediaPk,
                 $exerciseMediaRendition->getId()
             );
+            $exerciseMutedMediaPath = sprintf(
+                '%s/%s_mutted.mp4',
+                $tmpPath,
+                $exerciseMediaRendition->getId()
+                );
 
+            //Ejecutar comando de generación de video con control de volumen
+            if (!file_exists($exerciseMediaPath)) {
+                continue;
+            }
+            
+            $cmd = sprintf(
+                "%s -i %s %s %s %s",
+                '/usr/bin/ffmpeg',
+                $exerciseMediaPath,
+                "-c:a libmp3lame -strict -2",
+                "-af \"" . $exerciseMutedMediaCommand . "\"",
+                $exerciseMutedMediaPath
+            );
+            
+            $output->write('Ejecutando cmd ['.$cmd.']');
+            
+            shell_exec($cmd);
+            
             $mergeResponsePath = sprintf(
                 '%s/%s.mp4',
                 $pathResponsePk,
                 $response->getId()
             );
 
-            if (!file_exists($audioPath) && !file_exists($exerciseMediaPath)) {
+            //Ejecutar comando de generación de video con audio de ejercicio
+            if (!file_exists($audioPath) && !file_exists($exerciseMutedMediaPath)) {
                 continue;
             }
 
             $cmd = sprintf(
                 "%s -i %s -i %s -filter_complex %s -f mp4 %s",
                 '/usr/bin/ffmpeg',
-                $exerciseMediaPath,
+                $exerciseMutedMediaPath,
                 $audioPath,
                 "'amix=inputs=2' -c:a libmp3lame -q:a 4 -shortest -strict -2",
                 $mergeResponsePath
             );
+            
+            $output->write('Ejecutando cmd ['.$cmd.']');
 
             shell_exec($cmd);
-
+            
+            //Grabar objetos en BD
             if (file_exists($mergeResponsePath)) {
                 $response->setIsConverted(1);
             }
@@ -267,7 +318,7 @@ class ResponseConvertCommand extends Command
 
         }
 
-        $output->write('Fin de la converción!');
+        $output->write('Fin de la conversión!');
 
         $this->_sendToBabelium($output, $responseConverted);
 
@@ -387,5 +438,15 @@ class ResponseConvertCommand extends Command
             ->get('Doctrine\ORM\EntityManager')
             ->getRepository('\ApiV3\Entity\MediaRendition');
     }
-
+    
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getSubtitleRepository()
+    {
+        return $this->_zendApplication
+        ->getServiceManager()
+        ->get('Doctrine\ORM\EntityManager')
+        ->getRepository('\ApiV3\Entity\Subtitle');
+    }
 }
