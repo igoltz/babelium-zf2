@@ -47,9 +47,9 @@ Esta estructura tiene que tener permisos de escritura.
 
 ## Doctrine Commands
 
-### Pase a producción
-
 Comando de doctrine en Zend Framework
+
+### Pase a producción
 
 Para enviar los nuevos cambios a MySQL:
 
