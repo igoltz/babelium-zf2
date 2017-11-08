@@ -47,7 +47,17 @@ Esta estructura tiene que tener permisos de escritura.
 
 ## Doctrine Commands
 
+### Pase a producción
+
 Comando de doctrine en Zend Framework
+
+Para enviar los nuevos cambios a MySQL:
+
+```bash
+php bin/console doctrine:schema:update --force
+```
+
+### Desarrollo
 
 Sincronizar los nuevos cambios en la base de datos y los cambios que realiza doctrine (nombres de las KEYS).
 
