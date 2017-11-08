@@ -108,6 +108,14 @@ Al definir un nuevo campo en las entidades hay que ejecutar 2 comandos de Doctri
   babelium:convert:videos    Importa y convierte los videos a mp4 y webm
 ```
 
+## VirtualHost
+
+Para acceder a la nueva api hay crear un Alias/Link o lo que corresponda a la carpeta public
+
+````bash
+ Alias /api/v3 /~/babelium-zf2/public
+````
+
 ## Links de apoyo
 
 ```bash
