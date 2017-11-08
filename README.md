@@ -43,7 +43,18 @@ data
 
 ```
 
-Esta estructura tiene que tener permisos de escritura.
+El directorio **storage** es donde se guardan los videos despues de ser transformados y se mantienen vivos para el uso del nuevo modulo de Moodle 3.x
+
+```bash
+storage
+└── media
+    └── *
+```
+
+
+```
+Crear estas 2 estructuras en la raiz de la instalación con permisos de escritura
+```
 
 ## Doctrine Commands
 
