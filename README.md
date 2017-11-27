@@ -1,5 +1,7 @@
 # Babelium Project (Api V3)
 
+*Traducciones: [Español](README.md) | [English](README-en.md)
+
 ## Configuración
 
 En el modulo de **ApiV3** hay una serie de parametros que se tienen que configurar en el archivo "**/~/module/ApiV3/config/module.config.php**", los cuales son:
