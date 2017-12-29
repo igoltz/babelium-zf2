@@ -32,7 +32,7 @@ array(
 )
 ````
 
-## Directorio "data"
+## "data" Folder
 
 The **data** folder is where external and temp files will be stored in a **Zend Framework** project. The next folder structure is also required:
 
