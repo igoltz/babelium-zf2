@@ -110,13 +110,13 @@ To apply the database changes execute:
 ### One time execution on PROD
 
 ```bash
-  babelium:convert:videos    Imports and merges videos to mp4 and webm
+./commands babelium:convert:videos    Imports and merges videos to mp4 and webm
 ```
 
 ### CRON
 
 ```bash
-  babelium:convert:response  Merges the exercise audio and the original video for the response
+./commands babelium:convert:response  Merges the exercise audio and the original video for the response
 ```
 
 

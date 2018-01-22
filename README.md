@@ -113,13 +113,13 @@ Al definir un nuevo campo en las entidades hay que ejecutar 2 comandos de Doctri
 ### Ejecuciòn al instalar
 
 ```bash
-  babelium:convert:videos    Importa y convierte los videos a mp4 y webm
+./commands babelium:convert:videos    Importa y convierte los videos a mp4 y webm
 ```
 
 ### CRON a definir
 
 ```bash
-  babelium:convert:response  Combinar audio y video original para generar la respuesta
+./commands babelium:convert:response  Combinar audio y video original para generar la respuesta
 ```
 
 
