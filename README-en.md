@@ -91,7 +91,7 @@ When defining a new fields in an entity, the next two Doctrine commands must be 
 To apply the database changes execute:
 
 ```bash
-php bin/console doctrine:schema:update --force
+./vendor/bin/doctrine-module orm:schema-tool:update --force
 ```
 
 ## Babelium Commands

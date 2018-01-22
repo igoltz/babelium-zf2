@@ -67,7 +67,7 @@ Comando de doctrine en Zend Framework
 Para enviar los nuevos cambios a MySQL:
 
 ```bash
-php bin/console doctrine:schema:update --force
+./vendor/bin/doctrine-module orm:schema-tool:update --force
 ```
 
 ### Desarrollo

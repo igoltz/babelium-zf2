@@ -175,7 +175,7 @@ return [
             'application_entities' => array(
                 'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array('/home/dani/workspaces/babelium-zf2/module/ApiV3/src/Entity')
+                'paths' => array(__DIR__ . '/../src/ApiV3/Entity')
             ),
             'orm_default' => array(
                 'class'   => 'Doctrine\ORM\Mapping\Driver\DriverChain',
@@ -186,18 +186,18 @@ return [
             'mappings' => array(
                 'type' => 'annotation',
                 'namespace' => 'ApiV3\Entity',
-                'path' => '/home/dani/workspaces/babelium-zf2/module/ApiV3/src/Entity',
+                'path' => __DIR__ . '/../src/ApiV3/Entity',
             )
         ),
         'connection' => array(
             'orm_default' => array(
                 'driverClass' =>'Doctrine\DBAL\Driver\PDOMySql\Driver',
                 'params' => array(
-                    'host'     => '10.177.74.63',
+                    'host'     => '127.0.0.1',
                     'port'     => '3306',
-                    'user'     => 'root',
-                    'password' => 'B4b3l1umd4t4b4sE',
-                    'dbname'   => 'babelium_data_new',
+                    'user'     => 'admin',
+                    'password' => '1234',
+                    'dbname'   => 'babelium',
                     'charset'  => 'utf8'
                 ),
                 'doctrine_type_mappings' => array(
