@@ -52,7 +52,7 @@ class MediaRendition
     /**
      * @var integer
      *
-     * @ORM\Column(name="timemodified", type="integer", nullable=false)
+     * @ORM\Column(name="timemodified", type="integer", nullable=false, options={"default": 0})
      */
     private $timemodified;
 
