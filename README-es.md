@@ -1,6 +1,8 @@
 # Babelium Project (Api V3)
 
-*Traducciones: [Español](README.md) | [English](README-en.md)
+**WARNING:** this file is outdated. Please refer to [English Version](README.md)
+
+Traducciones: [Español](README-es.md) | [English](README.md)
 
 ## Configuración
 
