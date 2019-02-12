@@ -1,5 +1,6 @@
 *~
 .vagrant/
+.vscode/
 vendor/
 config/development.config.php
 data/cache/*
