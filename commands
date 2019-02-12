@@ -26,9 +26,11 @@ $zfApp = Application::init($appConfig);
 $application = new Symfony\Component\Console\Application('Babelium', '0.0.1');
 $convertCommand = new ApiV3\Command\ConvertCommand($zfApp);
 $responseConvertCommand = new ApiV3\Command\ResponseConvertCommand($zfApp);
+$responseMigrateCommand = new ApiV3\Command\ResponseMigrateCommand($zfApp);
 
 $application->add($convertCommand);
 $application->add($responseConvertCommand);
+$application->add($responseMigrateCommand);
 
 //$application->setDefaultCommand($convertCommand->getName(), true);
 
