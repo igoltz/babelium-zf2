@@ -36,9 +36,9 @@ class MediaRendition
     private $contenthash;
 
     /**
-     * @var boolean
+     * @var integer
      *
-     * @ORM\Column(name="status", type="boolean", nullable=false, options={"default": 0, "comment": "0: raw 1: encoding, 2: ready, 3: duplicate, 4: error"})
+     * @ORM\Column(name="status", type="integer", nullable=false, options={"default": 0, "comment": "0: raw 1: encoding, 2: ready, 3: duplicate, 4: error"})
      */
     private $status = '0';
 
