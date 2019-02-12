@@ -1,6 +1,6 @@
 # Babelium Project (Api V3)
 
-*Translations: [Spanish](README.md) | [English](README-en.md)
+Translations: [Spanish (outdated)](README-es.md) | [English](README.md)
 
 ## Configuration
 
@@ -96,27 +96,38 @@ To apply the database changes execute:
 
 ## Babelium Commands
 
+### One time execution - migration from old Moodle API
+
+Once exercises are uploaded in Babelium this command converts them to mp4.  
+**Note:** Older API versions removed uploaded files after successfull conversion to flv. Thus they need to be resubmitted via additional migration tool.  
+TODO: describe tool an push it
+
 ```bash
-./commands 
+/commands babelium:convert:videos
 ```
 
-* babelium:convert:videos
+Old responses must be converted too. Depending on the amount of responses this may need a (temporary) change to php.ini.  
+For 60.000 responses we found __memory_limit = 512M__ sufficient.  
+This merges the audio from old response file *_merge.flv with video stream from related exercise file (created by above conversion)
 
 ```bash
-  babelium:convert:response  Merges the exercise audio and the original video for the response
-  babelium:convert:videos    Imports and merges videos to mp4 and webm
-```
-
-### One time execution on PROD
-
-```bash
-./commands babelium:convert:videos    Imports and merges videos to mp4 and webm
+./commands babelium:migrate:response
 ```
 
 ### CRON
 
 ```bash
-./commands babelium:convert:response  Merges the exercise audio and the original video for the response
+# /etc/cron.d/babelium_api3
+
+LOG_PATH=path_to/log
+API3_PATH=path_to/api3
+PHP=path_to/php
+
+# Merges the exercise audio and the original video for the response
+*/5 * * * * apache ${PHP} ${API3_PATH}/commands babelium:convert:response >> ${LOG_PATH}/convert_response.log
+
+# Imports and merges videos to mp4 and webm
+*/15 * * * * apache ${PHP} ${API3_PATH}/commands babelium:convert:videos >> ${LOG_PATH}/convert_videos.log
 ```
 
 
