@@ -25,6 +25,7 @@
  * @category Command
  * @package  ApiV3
  * @author   Elurnet Informatika Zerbitzuak S.L - Irontec
+ * @author   Goethe-Institut e.V. - Immo Goltz
  * @license  GNU <http://www.gnu.org/licenses/>
  * @link     https://github.com/babeliumproject
  */
@@ -36,7 +37,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Esta clase combina el video mp4 con la respuesta en audio
+ * Merge submitted audio with original video to generate response media
  */
 class ResponseConvertCommand extends Command
 {
@@ -101,11 +102,11 @@ class ResponseConvertCommand extends Command
     protected function configure()
     {
 
-        $desc = 'Combinar audio y video original para generar la respuesta';
+        $desc = 'Merge submitted audio with original video to generate response media';
 
         $this->setName($this->_commandName)
             ->setDescription($desc)
-            ->setHelp('Ejecución en CRON');
+            ->setHelp('Run frequently via CRON');
 
     }
 
@@ -115,7 +116,8 @@ class ResponseConvertCommand extends Command
     )
     {
 
-        $output->writeln('Inicio de la conversión');
+        $date = date('Y-m-d H:i:s');
+        $output->writeln("Query DB for responses to convert ($date)");
 
         $where = array(
             'isProcessed' => 0,
@@ -124,12 +126,13 @@ class ResponseConvertCommand extends Command
 
         $responseList = $this->getResponseRepository()->findBy($where);
         if (empty($responseList)) {
-            $output->writeln('No hay respuestas que procesar');
+            $output->writeln('No responses found');
             return;
         }
 
-        $count = sizeof($responseList);
-        $output->writeln('Respuestas a procesar #' . $count);
+        $countMax = sizeof($responseList);
+        $output->writeln('Responses found: ' . $countMax);
+        $count = 1;
 
         $generatePath = $this->_zendApplication
             ->getServiceManager()
@@ -150,6 +153,11 @@ class ResponseConvertCommand extends Command
          */
         foreach ($responseList as $response) {
 
+            $output->writeln("\nWorking on $count/$countMax");
+            $output->writeln("responseId: " . $response->getId());
+            $count++;
+
+            // where to store the converted response
             $pathResponsePk = $generatePath->generate(
                 $responsePath,
                 $response->getId(),
@@ -162,30 +170,41 @@ class ResponseConvertCommand extends Command
                 $response->getId()
             );
 
-            //Obtener ejercicio
-            $exerciseId = $response->getFkExercise()->getId();
+            if (!file_exists($audioPath)) {
+                $output->writeln("Response file $audioPath not found, can't convert");
+                continue;
+            }
+            // TODO: check if audio file is not empty, has some duration (44 byte long files caused ffmpeg 3.4.2 to crash )
 
+            // get exercise id
+            $exerciseId = $response->getFkExercise()->getId();
+            $output->write("exerciseId: " . $exerciseId);
+
+            // get media
             $where = array(
                 'instanceid' => $exerciseId
             );
-
-            //Obtener media
             $exerciseMedia = $this->getMediaRepository()->findOneBy($where);
+            $output->write(", exerciseMediaId: " . $exerciseMedia->getId());
 
+            // get media rendition of exercise
             $where = array(
                 'fkMedia' => $exerciseMedia->getId()
             );
-            
-            //Obtener media rendition
             $exerciseMediaRendition = $this->getMediaRenditionRepository()
                 ->findOneBy($where);
+            if ( !$exerciseMediaRendition) {
+                $output->writeln("\nNo media rendition found for exercise, can't convert");
+                continue;
+            }
+            $output->writeln(", exerciseMediaRenditionId: " . $exerciseMediaRendition->getId());
+
+            //Obtener subtitles
             $where = array(
                 'fkMedia' => $exerciseMedia->getId(),
             );
-                
-            //Obtener subtitles
             $exerciseSubtitle = $this->getSubtitleRepository()
-            ->findOneBy($where);
+                ->findOneBy($where);
                                     
             $subtitleService = $this->_zendApplication->getServiceManager()->get('SubTitlesService');
             $decodedSubtitles = $subtitleService->parseSerializedSubtitles($exerciseSubtitle->getSerializedSubtitles(), $exerciseSubtitle->getId());
@@ -198,7 +217,7 @@ class ResponseConvertCommand extends Command
             }
             $exerciseMutedMediaCommand = substr($exerciseMutedMediaCommand, 0, -2);
             
-            //Generar paths
+            // get api3 path to exercises
             $pathExerciseMediaPk = $generatePath->generate(
                 $mediaPath,
                 $exerciseMediaRendition->getId(),
@@ -216,22 +235,23 @@ class ResponseConvertCommand extends Command
                 $exerciseMediaRendition->getId()
                 );
 
-            //Ejecutar comando de generación de video con control de volumen
             if (!file_exists($exerciseMediaPath)) {
+                $output->writeln("Exercise file $exerciseMediaPath not found, can't convert");
                 continue;
             }
             
+            // generate exercise video with muted audio during subtitled parts
             $cmd = sprintf(
-                "%s -y -i %s %s -af \"%s\" %s",
+                "%s %s -i %s %s -af \"%s\" %s",
                 '/usr/bin/ffmpeg',
+                '-y -loglevel warning',
                 $exerciseMediaPath,
                 "-c:a libmp3lame -strict -2",
                 $exerciseMutedMediaCommand,
                 $exerciseMutedMediaPath
             );
             
-            $output->write('Ejecutando cmd ['.$cmd.']');
-            
+            $output->writeln("Execute [$cmd]");
             shell_exec($cmd);
             
             $mergeResponsePath = sprintf(
@@ -240,29 +260,30 @@ class ResponseConvertCommand extends Command
                 $response->getId()
             );
 
-            //Ejecutar comando de generación de video con audio de ejercicio
-            if (!file_exists($audioPath) && !file_exists($exerciseMutedMediaPath)) {
+            if (!file_exists($exerciseMutedMediaPath)) {
+                $output->writeln("Muted exercise file $exerciseMutedMediaPath not found, can't convert");
                 continue;
             }
 
+            // merge muted video with submitted audio
             $cmd = sprintf(
-                "%s -i %s -i %s -filter_complex %s -f mp4 %s",
+                "%s %s -i %s -i %s -filter_complex %s -f mp4 %s",
                 '/usr/bin/ffmpeg',
+                '-y -loglevel warning',
                 $exerciseMutedMediaPath,
                 $audioPath,
                 "'amix=inputs=2' -c:a libmp3lame -q:a 4 -shortest -strict -2",
                 $mergeResponsePath
             );
             
-            $output->write('Ejecutando cmd ['.$cmd.']');
-
+            $output->writeln("Execute [$cmd]");
             shell_exec($cmd);
             
-            //Grabar objetos en BD
+            // mark response converted if newly converted response file exists
             if (file_exists($mergeResponsePath)) {
                 $response->setIsConverted(1);
             }
-
+            // mark response processed
             $response->setIsProcessed(1);
 
             $em->persist($response);
@@ -316,11 +337,14 @@ class ResponseConvertCommand extends Command
             $em->persist($response);
             $em->flush();
 
+            $output->writeln("Success.");
+
         }
 
-        $output->write('Fin de la conversión!');
+        $output->writeln("\nConversion done.");
 
-        $this->_sendToBabelium($output, $responseConverted);
+        // No need to store flash file versions
+        //$this->_sendToBabelium($output, $responseConverted);
 
     }
 
