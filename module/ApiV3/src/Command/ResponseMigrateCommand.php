@@ -115,7 +115,8 @@ class ResponseMigrateCommand extends Command
     )
     {
 
-        $output->writeln('Query DB for responses to migrate');
+        $date = date('Y-m-d H:i:s');
+        $output->writeln("Query DB for responses to convert ($date)");
 
         // api3 introduces these columns, they are set to 0 for existing (old) responses
         $where = array(
@@ -148,7 +149,7 @@ class ResponseMigrateCommand extends Command
 
         $countMax = sizeof($responseList);
         $output->writeln('Old responses found: ' . $countMax);
-        $count = 1; 
+        $count = 1;
 
         $generatePath = $this->_zendApplication
             ->getServiceManager()
@@ -261,7 +262,7 @@ class ResponseMigrateCommand extends Command
             $cmd = sprintf(
                 "%s %s -i %s -i %s %s -f mp4 %s",
                 '/usr/bin/ffmpeg',
-                '-y -loglevel warning',
+                '-y -loglevel warning -stats',
                 $exerciseMediaPath,
                 $oldResponsePath,
                 '-map 0:0 -map 1:0 -c copy',
@@ -331,7 +332,7 @@ class ResponseMigrateCommand extends Command
 
         }
 
-        $output->writeln('\nMigration done.');
+        $output->writeln("\nMigration done.");
     }
 
 
