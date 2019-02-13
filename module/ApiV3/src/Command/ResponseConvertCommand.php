@@ -244,7 +244,7 @@ class ResponseConvertCommand extends Command
             $cmd = sprintf(
                 "%s %s -i %s %s -af \"%s\" %s",
                 '/usr/bin/ffmpeg',
-                '-y -loglevel warning',
+                '-y -loglevel warning -stats',
                 $exerciseMediaPath,
                 "-c:a libmp3lame -strict -2",
                 $exerciseMutedMediaCommand,
@@ -269,7 +269,7 @@ class ResponseConvertCommand extends Command
             $cmd = sprintf(
                 "%s %s -i %s -i %s -filter_complex %s -f mp4 %s",
                 '/usr/bin/ffmpeg',
-                '-y -loglevel warning',
+                '-y -loglevel warning -stats',
                 $exerciseMutedMediaPath,
                 $audioPath,
                 "'amix=inputs=2' -c:a libmp3lame -q:a 4 -shortest -strict -2",

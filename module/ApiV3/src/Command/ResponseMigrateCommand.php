@@ -262,7 +262,7 @@ class ResponseMigrateCommand extends Command
             $cmd = sprintf(
                 "%s %s -i %s -i %s %s -f mp4 %s",
                 '/usr/bin/ffmpeg',
-                '-y -loglevel warning',
+                '-y -loglevel warning -stats',
                 $exerciseMediaPath,
                 $oldResponsePath,
                 '-map 0:0 -map 1:0 -c copy',
