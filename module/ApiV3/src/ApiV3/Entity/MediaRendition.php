@@ -150,7 +150,7 @@ class MediaRendition
     /**
      * Set status
      *
-     * @param boolean $status
+     * @param integer $status
      *
      * @return MediaRendition
      */
@@ -164,7 +164,7 @@ class MediaRendition
     /**
      * Get status
      *
-     * @return boolean
+     * @return integer
      */
     public function getStatus()
     {
