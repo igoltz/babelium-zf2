@@ -175,12 +175,18 @@ class ConvertCommand extends Command
 
             mkdir($pathMediaPk, 0775, true);
 
+            // convert video
             $video = $ffmpeg->open($pathFile);
             $videoNewPath = $pathMediaPk . '/' . $mediaRend->getId(). '.mp4';
+            $format = new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264');
+            $format->on('progress', function ($video, $format, $percentage) {
+                echo "\r$percentage% transcoded";
+            });
             $video->save(
-                new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'),
+                $format,
                 $videoNewPath
             );
+            $output->writeln("");
 
             // mark video converted if target file exists
             if (file_exists($videoNewPath)) {
