@@ -25,6 +25,7 @@
  * @category Command
  * @package  ApiV3
  * @author   Elurnet Informatika Zerbitzuak S.L - Irontec
+ * @author   Goethe-Institut e.V. - Immo Goltz
  * @license  GNU <http://www.gnu.org/licenses/>
  * @link     https://github.com/babeliumproject
  */
@@ -80,8 +81,8 @@ class ConvertCommand extends Command
     {
 
         $this->setName($this->_commandName)
-            ->setDescription('Importa y convierte los videos a mp4 y webm')
-            ->setHelp('Importa los videos desde Babelium Server');
+            ->setDescription('Convert exercise videos to mp4')
+            ->setHelp('Run frequently via CRON');
 
     }
 
@@ -92,16 +93,22 @@ class ConvertCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
-        $output->writeln('Convertir videos (mp4 - webm)');
+        $date = date('Y-m-d H:i:s');
+        $output->writeln("Query DB for exercises to convert ($date)");
 
         $where = array(
             'isProcessed' => 0
         );
 
         $mediaList = $this->getMediaRepository()->findBy($where);
+        if (empty($mediaList)) {
+            $output->writeln('No exercises found');
+            return;
+        }
 
-        $count = sizeof($mediaList);
-        $output->writeln('Videos a convertir #' . $count);
+        $countMax = sizeof($mediaList);
+        $output->writeln('Exercises found: ' . $countMax);
+        $count = 1;
 
         $generatePath = $this->_zendApplication
             ->getServiceManager()
@@ -126,6 +133,10 @@ class ConvertCommand extends Command
          */
         foreach ($mediaList as $media) {
 
+            $output->writeln("\nWorking on $count/$countMax");
+            $output->writeln("mediaId: " . $media->getId());
+            $count++;
+
             $criteria = array(
                 'fkMedia' => $media->getId()
             );
@@ -137,6 +148,7 @@ class ConvertCommand extends Command
                 $media->setIsProcessed(1);
                 $em->persist($media);
                 $em->flush();
+                $output->writeln("No media rendition found for exercise, can't convert");
                 continue;
             }
 
@@ -149,31 +161,40 @@ class ConvertCommand extends Command
             $media = $mediaRend->getFkMedia();
             $media->setIsProcessed(1);
 
-            if (file_exists($pathFile)) {
+            if (!file_exists($pathFile)) {
+                $em->persist($media);
+                $em->flush();
+                $output->writeln("Exercise video $pathFile not found, can't convert");
+                continue;
+            }
 
-                $pathMediaPk = $generatePath->generate(
-                    $mediaPath,
-                    $mediaRend->getId(), false
-                );
+            $pathMediaPk = $generatePath->generate(
+                $mediaPath,
+                $mediaRend->getId(), false
+            );
 
-                mkdir($pathMediaPk, 0777, true);
+            mkdir($pathMediaPk, 0775, true);
 
-                $video = $ffmpeg->open($pathFile);
-                $video->save(
-                    new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'),
-                    $pathMediaPk . '/' . $mediaRend->getId(). '.mp4'
-                );
+            $video = $ffmpeg->open($pathFile);
+            $videoNewPath = $pathMediaPk . '/' . $mediaRend->getId(). '.mp4';
+            $video->save(
+                new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264'),
+                $videoNewPath
+            );
 
+            // mark video converted if target file exists
+            if (file_exists($videoNewPath)) {
+                $output->writeln("Exercise video converted to $videoNewPath");
                 $media->setIsConverted(1);
-
             }
 
             $em->persist($media);
             $em->flush();
 
+            $output->writeln("Success.");
         }
 
-        $output->write('Terminado!');
+        $output->writeln("\nConversion done.");
 
     }
 
