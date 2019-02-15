@@ -99,8 +99,8 @@ To apply the database changes execute:
 ### One time execution - migration from old Moodle API
 
 Once exercises are uploaded in Babelium this command converts them to mp4.  
-**Note:** Older API versions removed uploaded files after successfull conversion to flv. Thus they need to be resubmitted via additional migration tool.  
-TODO: describe tool an push it
+**Note:** Older babelium versions did not store references to the original uploaded files and deleted them after conversion. Thus they need to be resubmitted via additional migration tool. This process is described here: [fixRAWmedia](tools/fixRAWmedia.md)
+
 
 ```bash
 /commands babelium:convert:videos
