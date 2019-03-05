@@ -268,10 +268,17 @@ class ResponseMigrateCommand extends Command
                 '-map 0:0 -map 1:0 -c copy',
                 $mergeResponsePath
             );
+           
+            // as converting takes a _long_ time pre-run before real migration could keep downtime short
+            if (file_exists($mergeResponsePath)) {
+                $output->writeln("New response file $mergeResponsePath already exists, skipping ffmpeg");
+            } else {
+                $output->writeln("Execute [$cmd]");
+                shell_exec($cmd);
+            }
             
-            $output->writeln("Execute [$cmd]");
-            shell_exec($cmd);
-            
+            # TODO: should this state not set once all is finished?
+            # TODO: do we need flsuh here or could we persist as last step?
             // mark response converted if newly migrated response file exists
             if (file_exists($mergeResponsePath)) {
                 $response->setIsConverted(1);
@@ -291,9 +298,10 @@ class ResponseMigrateCommand extends Command
 
             $metadata = json_encode($video->getFormat()->all(), true);
 
+            # TODO: do we really need media DB entry?
             $media = new \ApiV3\Entity\Media();
             $media->setFkUser($user);
-            $media->setComponent('exercise');
+            $media->setComponent('response');
             $media->setType('video');
             $media->setLevel(1);
             $media->setDefaultthumbnail(1);
@@ -309,6 +317,7 @@ class ResponseMigrateCommand extends Command
             $em->persist($media);
             $em->flush();
 
+            # TODO: do we really need mediaRendition DB entry?
             $mediaRendition = new \ApiV3\Entity\MediaRendition();
             $mediaRendition->setFkMedia($media);
             $mediaRendition->setTimecreated(time());
