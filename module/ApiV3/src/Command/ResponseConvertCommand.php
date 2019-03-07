@@ -300,7 +300,7 @@ class ResponseConvertCommand extends Command
 
             $media = new \ApiV3\Entity\Media();
             $media->setFkUser($user);
-            $media->setComponent('exercise');
+            $media->setComponent('response');
             $media->setType('video');
             $media->setLevel(1);
             $media->setDefaultthumbnail(1);
@@ -343,8 +343,9 @@ class ResponseConvertCommand extends Command
 
         $output->writeln("\nConversion done.");
 
-        // No need to store flash file versions
-        //$this->_sendToBabelium($output, $responseConverted);
+        /** No need to store flash file versions
+        $this->_sendToBabelium($output, $responseConverted);
+        */
 
     }
 
@@ -355,6 +356,7 @@ class ResponseConvertCommand extends Command
      * @param OutputInterface $output
      * @param array $responseConverted
      */
+    /** No need to store flash file versions
     protected function _sendToBabelium(
         OutputInterface $output,
         array $responseConverted = array()
@@ -379,10 +381,11 @@ class ResponseConvertCommand extends Command
             ->get('GeneratePath');
 
         $responsePath = STORAGE_PATH . '/response';
-
+    */
         /**
          * @var \ApiV3\Entity\Response $response
          */
+    /** No need to store flash file versions
         foreach ($responses as $response) {
 
             $pathResponsePk = $generatePath->generate(
@@ -418,6 +421,7 @@ class ResponseConvertCommand extends Command
         $output->writeln('Fin');
 
     }
+    */
 
     /**
      * @return \Doctrine\ORM\EntityRepository
