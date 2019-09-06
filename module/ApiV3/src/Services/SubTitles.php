@@ -62,9 +62,7 @@ class SubTitles
         
         $serialized = $this->unpackblob($serializedSubtitle);
         
-        //Sanitize string to strip non ASCII chars (non printable) to avoid json decode errors
-        $cleanSerialized = preg_replace('/[\x00-\x1F\x80-\xFF]/', "", $serialized);
-        $subtitles = \Zend\Json\Json::decode($cleanSerialized, true);
+        $subtitles = \Zend\Json\Json::decode($serialized, true);
         foreach ($subtitles as $num => $data) {
             
             $sline = new \stdClass();
