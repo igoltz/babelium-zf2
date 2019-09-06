@@ -2,6 +2,8 @@
 
 namespace ApiV3\Services;
 
+//FIXME: is this class used at all?
+
 class Exercises
 {
 
@@ -214,7 +216,7 @@ class Exercises
             'm.defaultthumbnail',
             'mr.status',
             'mr.filename',
-            'sub.id as subtitleId'
+            'MAX(sub.id) as subtitleId'
         );
         $colums = implode(', ', $columsPieces);
 
@@ -227,7 +229,7 @@ class Exercises
         $where = implode(' AND ', $wherePieces);
 
         $select = sprintf(
-            'SELECT %s FROM media m INNER JOIN media_rendition mr ON m.id = mr.fk_media_id INNER JOIN subtitle sub ON sub.fk_media_id = m.id WHERE %s LIMIT 1',
+            'SELECT %s FROM media m INNER JOIN media_rendition mr ON m.id = mr.fk_media_id INNER JOIN subtitle sub ON sub.fk_media_id = m.id WHERE %s',
             $colums,
             $where
         );
@@ -235,6 +237,7 @@ class Exercises
             'instanceid' => $id
         );
 
+        //Get the latest subtitle version (last DB entry), see babelium standalone Subtitle.php, public function getSubtitleLines
         $stmt = $this->_doctrineConnection->prepare($select);
         $stmt->execute($params);
 
@@ -252,7 +255,7 @@ class Exercises
                 $result['defaultthumbnail']
             );
 
-            $result['netConnectionUrl'] = 'rtmp://babelium-server-dev.irontec.com/oflaDemo/';
+            //FIXME:$result['netConnectionUrl'] = 'rtmp://babelium-server-dev.irontec.com/oflaDemo/';
             $result['mediaUrl'] = 'exercises/' . $result['filename'];
             $media[] = $result;
         }

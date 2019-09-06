@@ -140,9 +140,11 @@ class ExercisesController
         $whereSubtitle = array(
             'fkMedia' => $media->getId(),
         );
+        $orderBy = array('id' => 'desc');
 
+        //Get the latest subtitle version (last DB entry), see babelium standalone Subtitle.php, public function getSubtitleLines
         $subtitleRepository = $this->getDoctrineRepository('\ApiV3\Entity\Subtitle');
-        $subtitle = $subtitleRepository->findOneBy($whereSubtitle);
+        $subtitle = $subtitleRepository->findOneBy($whereSubtitle, $orderBy);
 
         /**
          * @var \ApiV3\Entity\Subtitle $subtitle
