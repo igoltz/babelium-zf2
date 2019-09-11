@@ -48,8 +48,12 @@ class SubTitlesController
      * {@inheritDoc}
      * @see \ApiV3\Controller\AbstractController::get()
      */
-    public function get($id, $role = NULL)
+    public function get($id)
     {
+
+        $role = $this->params()->fromRoute('role');
+        // not using params plugin
+        //$role= $this->getEvent()->getRouteMatch()->getParam('role', NULL);
 
         $vtt = false;
         if (strpos($id, '.vtt') !== false) {
