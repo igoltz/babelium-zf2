@@ -1,4 +1,34 @@
 <?php
+/**
+ * Babelium Project open source collaborative second language oral practice
+ * http://www.babeliumproject.com
+ *
+ * Copyright (c) 2011 GHyM and by respective authors (see below).
+ *
+ * This file is part of Babelium Project.
+ *
+ * Babelium Project is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Babelium Project is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * PHP version 5.6/7
+ *
+ * @category Command
+ * @package  ApiV3
+ * @author   Elurnet Informatika Zerbitzuak S.L - Irontec
+ * @author   Goethe-Institut e.V. - Immo Goltz
+ * @license  GNU <http://www.gnu.org/licenses/>
+ * @link     https://github.com/babeliumproject
+ */
 
 namespace ApiV3\Services;
 
@@ -42,9 +72,9 @@ class SubTitles
      *         Información de los subtitulos guardados en Base de datos.
      * @return array
      */
-    public function parseSubtitles(array $subtitle = array())
+    public function parseSubtitles(array $subtitle = array(), $role = NULL)
     {
-        return $this->parseSerializedSubtitles($subtitle['serialized_subtitles'], $subtitle['id']);
+        return $this->parseSerializedSubtitles($subtitle['serialized_subtitles'], $subtitle['id'], $role);
     }
         
     /**
@@ -54,7 +84,7 @@ class SubTitles
      *         Información serializada de los subtitulos guardados en Base de datos.
      * @return array
      */
-    public function parseSerializedSubtitles($serializedSubtitle, $subtitleId)
+    public function parseSerializedSubtitles($serializedSubtitle, $subtitleId, $role = NULL)
     {
         
         $parsedSubtitles = array();
@@ -80,7 +110,9 @@ class SubTitles
             }
             $sline->exerciseRoleId = $distinctVoices[$data['meta']['voice']];
             
-            $parsedSubtitles[] = $sline;
+            if (isset($role) && $sline->exerciseRoleName === $role ) {
+                $parsedSubtitles[] = $sline;
+            }
             
         }
         
