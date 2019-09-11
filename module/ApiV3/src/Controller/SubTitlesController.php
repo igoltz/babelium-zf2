@@ -25,6 +25,7 @@
  * @category Command
  * @package  ApiV3
  * @author   Elurnet Informatika Zerbitzuak S.L - Irontec
+ * @author   Goethe-Institut e.V. - Immo Goltz
  * @license  GNU <http://www.gnu.org/licenses/>
  * @link     https://github.com/babeliumproject
  */
@@ -47,7 +48,7 @@ class SubTitlesController
      * {@inheritDoc}
      * @see \ApiV3\Controller\AbstractController::get()
      */
-    public function get($id)
+    public function get($id, $role = NULL)
     {
 
         $vtt = false;
@@ -70,20 +71,20 @@ class SubTitlesController
         }
 
         $subtService = $this->getService('SubTitlesService');
-        $parseSubtitles = $subtService->parseSubtitles($subtitle);
+        $parsedSubtitles = $subtService->parseSubtitles($subtitle, $role);
 
         /**
          * Respuesta en formato JSON
          */
         if ($vtt === false) {
             $json = new JsonModel();
-            $json->setVariables($parseSubtitles);
+            $json->setVariables($parsedSubtitles);
             $this->response->setStatusCode(200);
             return $json;
 
         }
 
-        $fileContent = $subtService->generatoFileContent($parseSubtitles);
+        $fileContent = $subtService->generatoFileContent($parsedSubtitles);
 
         $headers = new \Zend\Http\Headers();
         $headers->addHeaderLine('Content-Type:text/vtt;charset=utf-8');
