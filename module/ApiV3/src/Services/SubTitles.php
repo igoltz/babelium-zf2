@@ -112,9 +112,10 @@ class SubTitles
             
             // return only the specified role
             // or all roles if role paramter is not set
-            if (isset($role) {
+            if (isset($role)) {
                 if ($sline->exerciseRoleName === $role) {
                     $parsedSubtitles[] = $sline;
+                }
             } else {
                 $parsedSubtitles[] = $sline;
             }
