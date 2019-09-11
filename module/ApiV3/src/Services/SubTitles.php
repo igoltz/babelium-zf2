@@ -110,7 +110,12 @@ class SubTitles
             }
             $sline->exerciseRoleId = $distinctVoices[$data['meta']['voice']];
             
-            if (isset($role) && $sline->exerciseRoleName === $role ) {
+            // return only the specified role
+            // or all roles if role paramter is not set
+            if (isset($role) {
+                if ($sline->exerciseRoleName === $role) {
+                    $parsedSubtitles[] = $sline;
+            } else {
                 $parsedSubtitles[] = $sline;
             }
             
