@@ -207,7 +207,7 @@ class ResponseConvertCommand extends Command
                 ->findOneBy($where);
                                     
             $subtitleService = $this->_zendApplication->getServiceManager()->get('SubTitlesService');
-            $decodedSubtitles = $subtitleService->parseSerializedSubtitles($exerciseSubtitle->getSerializedSubtitles(), $exerciseSubtitle->getId());
+            $decodedSubtitles = $subtitleService->parseSerializedSubtitles($exerciseSubtitle->getSerializedSubtitles(), $exerciseSubtitle->getId(), $response->getCharacterName());
             
             $exerciseMutedMediaCommand = '';
 
