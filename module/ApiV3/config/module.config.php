@@ -58,7 +58,7 @@ return [
                     'route' => '/sub-titles[/:id][/:role]',
                     'constraints' => array(
                         'id'     => '[0-9]+(\.vtt)?',
-                        'role'   => '[^\s]+',
+                        'role'   => '[\S ]+',
                         'controller' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ),
                     'defaults' => array(
