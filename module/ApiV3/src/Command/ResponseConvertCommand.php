@@ -199,16 +199,21 @@ class ResponseConvertCommand extends Command
             }
             $output->writeln(", exerciseMediaRenditionId: " . $exerciseMediaRendition->getId());
 
-            //Obtener subtitles
+            // Get the latest subtitle version (last DB entry)
             $where = array(
                 'fkMedia' => $exerciseMedia->getId(),
             );
-            $exerciseSubtitle = $this->getSubtitleRepository()
-                ->findOneBy($where);
-                                    
+            $orderBy = array('id' => 'desc');
+            $exerciseSubtitle = $this->getSubtitleRepository()->findOneBy($where, $orderBy);
+
             $subtitleService = $this->_zendApplication->getServiceManager()->get('SubTitlesService');
             $decodedSubtitles = $subtitleService->parseSerializedSubtitles($exerciseSubtitle->getSerializedSubtitles(), $exerciseSubtitle->getId(), $response->getCharacterName());
-            
+
+            // if decodedSubtitles are empty try without specific role
+            if ( count($decodedSubtitles) < 1 ) {
+                $decodedSubtitles = $subtitleService->parseSerializedSubtitles($exerciseSubtitle->getSerializedSubtitles(), $exerciseSubtitle->getId());
+            }
+
             $exerciseMutedMediaCommand = '';
 
             //Generar parámetros de control de volumen
