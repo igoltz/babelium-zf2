@@ -251,7 +251,7 @@ class ResponseConvertCommand extends Command
                 '/usr/bin/ffmpeg',
                 '-y -loglevel warning',
                 $exerciseMediaPath,
-                "-c:a libmp3lame -strict -2",
+                "-c:a aac -strict -2",
                 $exerciseMutedMediaCommand,
                 $exerciseMutedMediaPath
             );
@@ -277,7 +277,7 @@ class ResponseConvertCommand extends Command
                 '-y -loglevel warning',
                 $exerciseMutedMediaPath,
                 $audioPath,
-                "'amix=inputs=2' -c:a libmp3lame -q:a 4 -shortest -strict -2",
+                "'amix=inputs=2' -c:a aac -q:a 4 -shortest -strict -2",
                 $mergeResponsePath
             );
             

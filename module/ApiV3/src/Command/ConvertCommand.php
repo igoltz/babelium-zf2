@@ -178,7 +178,7 @@ class ConvertCommand extends Command
             // convert video
             $video = $ffmpeg->open($pathFile);
             $videoNewPath = $pathMediaPk . '/' . $mediaRend->getId(). '.mp4';
-            $format = new \FFMpeg\Format\Video\X264('libmp3lame', 'libx264');
+            $format = new \FFMpeg\Format\Video\X264('aac', 'libx264');
             $format->on('progress', function ($video, $format, $percentage) {
                 echo "\r$percentage% transcoded";
             });
